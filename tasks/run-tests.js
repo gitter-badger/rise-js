@@ -3,7 +3,7 @@ var mocha = require('gulp-mocha-phantomjs'),
     path = require('path');
 
 module.exports = function(gulp) {
-    gulp.task('run-tests', function() {
+    gulp.task('run-tests', ['build-js'], function() {
         gulp.src(path.resolve(__dirname, '../run-tests.html'))
             .pipe(linker({
                 scripts: [

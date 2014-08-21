@@ -16,6 +16,15 @@
 
     Rise.prototype = Object.create({});
 
+    /**
+     * Get current version
+     * @return {String} Returns current version
+     * @private
+     */
+    Rise.getVersion = function() {
+        return VERSION;
+    };
+
     global.Rise = Rise;
 
 })(this);
