@@ -1,0 +1,23 @@
+{
+    "author": {
+        "name": "Eugene Obrezkov",
+        "email": "ghaiklor@gmail.com",
+        "url": "https://www.facebook.com/ghaiklor"
+    },
+    "contributors": [],
+    "name": "rise-js",
+    "version": "0.0.0",
+    "description": "",
+    "keywords": "",
+    "homepage": "http://ghaiklor.github.io/rise-js",
+    "bugs": {
+        "url": "https://github.com/ghaiklor/rise-js/issues",
+        "email": "ghaiklor@gmail.com"
+    },
+    "license": "Apache-2.0",
+    "main": "dist/rise.min.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ghaiklor/rise-js.git"
+    }
+}
