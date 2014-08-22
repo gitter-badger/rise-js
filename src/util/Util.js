@@ -19,15 +19,6 @@
         },
 
         /**
-         * Check if this array
-         * @param  {Mixed}  array Value that might be checked
-         * @return {Boolean}      Returns true if array
-         */
-        isArray: function(array) {
-            return this.getType(array) == 'array';
-        },
-
-        /**
          * Check if this is number
          * @param  {Mixed}  number Value that might be checked
          * @return {Boolean}       Returns true if number
@@ -41,12 +32,12 @@
         },
 
         /**
-         * Check if this is string
-         * @param  {Mixed}  string Value that might be checked
-         * @return {Boolean}       Returns true if string
+         * Check if this array
+         * @param  {Mixed}  array Value that might be checked
+         * @return {Boolean}      Returns true if array
          */
-        isString: function(string) {
-            return this.getType(string) == 'string';
+        isArray: function(array) {
+            return this.getType(array) == 'array';
         },
 
         /**
@@ -56,6 +47,24 @@
          */
         isBoolean: function(bool) {
             return this.getType(bool) == 'boolean';
+        },
+
+        /**
+         * Check if this function
+         * @param  {Mixed}  method Value that might be checked
+         * @return {Boolean}       Returns true if function
+         */
+        isFunction: function(method) {
+            return this.getType(method) == 'function';
+        },
+
+        /**
+         * Check if this is string
+         * @param  {Mixed}  string Value that might be checked
+         * @return {Boolean}       Returns true if string
+         */
+        isString: function(string) {
+            return this.getType(string) == 'string';
         },
 
         /**

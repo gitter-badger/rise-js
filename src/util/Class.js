@@ -26,7 +26,6 @@
     function wrapMethod(method, parentMethod) {
         return function() {
             var backup = this._super;
-
             this._super = parentMethod;
 
             try {
@@ -72,9 +71,9 @@
 
         copyProperties(staticProperties, Constructor, this);
         copyProperties(prototype, Constructor.prototype, this.prototype);
-        mixins.forEach(function(mixin) {
-            copyProperties(mixin, Constructor.prototype, this.prototype);
-        });
+        for (var i = mixins.length - 1; i >= 0; i--) {
+            copyProperties(mixins[i], Constructor.prototype, this.prototype);
+        }
 
         return Constructor;
     };
@@ -82,17 +81,3 @@
     global.Rise.Class = Class;
 
 })(this);
-
-var Text = Rise.Class.extend({
-    init: function() {
-        console.log('text');
-    }
-});
-
-var AdvText = Text.extend({
-    init: function() {
-        console.log('AdvText', this);
-    }
-});
-
-new AdvText();

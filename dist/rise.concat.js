@@ -29,29 +29,33 @@
 
 })(this);
 (function(global) {
-    var fnTest = /alert();/.test(function() {
-        alert();
-    }) ? /\b_super\b/ : /./;
-
-    function copyWrappedProps(prototype, targetPropsObj, parentPropsObj) {
-        if (!prototype) return;
-
-        for (var name in prototype) {
-            if (typeof prototype[name] == "function" && typeof parentPropsObj[name] == "function" && fnTest.test(prototype[name])) {
-                targetPropsObj[name] = wrapMethod(prototype[name], parentPropsObj[name]);
+    /**
+     * Copy properties from parent to target object
+     * @param  {Object} source Object from where properties will be copied
+     * @param  {Object} target Object to where properties will copy
+     * @param  {Object} parent Parent object
+     * @private
+     */
+    function copyProperties(source, target, parent) {
+        Object.keys(source).forEach(function(key) {
+            if (typeof source[key] == "function" && typeof parent[key] == "function" && /\b_super\b/.test(source[key])) {
+                target[key] = wrapMethod(source[key], parent[key]);
             } else {
-                targetPropsObj[name] = prototype[name];
+                target[key] = source[key];
             }
-        }
-
+        });
     }
 
-    // возвращает обёртку вокруг method, которая ставит this._super на родителя
-    // и возвращает его потом 
+    /**
+     * Wrap method with parent method.
+     * Useful for create this._super() in subclasses.
+     * @param  {Function} method       Method that need to be wrapped
+     * @param  {Function} parentMethod Parent method in other works - this._super();
+     * @return {Function}              Returns wrapped function
+     */
     function wrapMethod(method, parentMethod) {
         return function() {
             var backup = this._super;
-
             this._super = parentMethod;
 
             try {
@@ -61,7 +65,6 @@
             }
         };
     }
-
 
     /**
      * Empty function (interface)
@@ -84,30 +87,23 @@
      * Rise.Class.extend([prototype], [staticProperties], [mixins])
      */
     Class.extend = function(prototype, staticProperties, mixins) {
+        prototype = prototype || {};
+        staticProperties = staticProperties || {};
         mixins = mixins || [];
 
         function Constructor() {
-            this.init && this.init.apply(this, arguments);
+            return this.init && this.init.apply(this, arguments);
         }
 
-        // this -- это класс "перед точкой", для которого вызван extend (Animal.extend)
-        // наследуем от него:
-        Constructor.prototype = Class.inherit(this.prototype);
-
-        // constructor был затёрт вызовом inherit
+        Constructor.prototype = Object.create(this.prototype);
         Constructor.prototype.constructor = Constructor;
-
-        // добавим возможность наследовать дальше
         Constructor.extend = Class.extend;
 
-        // скопировать в Constructor статические свойства
-        copyWrappedProps(staticProperties, Constructor, this);
-
-        // скопировать в Constructor.prototype свойства из примесей и prototype
-        for (var i = 0; i < mixins.length; i++) {
-            copyWrappedProps(mixins[i], Constructor.prototype, this.prototype);
+        copyProperties(staticProperties, Constructor, this);
+        copyProperties(prototype, Constructor.prototype, this.prototype);
+        for (var i = mixins.length - 1; i >= 0; i--) {
+            copyProperties(mixins[i], Constructor.prototype, this.prototype);
         }
-        copyWrappedProps(prototype, Constructor.prototype, this.prototype);
 
         return Constructor;
     };
@@ -115,23 +111,6 @@
     global.Rise.Class = Class;
 
 })(this);
-
-
-
-var Text = Rise.Class.extend({
-    init: function() {
-        console.log(this);
-    }
-});
-
-var AdvText = Text.extend({
-    init: function() {
-        console.log('AdvText', this);
-    }
-});
-
-new Text();
-new AdvText();
 (function(global) {
     var Util = {
         /**
@@ -153,15 +132,6 @@ new AdvText();
         },
 
         /**
-         * Check if this array
-         * @param  {Mixed}  array Value that might be checked
-         * @return {Boolean}      Returns true if array
-         */
-        isArray: function(array) {
-            return this.getType(array) == 'array';
-        },
-
-        /**
          * Check if this is number
          * @param  {Mixed}  number Value that might be checked
          * @return {Boolean}       Returns true if number
@@ -175,12 +145,12 @@ new AdvText();
         },
 
         /**
-         * Check if this is string
-         * @param  {Mixed}  string Value that might be checked
-         * @return {Boolean}       Returns true if string
+         * Check if this array
+         * @param  {Mixed}  array Value that might be checked
+         * @return {Boolean}      Returns true if array
          */
-        isString: function(string) {
-            return this.getType(string) == 'string';
+        isArray: function(array) {
+            return this.getType(array) == 'array';
         },
 
         /**
@@ -190,6 +160,24 @@ new AdvText();
          */
         isBoolean: function(bool) {
             return this.getType(bool) == 'boolean';
+        },
+
+        /**
+         * Check if this function
+         * @param  {Mixed}  method Value that might be checked
+         * @return {Boolean}       Returns true if function
+         */
+        isFunction: function(method) {
+            return this.getType(method) == 'function';
+        },
+
+        /**
+         * Check if this is string
+         * @param  {Mixed}  string Value that might be checked
+         * @return {Boolean}       Returns true if string
+         */
+        isString: function(string) {
+            return this.getType(string) == 'string';
         },
 
         /**
