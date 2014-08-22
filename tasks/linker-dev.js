@@ -6,6 +6,9 @@ module.exports = function(gulp) {
         gulp.src(path.resolve(__dirname, '../index.html'))
             .pipe(linker({
                 scripts: [
+                    path.resolve(__dirname, '../src/Rise.js'),
+                    path.resolve(__dirname, '../src/util/Class.js'),
+                    path.resolve(__dirname, '../src/util/**/*.js'),
                     path.resolve(__dirname, '../src/**/*.js')
                 ],
                 startTag: '<!--SCRIPTS-->',
