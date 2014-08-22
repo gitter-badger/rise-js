@@ -47,7 +47,7 @@
      * Print welcome message to console
      * @private
      */
-    function printWelcomeMessage() {
+    (function printWelcomeMessage() {
         if (window.chrome) {
             console.log.apply(console, [
                 '%c %c %c Rise v' + Rise.getVersion() + ' %c %c %c',
@@ -61,9 +61,7 @@
         } else {
             console.log('Rise v' + Rise.getVersion());
         }
-    }
-
-    window.addEventListener('DOMContentLoaded', printWelcomeMessage);
+    })();
 
     var Logger = {
         /**
