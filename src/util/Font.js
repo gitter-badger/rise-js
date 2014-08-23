@@ -352,9 +352,7 @@
          * @return {Rise.Font}       Returns Rise.Font instance
          */
         fromNode: function(element) {
-            element = Rise.$(element);
-
-            var style = window.getComputedStyle(element.get(0), null);
+            var style = window.getComputedStyle(element, null);
 
             return new Rise.Font({
                 style: style.getPropertyValue('font-style'),

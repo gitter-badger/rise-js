@@ -29,6 +29,8 @@
 
 })(this);
 (function(global) {
+    'use strict';
+
     /**
      * Copy properties from parent to target object
      * @param  {Object} source Object from where properties will be copied
@@ -38,7 +40,11 @@
      */
     function copyProperties(source, target, parent) {
         Object.keys(source).forEach(function(key) {
-            if (typeof source[key] == "function" && typeof parent[key] == "function" && /\b_super\b/.test(source[key])) {
+            if (
+                typeof source[key] == "function" &&
+                typeof parent[key] == "function" &&
+                /\b_super\b/.test(source[key])
+            ) {
                 target[key] = wrapMethod(source[key], parent[key]);
             } else {
                 target[key] = source[key];
@@ -52,6 +58,7 @@
      * @param  {Function} method       Method that need to be wrapped
      * @param  {Function} parentMethod Parent method in other works - this._super();
      * @return {Function}              Returns wrapped function
+     * @private
      */
     function wrapMethod(method, parentMethod) {
         return function() {
@@ -68,18 +75,17 @@
 
     /**
      * Empty function (interface)
-     * @member Rise.Class
      * @private
      */
     function Class() {}
 
     /**
      * Create new Class or extend exists
+     * @static
      * @param {Array} [mixins] Optional parameter. Array of mixins which need to inject in new Class
      * @param {Object} prototype Prototype object for new Class
      * @param {Object} staticProperties Object with static properties for new Class. Will send in Object.defineProperties.
      * @return {Object} Returns new Class
-     * @member Rise.Class
      *
      * @example
      * Rise.Class.extend([prototype])
@@ -111,297 +117,376 @@
     global.Rise.Class = Class;
 
 })(this);
-Rise.Font = Rise.Class.extend({
-    init: function() {
-        options = options || {};
-
-        if (!(this instanceof arguments.callee)) {
-            var callee = arguments.callee,
-                newObject = Object.create(callee.prototype);
-            callee.apply(newObject, callee.arguments);
-            return newObject;
-        } else if (Rise.Util.getType(options) == 'string') {
-            options = stringToObject(options);
-        } else if (options instanceof Rise.$) {
-            options = fromNodeElementToObject(options.get(0));
-        } else if (options instanceof Element) {
-            options = fromNodeElementToObject(options);
-        } else {
-            Rise.Logger.warning('Rise.Font -> Options %O not valid', options);
-        }
-
-        Rise.Logger.startGroup('Rise.Font -> Start parsing');
-        Rise.Logger.log('Trying to parse %O', options);
-
-        this.valid = true;
-        this.style = options.style || 'normal';
-        this.variant = options.variant || 'normal';
-        this.weight = options.weight || 'normal';
-        this.size = options.size || 'medium';
-        this.lineHeight = options.lineHeight || 'normal';
-        this.family = options.family || 'serif';
-
-        if (!isFontObjectValid(this)) {
-            this.valid = false;
-            Rise.Logger.warning('Font %O not parsed, reset to defaults', options);
-        }
-
-        Rise.Logger.log('Font %O parsed to Rise.Font %O', options, this);
-        Rise.Logger.endGroup();
-
-        return this;
-    },
-
-    isValid: function() {
-        return this.valid;
-    },
-
-    getStyle: function() {
-        return this.style;
-    },
-
-    setStyle: function(style) {
-        if (isFontStyleValid(style)) {
-            this.style = style;
-        }
-
-        return this;
-    },
-
-    getVariant: function() {
-        return this.variant;
-    },
-
-    setVariant: function(variant) {
-        if (isFontVariantValid(variant)) {
-            this.variant = variant;
-        }
-
-        return this;
-    },
-
-    getWeight: function() {
-        return this.weight;
-    },
-
-    setWeight: function(weight) {
-        if (isFontWeightValid(weight)) {
-            this.weight = weight;
-        }
-
-        return this;
-    },
-
-    getSize: function() {
-        return this.size;
-    },
-
-    setSize: function(size) {
-        if (isFontSizeValid(size)) {
-            this.size = size;
-        }
-
-        return this;
-    },
-
-    getLineHeight: function() {
-        return this.lineHeight;
-    },
-
-    setLineHeight: function(lineHeight) {
-        if (isFontLineHeightValid(lineHeight)) {
-            this.lineHeight = lineHeight;
-        }
-
-        return this;
-    },
-
-    getFamily: function() {
-        return this.family;
-    },
-
-    setFamily: function(family) {
-        if (isFontFamilyValid(family)) {
-            this.family = family;
-        }
-
-        return this;
-    },
-
-    toString: function() {
-        return (
-            [
-                this.style,
-                this.variant,
-                this.weight,
-                this.size,
-                '/' + this.lineHeight,
-                this.family
-            ].join(' ')
-        );
-    }
-});
-
-/**
- * Map of valid CSS units
- * @type {Array}
- * @private
- */
-var cssUnitsMap = ['em', 'ex', 'pt', 'px', '%'];
-
-/**
- * Map of valid font styles
- * @type {Array}
- * @private
- */
-var fontStyleMap = ['normal', 'italic', 'oblique', 'inherit'];
-
-/**
- * Map of valid font variants
- * @type {Array}
- * @private
- */
-var fontVariantMap = ['normal', 'small-caps', 'inherit'];
-
-/**
- * Map of valid font weight
- * @type {Array}
- * @private
- */
-var fontWeightMap = ['bold', 'bolder', 'lighter', 'normal', '100', '200', '300', '400', '500', '600', '700', '800', '900'];
-
-/**
- * Map of valid font size constants
- * @type {Array}
- * @private
- */
-var fontSizeMap = ['xx-small', 'x-small', 'smaller', 'small', 'medium', 'large', 'larger', 'x-large', 'xx-large'];
-
-/**
- * Check if value ends on valid css unit
- * @param  {String} value Value that need to check
- * @return {Boolean} True if valid
- * @private
- */
-function isCssValueValid(value) {
-    return cssUnitsMap.some(function(unit) {
-        return value.lastIndexOf(unit) != -1;
-    });
-}
-
-/**
- * Check if this value is valid font-style attribute
- * @param  {String} value Value that need to check
- * @return {Boolean} If value valid then true
- * @private
- */
-function isFontStyleValid(value) {
-    return fontStyleMap.indexOf(value) != -1;
-}
-
-/**
- * Check if value is valid font-variant attribute
- * @param  {String} value Value that need to check
- * @return {Boolean} True if value is valid
- * @private
- */
-function isFontVariantValid(value) {
-    return fontVariantMap.indexOf(value) != -1;
-}
-
-/**
- * Check if provided value it's valid font-weight attribute
- * @param  {String} value Font weight value that need to check
- * @return {Boolean} True if valid
- * @private
- */
-function isFontWeightValid(value) {
-    return fontWeightMap.indexOf(value) != -1;
-}
-
-/**
- * Check if provided value it's valid font size attribute
- * @param  {String} value Font size that need to check
- * @return {Boolean} True if valid
- * @private
- */
-function isFontSizeValid(value) {
-    return (
-        fontSizeMap.indexOf(value) != -1 ||
-        isCssValueValid(value)
-    );
-}
-
-/**
- * Check if provided value it's valid font line-height attribute
- * @param  {String} value Value that need to be checked
- * @return {Boolean} True if valid
- * @private
- */
-function isFontLineHeightValid(value) {
-    return isCssValueValid(value);
-}
-
-/**
- * Check if provided value it's valid font-family attribute
- * @param  {String} value Value that need to be checked
- * @return {Boolean} True if valid
- * @private
- */
-function isFontFamilyValid(value) {
-    // TODO: implement
-    return true;
-}
-
-/**
- * Check if created Rise.Font object is valid
- * @param {Rise.Font} font Font object that need to be checked
- * @return {Boolean} True if valid
- * @private
- */
-function isFontObjectValid(font) {
-    // FIXME: sometimes it returns false on valid objects
-    return (
-        isFontStyleValid(font.getStyle()) &&
-        isFontVariantValid(font.getVariant()) &&
-        isFontWeightValid(font.getWeight()) &&
-        isFontSizeValid(font.getSize()) &&
-        isFontLineHeightValid(font.getLineHeight()) &&
-        isFontFamilyValid(font.getFamily())
-    );
-}
-
-/**
- * Parse font string and return object with corresponding values
- * @param  {String} font Font string that need to parse
- * @return {Object} Object with font values
- * @private
- */
-function stringToObject(font) {
-    // TODO: implement
-    Rise.Logger.warning('Rise.Font -> stringToObject() not realized yet');
-    return {};
-}
-
-/**
- * Parse node Element for font properties and get font object
- * @param  {Element|Rise.$} element Node Element from where you want get font properties
- * @return {Rise.Font}
- * @private
- */
-function fromNodeElementToObject(element) {
-    var style = window.getComputedStyle(element, null);
-
-    return {
-        style: style.getPropertyValue('font-style'),
-        variant: style.getPropertyValue('font-variant'),
-        weight: style.getPropertyValue('font-weight'),
-        size: style.getPropertyValue('font-size'),
-        lineHeight: style.getPropertyValue('line-height'),
-        family: style.getPropertyValue('font-family')
-    };
-}
 (function(global) {
+    'use strict';
+
+    global.Rise.Font = Rise.Class.extend({
+        /**
+         * Create new Font object
+         * @constructor
+         * @param  {Object} options Font options
+         * @return {Rise.Font}      Returns Rise.Font instance
+         */
+        init: function(options) {
+            options = options || {};
+
+            Rise.Logger.startGroup(true, 'Rise.Font -> init()');
+            Rise.Logger.log('Trying to parse options object -> %O', options);
+
+            this.style = options.style || 'normal';
+            this.variant = options.variant || 'normal';
+            this.weight = options.weight || 'normal';
+            this.size = options.size || 'medium';
+            this.lineHeight = options.lineHeight || 'normal';
+            this.family = options.family || 'serif';
+
+            if (!Rise.Font.isFontValid(this)) {
+                Rise.Logger.warning('Something wrong with options -> %O', options);
+                Rise.Logger.warning('Rise.Font created with this font -> "%s"', this.toString());
+            }
+
+            Rise.Logger.log('Instantiated Rise.Font -> %O', this);
+            Rise.Logger.endGroup();
+
+            return this;
+        },
+
+        /**
+         * Check if Rise.Font is valid instance
+         * @return {Boolean} Returns true if Rise.Font instance valid
+         */
+        isValid: function() {
+            return Rise.Font.isFontValid(this);
+        },
+
+        /**
+         * Get current style
+         * @return {String} Returns CSS font style
+         */
+        getStyle: function() {
+            return this.style;
+        },
+
+        /**
+         * Set style to Rise.Font
+         * @param {String} style New CSS font style
+         * @return {Rise.Font} Returns Rise.Font instance
+         */
+        setStyle: function(style) {
+            if (Rise.Font.isFontStyleValid(style)) {
+                this.style = style;
+            } else {
+                Rise.Logger.warning('Rise.Font.setStyle() -> "%s" is not valid value', style);
+            }
+
+            return this;
+        },
+
+        /**
+         * Get current font variant
+         * @return {String} Returns CSS font variant
+         */
+        getVariant: function() {
+            return this.variant;
+        },
+
+        /**
+         * Set font variant to Rise.Font
+         * @param {String} variant New CSS font variant
+         * @return {Rise.Font} Returns Rise.Font instance
+         */
+        setVariant: function(variant) {
+            if (Rise.Font.isFontVariantValid(variant)) {
+                this.variant = variant;
+            } else {
+                Rise.Logger.warning('Rise.Font.setVariant() -> "%s" is not valid value', variant);
+            }
+
+            return this;
+        },
+
+        /**
+         * Get current font weight
+         * @return {String} Returns CSS font weight
+         */
+        getWeight: function() {
+            return this.weight;
+        },
+
+        /**
+         * Set font weight to Rise.Font
+         * @param {String} weight New CSS font weight
+         * @return {Rise.Font} Returns Rise.Font instance
+         */
+        setWeight: function(weight) {
+            if (Rise.Font.isFontWeightValid(weight)) {
+                this.weight = weight;
+            } else {
+                Rise.Logger.warning('Rise.Font.setWeight() -> "%s" is not valid value', weight);
+            }
+
+            return this;
+        },
+
+        /**
+         * Get current font size
+         * @return {String} Returns CSS font size
+         */
+        getSize: function() {
+            return this.size;
+        },
+
+        /**
+         * Set font size to Rise.Font
+         * @param {String} size New CSS font size
+         * @return {Rise.Font} Returns Rise.Font instance
+         */
+        setSize: function(size) {
+            if (Rise.Font.isFontSizeValid(size)) {
+                this.size = size;
+            } else {
+                Rise.Logger.warning('Rise.Font.setSize() -> "%s" is not valid value', size);
+            }
+
+            return this;
+        },
+
+        /**
+         * Get current font line height
+         * @return {String} Returns CSS font line-height
+         */
+        getLineHeight: function() {
+            return this.lineHeight;
+        },
+
+        /**
+         * Set font line height to Rise.Font
+         * @param {String} lineHeight New CSS font line-height
+         * @return {Rise.Font} Returns Rise.Font instance
+         */
+        setLineHeight: function(lineHeight) {
+            if (Rise.Font.isFontLineHeightValid(lineHeight)) {
+                this.lineHeight = lineHeight;
+            } else {
+                Rise.Logger.warning('Rise.Font.setLineHeight() -> "%s" is not valid value', lineHeight);
+            }
+
+            return this;
+        },
+
+        /**
+         * Get current font family
+         * @return {String} Returns CSS font family
+         */
+        getFamily: function() {
+            return this.family;
+        },
+
+        /**
+         * Set font family to Rise.Font
+         * @param {String} family New CSS font family
+         * @return {Rise.Font} Returns Rise.Font instance
+         */
+        setFamily: function(family) {
+            if (Rise.Font.isFontFamilyValid(family)) {
+                this.family = family;
+            } else {
+                Rise.Logger.warning('Rise.Font.setFamily() -> "%s" is not valid value', family);
+            }
+
+            return this;
+        },
+
+        /**
+         * Convert Rise.Font to CSS string representation
+         * @return {String} Returns CSS string of Rise.Font representation
+         */
+        toString: function() {
+            return (
+                [
+                    this.getStyle(),
+                    this.getVariant(),
+                    this.getWeight(),
+                    this.getSize(),
+                    '/' + this.getLineHeight(),
+                    this.getFamily()
+                ].join(' ')
+            );
+        }
+    }, {
+        /**
+         * Map of CSS units
+         * @static
+         * @type {Array}
+         */
+        unitsMap: ['em', 'ex', 'pt', 'px', '%'],
+
+        /**
+         * Map of CSS font styles
+         * @static
+         * @type {Array}
+         */
+        fontStyleMap: ['normal', 'italic', 'oblique', 'inherit'],
+
+        /**
+         * Map of CSS font variants
+         * @static
+         * @type {Array}
+         */
+        fontVariantMap: ['normal', 'small-caps', 'inherit'],
+
+        /**
+         * Map of CSS font weights
+         * @static
+         * @type {Array}
+         */
+        fontWeightMap: ['bold', 'bolder', 'lighter', 'normal', '100', '200', '300', '400', '500', '600', '700', '800', '900'],
+
+        /**
+         * Map of CSS font sizes
+         * @static
+         * @type {Array}
+         */
+        fontSizeMap: ['xx-small', 'x-small', 'smaller', 'small', 'medium', 'large', 'larger', 'x-large', 'xx-large'],
+
+        /**
+         * Map of CSS font line heights
+         * @static
+         * @type {Array}
+         */
+        fontLineHeightMap: ['normal', 'inherit'],
+
+        /**
+         * Check if provided value is valid CSS value
+         * @static
+         * @param  {String}  value Value that need to check
+         * @return {Boolean}       Returns true if value is valid CSS value
+         */
+        isCssValueValid: function(value) {
+            return Rise.Font.unitsMap.some(function(unit) {
+                return value.lastIndexOf(unit) != -1;
+            });
+        },
+
+        /**
+         * Check if provided value is valid CSS font style
+         * @static
+         * @param  {String}  value Value that need to check
+         * @return {Boolean}       Returns true if value is valid
+         */
+        isFontStyleValid: function(value) {
+            return Rise.Font.fontStyleMap.indexOf(value) != -1;
+        },
+
+        /**
+         * Check if provided value is valid CSS font variant
+         * @static
+         * @param  {String}  value Value that need to check
+         * @return {Boolean}       Returns true if value is valid
+         */
+        isFontVariantValid: function(value) {
+            return Rise.Font.fontVariantMap.indexOf(value) != -1;
+        },
+
+        /**
+         * Check if provided value is valid CSS font weight
+         * @static
+         * @param  {String}  value Value that need to check
+         * @return {Boolean}       Returns true if value is valid
+         */
+        isFontWeightValid: function(value) {
+            return Rise.Font.fontWeightMap.indexOf(value) != -1;
+        },
+
+        /**
+         * Check if provided value is valid CSS font size
+         * @static
+         * @param  {String}  value Value that need to check
+         * @return {Boolean}       Returns true if value is valid
+         */
+        isFontSizeValid: function(value) {
+            return (
+                Rise.Font.fontSizeMap.indexOf(value) != -1 ||
+                Rise.Font.isCssValueValid(value)
+            );
+        },
+
+        /**
+         * Check if provided value is valid CSS font line height
+         * @static
+         * @param  {String}  value Value that need to check
+         * @return {Boolean}       Returns true if value is valid
+         */
+        isFontLineHeightValid: function(value) {
+            return (
+                Rise.Font.isCssValueValid(value) ||
+                Rise.Font.fontLineHeightMap.indexOf(value) != -1
+            );
+        },
+
+        /**
+         * Check if provided value is valid CSS font family
+         * @static
+         * @param  {String}  value Value that need to check
+         * @return {Boolean}       Returns true if value is valid
+         */
+        isFontFamilyValid: function(value) {
+            // TODO: implement
+            return true;
+        },
+
+        /**
+         * Check whole Rise.Font instance for valid values
+         * @static
+         * @param  {Rise.Font}  font Rise.Font instance where need to check their font values
+         * @return {Boolean}         Returns true if Rise.Font is correct instance
+         */
+        isFontValid: function(font) {
+            return (
+                Rise.Font.isFontStyleValid(font.getStyle()) &&
+                Rise.Font.isFontVariantValid(font.getVariant()) &&
+                Rise.Font.isFontWeightValid(font.getWeight()) &&
+                Rise.Font.isFontSizeValid(font.getSize()) &&
+                Rise.Font.isFontLineHeightValid(font.getLineHeight()) &&
+                Rise.Font.isFontFamilyValid(font.getFamily())
+            );
+        },
+
+        /**
+         * Create Rise.Font instance from string representation
+         * @static
+         * @param  {String} font    Font string
+         * @return {Rise.Font}      Returns Rise.Font instance with parsed options from string
+         */
+        fromString: function(font) {
+            // TODO: implement
+            Rise.Logger.warning('Rise.Font -> fromString() not realized yet');
+            return new Rise.Font();
+        },
+
+        /**
+         * Create Rise.Font instance from exists node element
+         * @static
+         * @param  {Element} element Existing node element from where font options will parse
+         * @return {Rise.Font}       Returns Rise.Font instance
+         */
+        fromNode: function(element) {
+            var style = window.getComputedStyle(element, null);
+
+            return new Rise.Font({
+                style: style.getPropertyValue('font-style'),
+                variant: style.getPropertyValue('font-variant'),
+                weight: style.getPropertyValue('font-weight'),
+                size: style.getPropertyValue('font-size'),
+                lineHeight: style.getPropertyValue('line-height'),
+                family: style.getPropertyValue('font-family')
+            });
+        }
+    });
+})(this);
+(function(global) {
+    'use strict';
+
     /**
      * Current log level
      * @type {Number}
@@ -466,6 +551,11 @@ function fromNodeElementToObject(element) {
         }
     })();
 
+    /**
+     * Logger object
+     * @static
+     * @type {Object}
+     */
     var Logger = {
         /**
          * Allow print out all messages
@@ -599,11 +689,16 @@ function fromNodeElementToObject(element) {
         /**
          * Start new group in console
          * @static
+         * @param {Boolean} startCollapsed If you set true for first argument, group will be collapsed
          * @return {Rise.Logger}
          */
         startGroup: function() {
             if (isAllowedLevel(this.VERBOSE)) {
-                invokeConsole('group', arguments);
+                if (Rise.Util.isBoolean(arguments[0]) && arguments[0] === true) {
+                    invokeConsole('groupCollapsed', Array.prototype.slice.call(arguments, 1));
+                } else {
+                    invokeConsole('group', arguments);
+                }
             }
 
             return this;
@@ -653,9 +748,764 @@ function fromNodeElementToObject(element) {
 
 })(this);
 (function(global) {
+    'use strict';
+
+    /**
+     * Factory method that returns new Rise.RQuery instance
+     * @return {Rise.RQuery} Returns Rise.RQuery instance
+     */
+    global.Rise.$ = function() {
+        return Rise.RQuery.apply(Object.create(Rise.RQuery.prototype), arguments);
+    };
+
+    global.Rise.RQuery = Rise.Class.extend({
+        /**
+         * Create new Rise.RQuery instance
+         * @constructor
+         * @param  {String|Rise.RQuery|Element|Array} selector Selector or exists Elements
+         * @param  {Element|Document|Window} parent Parent from where selector will parse
+         * @return {Rise.RQuery} Returns Rise.RQuery instance
+         */
+        init: function(selector, parent) {
+            selector = selector || window;
+            parent = parent || document;
+
+            var pushElement = function(element) {
+                if (element instanceof Element) {
+                    this.elements.push(element);
+                }
+            }.bind(this);
+
+            this.elements = [];
+
+            Rise.Logger.startGroup(true, 'Rise.RQuery -> init()');
+            Rise.Logger.log('Parsing selector -> "%O" with parent -> %O', selector, parent);
+
+            if (selector instanceof Rise.RQuery) {
+                this.elements = selector.get();
+            } else if (Rise.Util.isArray(selector) || selector instanceof HTMLCollection) {
+                Array.prototype.forEach.call(selector, pushElement);
+            } else if (selector instanceof Element || selector instanceof Window) {
+                this.elements[0] = selector;
+            } else if (Rise.Util.isString(selector)) {
+                Array.prototype.forEach.call(parent.querySelectorAll(selector), pushElement);
+            } else {
+                Rise.Logger.warning('Selector is not valid -> %O', selector);
+            }
+
+            Rise.Logger.log('Instantiated Rise.RQuery -> %O', this);
+            Rise.Logger.endGroup();
+
+            return this;
+        },
+
+        /**
+         * Get Element by index
+         * @param  {Integer} index Index
+         * @return {Array|Element} Returns Element with corresponding index
+         */
+        get: function(index) {
+            return Rise.Util.isUndefined(index) ? this.elements : this.elements[index];
+        },
+
+        /**
+         * Get elements count
+         * @return {Integer} Returns count
+         */
+        count: function() {
+            return (this.elements && this.elements.length) || 0;
+        },
+
+        /**
+         * Iterate through all elements and call callback function
+         * @param  {Function} cb Callback which called at each iteration cb(element, index, array)
+         * @return {Rise.RQuery}
+         */
+        each: function(cb) {
+            Array.prototype.forEach.call(this.get(), cb);
+            return this;
+        },
+
+        /**
+         * Get next sibling element
+         * @return {Rise.RQuery} Returns next sibling element
+         */
+        next: function() {
+            return new Rise.RQuery(this.get(0).nextElementSibling);
+        },
+
+        /**
+         * Get previous sibling element
+         * @return {Rise.RQuery} Returns previous sibling element from current element
+         */
+        prev: function() {
+            return new Rise.RQuery(this.get(0).previousElementSibling);
+        },
+
+        /**
+         * Get all siblings elements
+         * @return {Rise.RQuery} Returns Rise.RQuery instance with all siblings elements
+         */
+        siblings: function() {
+            var element = this.get(0);
+
+            return new Rise.RQuery(Array.prototype.filter.call(element.parentNode.children, function(children) {
+                return element !== children;
+            }));
+        },
+
+        /**
+         * Get Rise.RQuery object with parent node
+         * @member Rise.RQuery
+         * @return {Rise.RQuery} Returns parent node of element
+         */
+        parent: function() {
+            return new Rise.RQuery(this.get(0).parentNode);
+        },
+
+        /**
+         * Get all childrens of Element
+         * @member Rise.RQuery
+         * @return {Rise.RQuery} Return Rise.RQuery object with child nodes of this element
+         */
+        children: function() {
+            return new Rise.RQuery(this.get(0).children);
+        },
+
+        /**
+         * Check if element contains other element
+         * @param {Rise.RQuery} child Child element which need check for existing in this element
+         * @return {Boolean} True if contains
+         */
+        contains: function(child) {
+            var element = this.get(0);
+            return element !== child && element.contains(child);
+        },
+
+        /**
+         * Get offset of element
+         * @return {Object} Returns object with left, top properties
+         */
+        offset: function() {
+            var boundingBox = this.getBoundingBox();
+
+            return {
+                left: boundingBox.left + document.body.scrollLeft,
+                top: boundingBox.top + document.body.scrollTop
+            };
+        },
+
+        /**
+         * Get width of element including padding, border, content.
+         * @member Rise.RQuery
+         * @return {Integer} Returns offsetWidth of element
+         */
+        offsetWidth: function() {
+            return this.get(0).offsetWidth;
+        },
+
+        /**
+         * Get height of element including padding, border and content.
+         * @member Rise.RQuery
+         * @return {Integer} Returns offsetHeight of element
+         */
+        offsetHeight: function() {
+            return this.get(0).offsetHeight;
+        },
+
+        /**
+         * Get actual width of element including only padding
+         * @member Rise.RQuery
+         * @return {Integer} Returns clientWidth of element
+         */
+        clientWidth: function() {
+            return this.get(0).clientWidth;
+        },
+
+        /**
+         * Get actual height of element including only padding
+         * @member Rise.RQuery
+         * @return {Integer} Returns clientHeight of element
+         */
+        clientHeight: function() {
+            return this.get(0).clientHeight;
+        },
+
+        /**
+         * Get entire width of element with scrollbar content.
+         * @member Rise.RQuery
+         * @return {Integer} Returns scrollWidth of element
+         */
+        scrollWidth: function() {
+            return this.get(0).scrollWidth;
+        },
+
+        /**
+         * Get entire height of element with scrollbar content
+         * @member Rise.RQuery
+         * @return {Integer} Returns scrollHeight of element
+         */
+        scrollHeight: function() {
+            return this.get(0).scrollHeight;
+        },
+
+        /**
+         * Get offsetLeft of element
+         * @member Rise.RQuery
+         * @return {Integer} Returns offsetLeft of element
+         */
+        offsetLeft: function() {
+            return this.get(0).offsetLeft;
+        },
+
+        /**
+         * Get offsetTop of element
+         * @member Rise.RQuery
+         * @return {Integer} Returns offsetTop of element
+         */
+        offsetTop: function() {
+            return this.get(0).offsetTop;
+        },
+
+        /**
+         * Get position of element
+         * @return {Object} Returns object with left, top properties
+         */
+        position: function() {
+            return {
+                left: this.offsetLeft(),
+                top: this.offsetTop()
+            };
+        },
+
+        /**
+         * Focus at this element
+         * @member Rise.RQuery
+         * @return {Rise.RQuery}
+         */
+        focus: function() {
+            this.get(0).focus();
+            return this;
+        },
+
+        /**
+         * Unfocus this element
+         * @member Rise.RQuery
+         * @return {Rise.RQuery}
+         */
+        blur: function() {
+            this.get(0).blur();
+            return this;
+        },
+
+        /**
+         * Hide element
+         * @return {Rise.RQuery}
+         */
+        hide: function() {
+            return this.each(function(element) {
+                element.style.display = 'none';
+            });
+        },
+
+        /**
+         * Show element
+         * @return {Rise.RQuery}
+         */
+        show: function() {
+            return this.each(function(element) {
+                element.style.display = '';
+            });
+        },
+
+        /**
+         * Select only elements which checked with filter
+         * @member Rise.RQuery
+         * @param  {Function} cb If your function return true then element will be appended to resulting array
+         * @return {Rise.RQuery} Returns Rise.RQuery objects with elements which only checked with filter.
+         */
+        filter: function(cb) {
+            if (Rise.Util.getType(cb) == 'function') {
+                return new Rise.RQuery(Array.prototype.filter.call(this.get(), cb));
+            } else {
+                Rise.Logger.warning('Rise.RQuery.filter() -> You must provide function');
+            }
+        },
+
+        /**
+         * Find elements by selector from this parent
+         * @member Rise.RQuery
+         * @param  {String} selector
+         * @return {Rise.RQuery}
+         */
+        find: function(selector) {
+            return new Rise.RQuery(selector, this.get(0));
+        },
+
+        /**
+         * Set or get attribute value
+         * @member Rise.RQuery
+         * @param  {String|Object} options If string then get attribute value or Object if set attributes
+         * @return {Rise.RQuery}
+         */
+        attr: function(options) {
+            if (Rise.Util.getType(options) == 'string') {
+                return this.get(0).getAttribute(options);
+            } else if (Rise.Util.getType(options) == 'object') {
+                Rise.Logger.startGroup('Rise.RQuery -> Setting attributes');
+                this.each(function(element) {
+                    for (var property in options) {
+                        Rise.Logger.log('Set %s -> %s to %O element', property, options[property], element);
+                        element.setAttribute(property, options[property]);
+                    }
+                });
+                Rise.Logger.endGroup();
+            }
+
+            return this;
+        },
+
+        /**
+         * Set or get css-rules
+         * @member Rise.RQuery
+         * @param  {String|Object} name String if you want get CSS-rule or Object for set CSS-rules
+         * @param {String} pseudoElement If you want you can provide pseudoElement selector
+         * @return {Rise.RQuery}
+         * @example
+         * Rise.RQuery('#someElement').css({
+         *     width: 200
+         * });
+         * Rise.RQuery('#someElement').css('width', ':after');
+         * Rise.RQuery('#someElement').css('width');
+         */
+        css: function(css, pseudoElement) {
+            pseudoElement = pseudoElement || null;
+
+            if (Rise.Util.getType(css) == 'string') {
+                return window.getComputedStyle(this.get(0), pseudoElement).getPropertyValue(css);
+            } else if (Rise.Util.getType(css) == 'object') {
+                Rise.Logger.startGroup('Rise.RQuery -> Setting CSS');
+                this.each(function(element) {
+                    for (var property in css) {
+                        Rise.Logger.log('Set %s -> %s to %O element', property, css[property], element);
+                        if (css[property] === false) {
+                            element.style.removeProperty(Rise.Util.getDashedString(property));
+                        } else if (isNaN(css[property]) || cssNumbersMap.indexOf(property) != -1) {
+                            element.style[Rise.Util.getCamelizedString(property)] = css[property];
+                        } else {
+                            element.style[Rise.Util.getCamelizedString(property)] = css[property] + 'px';
+                        }
+                    }
+                });
+                Rise.Logger.endGroup();
+            }
+
+            return this;
+        },
+
+        /**
+         * Wrap matched elements with new Element
+         * @param  {Rise.RQuery} html Rise.RQuery instance with HTML which will be a wrapper.
+         * @member Rise.RQuery
+         * @return {Rise.RQuery}
+         * @example
+         * Rise.RQuery('div').wrap(Rise.RQuery.create('a')); // Wrap all div with a
+         */
+        wrap: function(html) {
+            var wrapper;
+
+            return this.each(function(element) {
+                wrapper = html.clone();
+                element.parentNode.insertBefore(wrapper.get(0), element);
+                wrapper.append(element);
+            });
+        },
+
+        /**
+         * Unwrap Element.
+         * In other words remove parent node from Element.
+         * @member Rise.RQuery
+         * @return {Rise.RQuery}
+         */
+        unwrap: function() {
+            return this.each(function(element) {
+                element.parentNode.parentNode.replaceChild(element, element.parentNode);
+            });
+        },
+
+        /**
+         * Check if this element is matching selector.
+         * @member Rise.RQuery
+         * @param  {String} selector
+         * @return {Boolean} Return true if all elements is match the selector and false otherwise
+         */
+        is: function(selector) {
+            var element;
+
+            if (this.count() > 0) {
+                element = this.get(0);
+
+                return (
+                    element.matches ||
+                    element.matchesSelector ||
+                    element.msMatchesSelector ||
+                    element.mozMatchesSelector ||
+                    element.webkitMatchesSelector ||
+                    element.oMatchesSelector
+                ).call(element, selector);
+            } else {
+                return false;
+            }
+        },
+
+        /**
+         * Add class name to elements
+         * @member Rise.RQuery
+         * @param {String} names Add class to elements
+         * @return {Rise.RQuery}
+         */
+        addClass: function(names) {
+            names = names.split(/[ ]+/);
+
+            return this.each(function(element) {
+                names.forEach(function(name) {
+                    element.classList.add(name);
+                });
+            });
+        },
+
+        /**
+         * Remove class name from elements
+         * @member Rise.RQuery
+         * @param  {String} names Remove class from elements
+         * @return {Rise.RQuery}
+         */
+        removeClass: function(names) {
+            names = names.split(/[ ]+/);
+
+            return this.each(function(element) {
+                names.forEach(function(name) {
+                    element.classList.remove(name);
+                });
+            });
+        },
+
+        /**
+         * Toggle class name for elements
+         * @member Rise.RQuery
+         * @param  {String} names Toggle class name for elements
+         * @return {Rise.RQuery}
+         */
+        toggleClass: function(names) {
+            names = names.split(/[ ]+/);
+
+            return this.each(function(element) {
+                names.forEach(function(name) {
+                    element.classList.toggle(name);
+                });
+            });
+        },
+
+        /**
+         * Check if elements have this class name
+         * @member Rise.RQuery
+         * @param  {String}  className Check if elements collection have this class name
+         * @return {Boolean}
+         */
+        hasClass: function(name) {
+            if (this.count() > 0) {
+                return Array.prototype.every.call(this.get(), function(element) {
+                    return element.classList.contains(name);
+                });
+            } else {
+                return false;
+            }
+        },
+
+        /**
+         * Bind event to elements
+         * @member Rise.RQuery
+         * @param  {String|Object} eventType Event type. For example 'click' or 'dblclick'.
+         * @param  {Function} handler Your function which you want execute on event.
+         * @return {Rise.RQuery}
+         */
+        on: function(eventType, handler) {
+            if (Rise.Util.getType(eventType) == 'object') {
+                for (var property in eventType) {
+                    this.on(property, eventType[property]);
+                }
+            } else {
+                Rise.Logger.startGroup('Rise.RQuery -> Binding events');
+                this.each(function(element) {
+                    Rise.Logger.log('Binding event %s to %O', eventType, element);
+                    element.addEventListener(eventType, handler, false);
+                });
+                Rise.Logger.endGroup();
+            }
+
+            return this;
+        },
+
+        /**
+         * Unbind event to elements
+         * @member Rise.RQuery
+         * @param  {String} eventType Event type. For example 'click' or 'dblclick'.
+         * @param  {Function} handler Your function which you want unsubscribe from event.
+         * @return {Rise.RQuery}
+         */
+        off: function(eventType, handler) {
+            if (Rise.Util.getType(eventType) == 'object') {
+                for (var property in eventType) {
+                    this.off(property, eventType[property]);
+                }
+            } else {
+                Rise.Logger.startGroup('Rise.RQuery -> Unbinding events');
+                this.each(function(element) {
+                    Rise.Logger.log('Unbinding event %s from %O element', eventType, element);
+                    element.removeEventListener(eventType, handler, false);
+                });
+                Rise.Logger.endGroup();
+            }
+
+            return this;
+        },
+
+        /**
+         * Bind ready event
+         * @param  {Function} cb
+         * @return {Rise.RQuery}
+         */
+        ready: function(cb) {
+            document.addEventListener('DOMContentLoaded', cb);
+            return this;
+        },
+
+        /**
+         * Trigger native event for element
+         * @param  {String} eventName Name of event
+         * @return {Rise.RQuery}
+         */
+        trigger: function(eventName) {
+            var event = document.createEvent('HTMLEvents');
+
+            event.initEvent(eventName, true, false);
+            this.get(0).dispatch(event);
+
+            return this;
+        },
+
+        /**
+         * Bind live-event to this element
+         * @member Rise.RQuery
+         * @param  {String} eventType EventType name
+         * @param  {Function} handler Handler for event
+         * @return {Rise.RQuery}
+         */
+        live: function(eventType, handler) {
+            var self = this,
+                founded = false,
+                target;
+
+            document.addEventListener(eventType, function(event) {
+                target = event.target;
+                self.each(function(element) {
+                    while (target && !(founded = element === target)) {
+                        target = target.parentElement;
+                    }
+
+                    if (founded) {
+                        handler.call(new Rise.RQuery(element), event);
+                    }
+                });
+            });
+
+            Rise.Logger.log('Binded live event %s to elements %O', eventType, this.get());
+
+            return this;
+        },
+
+        /**
+         * Remove elements from the DOM
+         * @member Rise.RQuery
+         * @return {Rise.RQuery}
+         */
+        remove: function() {
+            return this.each(function(element) {
+                if (element && element.parentNode) {
+                    element.parentNode.removeChild(element);
+                }
+            });
+        },
+
+        /**
+         * Get or set HTML to Elements. If arguments not provided then returns exists HTML string.
+         * @member Rise.RQuery
+         * @param  {String|Rise.RQuery} [html] HTML-string
+         * @return {Rise.RQuery|String}
+         */
+        html: function(html) {
+            if (html) {
+                return this.each(function(element) {
+                    new Rise.RQuery(element).empty().append(html);
+                });
+            } else {
+                return this.get(0).innerHTML;
+            }
+        },
+
+        /**
+         * Append HTML before element's end
+         * @member Rise.RQuery
+         * @param  {String|Rise.RQuery|Element} html You can send String or existing Element
+         * @return {Rise.RQuery}
+         */
+        append: function(html) {
+            if (Rise.Util.getType(html) == 'string') {
+                this.each(function(element) {
+                    element.insertAdjacentHTML('beforeend', html);
+                });
+            } else if (html instanceof Rise.RQuery) {
+                this.each(function(element) {
+                    element.appendChild(html.get(0));
+                });
+            } else if (html instanceof Element) {
+                this.each(function(element) {
+                    element.appendChild(html);
+                });
+            }
+
+            return this;
+        },
+
+        /**
+         * Prepend HTML after element's begin
+         * @member Rise.RQuery
+         * @param  {String|Rise.RQuery|Element} html You can send String or existing Element
+         * @return {Rise.RQuery}
+         */
+        prepend: function(html) {
+            if (Rise.Util.getType(html) == 'string') {
+                this.each(function(element) {
+                    element.insertAdjacentHTML('afterbegin', html);
+                });
+            } else if (html instanceof Rise.RQuery) {
+                this.each(function(element) {
+                    element.insertBefore(html.get(0), element.firstChild);
+                });
+            } else if (html instanceof Element) {
+                this.each(function(element) {
+                    element.insertBefore(html, element.firstChild);
+                });
+            }
+
+            return this;
+        },
+
+        /**
+         * Set or get inner text. If text not provided then returns text.
+         * @member Rise.RQuery
+         * @param  {String} text Text which you want to set in elements
+         * @return {Rise.RQuery|String}
+         */
+        text: function(text) {
+            if (text) {
+                return this.each(function(element) {
+                    element.textContent = text;
+                });
+            } else {
+                return this.get(0).textContent;
+            }
+        },
+
+        /**
+         * Remove all child nodes from elements
+         * @member Rise.RQuery
+         * @return {Rise.RQuery}
+         */
+        empty: function() {
+            return this.each(function(element) {
+                element.innerHTML = '';
+            });
+        },
+
+        /**
+         * Clone Element and return it
+         * @member Rise.RQuery
+         * @return {Rise.RQuery}
+         */
+        clone: function() {
+            var clones = [];
+
+            this.each(function(element) {
+                clones.push(element.cloneNode(true));
+            });
+
+            return new Rise.RQuery(clones);
+        },
+
+        /**
+         * Get bounding box of node
+         * @member Rise.RQuery
+         * @return {Object} Returns object with left, top, bottom, right, width, height properties
+         */
+        getBoundingBox: function() {
+            var boundingBox = false,
+                currentBoundingBox;
+
+            this.each(function(node) {
+                currentBoundingBox = node.getBoundingClientRect();
+                boundingBox = boundingBox || Rise.Util.extend({}, currentBoundingBox);
+
+                boundingBox.bottom = currentBoundingBox.bottom > (boundingBox.bottom || 0) ? currentBoundingBox.bottom : boundingBox.bottom;
+                boundingBox.left = currentBoundingBox.left < (boundingBox.left || 0) ? currentBoundingBox.left : boundingBox.left;
+                boundingBox.right = currentBoundingBox.right > (boundingBox.right || 0) ? currentBoundingBox.right : boundingBox.right;
+                boundingBox.top = currentBoundingBox.top < (boundingBox.top || 0) ? currentBoundingBox.top : boundingBox.top;
+
+                boundingBox.height = boundingBox.bottom - boundingBox.top;
+                boundingBox.width = boundingBox.right - boundingBox.left;
+            });
+
+            return boundingBox;
+        }
+    }, {
+        /**
+         * Map of CSS attributes which have numbers at value
+         * @static
+         * @type {Array}
+         */
+        cssNumbersMap: [
+            "columnCount",
+            "fillOpacity",
+            "flexGrow",
+            "flexShrink",
+            "fontWeight",
+            "lineHeight",
+            "opacity",
+            "order",
+            "orphans",
+            "widows",
+            "zIndex",
+            "zoom"
+        ],
+
+        create: function(tag) {
+            Rise.Logger.log('Creating new Element "%s"', tag);
+            return new Rise.RQuery(document.createElement(tag));
+        }
+    });
+})(this);
+(function(global) {
+    'use strict';
+
+    /**
+     * Util object
+     * @static
+     * @type {Object}
+     */
     var Util = {
         /**
          * Get type of variable
+         * @static
          * @param  {Mixed} value Variable that might be checked
          * @return {String}       Returns string representation of type
          */
@@ -665,6 +1515,7 @@ function fromNodeElementToObject(element) {
 
         /**
          * Check if this object
+         * @static
          * @param  {Mixed}  object Value that might be checked
          * @return {Boolean}       Returns true if object
          */
@@ -674,6 +1525,7 @@ function fromNodeElementToObject(element) {
 
         /**
          * Check if this is number
+         * @static
          * @param  {Mixed}  number Value that might be checked
          * @return {Boolean}       Returns true if number
          */
@@ -687,6 +1539,7 @@ function fromNodeElementToObject(element) {
 
         /**
          * Check if this array
+         * @static
          * @param  {Mixed}  array Value that might be checked
          * @return {Boolean}      Returns true if array
          */
@@ -696,6 +1549,7 @@ function fromNodeElementToObject(element) {
 
         /**
          * Check if this is boolean
+         * @static
          * @param  {Mixed}  bool Value that might be checked
          * @return {Boolean}      Returns true if boolean
          */
@@ -705,6 +1559,7 @@ function fromNodeElementToObject(element) {
 
         /**
          * Check if this function
+         * @static
          * @param  {Mixed}  method Value that might be checked
          * @return {Boolean}       Returns true if function
          */
@@ -714,6 +1569,7 @@ function fromNodeElementToObject(element) {
 
         /**
          * Check if this is string
+         * @static
          * @param  {Mixed}  string Value that might be checked
          * @return {Boolean}       Returns true if string
          */
@@ -722,7 +1578,21 @@ function fromNodeElementToObject(element) {
         },
 
         /**
+         * Check if this is undefined
+         * @static
+         * @param  {Mixed}  value Value that might be checked
+         * @return {Boolean}       Returns true if undefined
+         */
+        isUndefined: function(value) {
+            return (
+                this.getType(value) == 'undefined' ||
+                this.getType(value) == 'domwindow'
+            );
+        },
+
+        /**
          * Get random string
+         * @static
          * @param  {String} prepend   String which prepends to random string
          * @param  {String} append    String which appends to random string
          * @param  {String} separator String which separate prepender and appender

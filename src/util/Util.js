@@ -88,7 +88,10 @@
          * @return {Boolean}       Returns true if undefined
          */
         isUndefined: function(value) {
-            return this.getType(value) == 'undefined';
+            return (
+                this.getType(value) == 'undefined' ||
+                this.getType(value) == 'domwindow'
+            );
         },
 
         /**

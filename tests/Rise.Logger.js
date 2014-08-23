@@ -39,6 +39,8 @@ describe('Rise.Logger', function() {
     it('Should start and end group', function() {
         Rise.Logger.startGroup('test').should.be.equal(Rise.Logger);
         Rise.Logger.endGroup().should.be.equal(Rise.Logger);
+        Rise.Logger.startGroup(true, 'test').should.be.equal(Rise.Logger);
+        Rise.Logger.endGroup().should.be.equal(Rise.Logger);
     });
 
     it('Should start and end time profiling', function() {
