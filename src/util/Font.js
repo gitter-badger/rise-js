@@ -19,100 +19,175 @@ Rise.Font = Rise.Class.extend({
         this.family = options.family || 'serif';
 
         if (!Rise.Font.isFontValid(this)) {
-            Rise.Logger.warning('Font %O not parsed, reset to defaults', options);
+            Rise.Logger.warning('Something wrong with options -> %O', options);
+            Rise.Logger.warning('Rise.Font created with this font -> "%s"', this.toString());
         }
 
-        Rise.Logger.log('Font %O parsed to Rise.Font -> %O', options, this);
+        Rise.Logger.log('Instantiated Rise.Font -> %O', this);
         Rise.Logger.endGroup();
 
         return this;
     },
 
+    /**
+     * Check if Rise.Font is valid instance
+     * @return {Boolean} Returns true if Rise.Font instance valid
+     */
     isValid: function() {
-        return this.valid;
+        return Rise.Font.isFontValid(this);
     },
 
+    /**
+     * Get current style
+     * @return {String} Returns CSS font style
+     */
     getStyle: function() {
         return this.style;
     },
 
+    /**
+     * Set style to Rise.Font
+     * @param {String} style New CSS font style
+     * @return {Rise.Font} Returns Rise.Font instance
+     */
     setStyle: function(style) {
-        if (isFontStyleValid(style)) {
+        if (Rise.Font.isFontStyleValid(style)) {
             this.style = style;
+        } else {
+            Rise.Logger.warning('Rise.Font.setStyle() -> "%s" is not valid value', style);
         }
 
         return this;
     },
 
+    /**
+     * Get current font variant
+     * @return {String} Returns CSS font variant
+     */
     getVariant: function() {
         return this.variant;
     },
 
+    /**
+     * Set font variant to Rise.Font
+     * @param {String} variant New CSS font variant
+     * @return {Rise.Font} Returns Rise.Font instance
+     */
     setVariant: function(variant) {
-        if (isFontVariantValid(variant)) {
+        if (Rise.Font.isFontVariantValid(variant)) {
             this.variant = variant;
+        } else {
+            Rise.Logger.warning('Rise.Font.setVariant() -> "%s" is not valid value', variant);
         }
 
         return this;
     },
 
+    /**
+     * Get current font weight
+     * @return {String} Returns CSS font weight
+     */
     getWeight: function() {
         return this.weight;
     },
 
+    /**
+     * Set font weight to Rise.Font
+     * @param {String} weight New CSS font weight
+     * @return {Rise.Font} Returns Rise.Font instance
+     */
     setWeight: function(weight) {
-        if (isFontWeightValid(weight)) {
+        if (Rise.Font.isFontWeightValid(weight)) {
             this.weight = weight;
+        } else {
+            Rise.Logger.warning('Rise.Font.setWeight() -> "%s" is not valid value', weight);
         }
 
         return this;
     },
 
+    /**
+     * Get current font size
+     * @return {String} Returns CSS font size
+     */
     getSize: function() {
         return this.size;
     },
 
+    /**
+     * Set font size to Rise.Font
+     * @param {String} size New CSS font size
+     * @return {Rise.Font} Returns Rise.Font instance
+     */
     setSize: function(size) {
-        if (isFontSizeValid(size)) {
+        if (Rise.Font.isFontSizeValid(size)) {
             this.size = size;
+        } else {
+            Rise.Logger.warning('Rise.Font.setSize() -> "%s" is not valid value', size);
         }
 
         return this;
     },
 
+    /**
+     * Get current font line height
+     * @return {String} Returns CSS font line-height
+     */
     getLineHeight: function() {
         return this.lineHeight;
     },
 
+    /**
+     * Set font line height to Rise.Font
+     * @param {String} lineHeight New CSS font line-height
+     * @return {Rise.Font} Returns Rise.Font instance
+     */
     setLineHeight: function(lineHeight) {
-        if (isFontLineHeightValid(lineHeight)) {
+        if (Rise.Font.isFontLineHeightValid(lineHeight)) {
             this.lineHeight = lineHeight;
+        } else {
+            Rise.Logger.warning('Rise.Font.setLineHeight() -> "%s" is not valid value', lineHeight);
         }
 
         return this;
     },
 
+    /**
+     * Get current font family
+     * @return {String} Returns CSS font family
+     */
     getFamily: function() {
         return this.family;
     },
 
+    /**
+     * Set font family to Rise.Font
+     * @param {String} family New CSS font family
+     * @return {Rise.Font} Returns Rise.Font instance
+     */
     setFamily: function(family) {
-        if (isFontFamilyValid(family)) {
+        if (Rise.Font.isFontFamilyValid(family)) {
             this.family = family;
+        } else {
+            Rise.Logger.warning('Rise.Font.setFamily() -> "%s" is not valid value', family);
         }
 
         return this;
     },
 
+    /**
+     * Convert Rise.Font to CSS string representation
+     * @return {String} Returns CSS string of Rise.Font representation
+     */
     toString: function() {
         return (
             [
-                this.style,
-                this.variant,
-                this.weight,
-                this.size,
-                '/' + this.lineHeight,
-                this.family
+                this.getStyle(),
+                this.getVariant(),
+                this.getWeight(),
+                this.getSize(),
+                '/' + this.getLineHeight(),
+                this.getFamily()
             ].join(' ')
         );
     }
