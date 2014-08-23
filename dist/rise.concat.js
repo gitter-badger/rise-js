@@ -752,17 +752,28 @@
 
     /**
      * Factory method that returns new Rise.RQuery instance
+     * @static
      * @return {Rise.RQuery} Returns Rise.RQuery instance
      */
     global.Rise.$ = function() {
         return Rise.RQuery.apply(Object.create(Rise.RQuery.prototype), arguments);
     };
 
+    /**
+     * Factory method that returns new Rise.RQuery instance with created Element
+     * @static
+     * @param  {String} tag Tag element that need to create
+     * @return {Rise.RQuery}     Returns Rise.RQuery instance with created Element
+     */
+    global.Rise.$.create = function(tag) {
+        return new Rise.RQuery(document.createElement(tag));
+    };
+
     global.Rise.RQuery = Rise.Class.extend({
         /**
          * Create new Rise.RQuery instance
          * @constructor
-         * @param  {String|Rise.RQuery|Element|Array} selector Selector or exists Elements
+         * @param  {String|Rise.RQuery|Element|Array} selector Selector or exists Element
          * @param  {Element|Document|Window} parent Parent from where selector will parse
          * @return {Rise.RQuery} Returns Rise.RQuery instance
          */
@@ -770,6 +781,12 @@
             selector = selector || window;
             parent = parent || document;
 
+            /**
+             * Push Element to this.elements if valid
+             * @this {Rise.RQuery}
+             * @param  {Element} element It should be Element instance
+             * @private
+             */
             var pushElement = function(element) {
                 if (element instanceof Element) {
                     this.elements.push(element);
@@ -802,7 +819,7 @@
         /**
          * Get Element by index
          * @param  {Integer} index Index
-         * @return {Array|Element} Returns Element with corresponding index
+         * @return {Array|Element} Returns Element with corresponding index or array of elements
          */
         get: function(index) {
             return Rise.Util.isUndefined(index) ? this.elements : this.elements[index];
@@ -810,7 +827,7 @@
 
         /**
          * Get elements count
-         * @return {Integer} Returns count
+         * @return {Integer} Returns elements count
          */
         count: function() {
             return (this.elements && this.elements.length) || 0;
@@ -836,7 +853,7 @@
 
         /**
          * Get previous sibling element
-         * @return {Rise.RQuery} Returns previous sibling element from current element
+         * @return {Rise.RQuery} Returns previous sibling element
          */
         prev: function() {
             return new Rise.RQuery(this.get(0).previousElementSibling);
@@ -856,7 +873,6 @@
 
         /**
          * Get Rise.RQuery object with parent node
-         * @member Rise.RQuery
          * @return {Rise.RQuery} Returns parent node of element
          */
         parent: function() {
@@ -864,8 +880,7 @@
         },
 
         /**
-         * Get all childrens of Element
-         * @member Rise.RQuery
+         * Get array of children elements
          * @return {Rise.RQuery} Return Rise.RQuery object with child nodes of this element
          */
         children: function() {
@@ -896,8 +911,7 @@
         },
 
         /**
-         * Get width of element including padding, border, content.
-         * @member Rise.RQuery
+         * Get width of element including padding, border, content
          * @return {Integer} Returns offsetWidth of element
          */
         offsetWidth: function() {
@@ -905,8 +919,7 @@
         },
 
         /**
-         * Get height of element including padding, border and content.
-         * @member Rise.RQuery
+         * Get height of element including padding, border and content
          * @return {Integer} Returns offsetHeight of element
          */
         offsetHeight: function() {
@@ -915,7 +928,6 @@
 
         /**
          * Get actual width of element including only padding
-         * @member Rise.RQuery
          * @return {Integer} Returns clientWidth of element
          */
         clientWidth: function() {
@@ -924,7 +936,6 @@
 
         /**
          * Get actual height of element including only padding
-         * @member Rise.RQuery
          * @return {Integer} Returns clientHeight of element
          */
         clientHeight: function() {
@@ -932,8 +943,7 @@
         },
 
         /**
-         * Get entire width of element with scrollbar content.
-         * @member Rise.RQuery
+         * Get entire width of element with scrollbar content
          * @return {Integer} Returns scrollWidth of element
          */
         scrollWidth: function() {
@@ -942,7 +952,6 @@
 
         /**
          * Get entire height of element with scrollbar content
-         * @member Rise.RQuery
          * @return {Integer} Returns scrollHeight of element
          */
         scrollHeight: function() {
@@ -951,7 +960,6 @@
 
         /**
          * Get offsetLeft of element
-         * @member Rise.RQuery
          * @return {Integer} Returns offsetLeft of element
          */
         offsetLeft: function() {
@@ -960,7 +968,6 @@
 
         /**
          * Get offsetTop of element
-         * @member Rise.RQuery
          * @return {Integer} Returns offsetTop of element
          */
         offsetTop: function() {
@@ -980,7 +987,6 @@
 
         /**
          * Focus at this element
-         * @member Rise.RQuery
          * @return {Rise.RQuery}
          */
         focus: function() {
@@ -990,7 +996,6 @@
 
         /**
          * Unfocus this element
-         * @member Rise.RQuery
          * @return {Rise.RQuery}
          */
         blur: function() {
@@ -1020,7 +1025,6 @@
 
         /**
          * Select only elements which checked with filter
-         * @member Rise.RQuery
          * @param  {Function} cb If your function return true then element will be appended to resulting array
          * @return {Rise.RQuery} Returns Rise.RQuery objects with elements which only checked with filter.
          */
@@ -1034,7 +1038,6 @@
 
         /**
          * Find elements by selector from this parent
-         * @member Rise.RQuery
          * @param  {String} selector
          * @return {Rise.RQuery}
          */
@@ -1044,7 +1047,6 @@
 
         /**
          * Set or get attribute value
-         * @member Rise.RQuery
          * @param  {String|Object} options If string then get attribute value or Object if set attributes
          * @return {Rise.RQuery}
          */
@@ -1067,7 +1069,6 @@
 
         /**
          * Set or get css-rules
-         * @member Rise.RQuery
          * @param  {String|Object} name String if you want get CSS-rule or Object for set CSS-rules
          * @param {String} pseudoElement If you want you can provide pseudoElement selector
          * @return {Rise.RQuery}
@@ -1090,7 +1091,7 @@
                         Rise.Logger.log('Set %s -> %s to %O element', property, css[property], element);
                         if (css[property] === false) {
                             element.style.removeProperty(Rise.Util.getDashedString(property));
-                        } else if (isNaN(css[property]) || cssNumbersMap.indexOf(property) != -1) {
+                        } else if (isNaN(css[property]) || Rise.RQuery.cssNumbersMap.indexOf(property) != -1) {
                             element.style[Rise.Util.getCamelizedString(property)] = css[property];
                         } else {
                             element.style[Rise.Util.getCamelizedString(property)] = css[property] + 'px';
@@ -1106,7 +1107,6 @@
         /**
          * Wrap matched elements with new Element
          * @param  {Rise.RQuery} html Rise.RQuery instance with HTML which will be a wrapper.
-         * @member Rise.RQuery
          * @return {Rise.RQuery}
          * @example
          * Rise.RQuery('div').wrap(Rise.RQuery.create('a')); // Wrap all div with a
@@ -1124,7 +1124,6 @@
         /**
          * Unwrap Element.
          * In other words remove parent node from Element.
-         * @member Rise.RQuery
          * @return {Rise.RQuery}
          */
         unwrap: function() {
@@ -1134,8 +1133,7 @@
         },
 
         /**
-         * Check if this element is matching selector.
-         * @member Rise.RQuery
+         * Check if this element is matching selector
          * @param  {String} selector
          * @return {Boolean} Return true if all elements is match the selector and false otherwise
          */
@@ -1160,7 +1158,6 @@
 
         /**
          * Add class name to elements
-         * @member Rise.RQuery
          * @param {String} names Add class to elements
          * @return {Rise.RQuery}
          */
@@ -1176,7 +1173,6 @@
 
         /**
          * Remove class name from elements
-         * @member Rise.RQuery
          * @param  {String} names Remove class from elements
          * @return {Rise.RQuery}
          */
@@ -1192,7 +1188,6 @@
 
         /**
          * Toggle class name for elements
-         * @member Rise.RQuery
          * @param  {String} names Toggle class name for elements
          * @return {Rise.RQuery}
          */
@@ -1208,7 +1203,6 @@
 
         /**
          * Check if elements have this class name
-         * @member Rise.RQuery
          * @param  {String}  className Check if elements collection have this class name
          * @return {Boolean}
          */
@@ -1224,7 +1218,6 @@
 
         /**
          * Bind event to elements
-         * @member Rise.RQuery
          * @param  {String|Object} eventType Event type. For example 'click' or 'dblclick'.
          * @param  {Function} handler Your function which you want execute on event.
          * @return {Rise.RQuery}
@@ -1248,7 +1241,6 @@
 
         /**
          * Unbind event to elements
-         * @member Rise.RQuery
          * @param  {String} eventType Event type. For example 'click' or 'dblclick'.
          * @param  {Function} handler Your function which you want unsubscribe from event.
          * @return {Rise.RQuery}
@@ -1271,16 +1263,6 @@
         },
 
         /**
-         * Bind ready event
-         * @param  {Function} cb
-         * @return {Rise.RQuery}
-         */
-        ready: function(cb) {
-            document.addEventListener('DOMContentLoaded', cb);
-            return this;
-        },
-
-        /**
          * Trigger native event for element
          * @param  {String} eventName Name of event
          * @return {Rise.RQuery}
@@ -1296,7 +1278,6 @@
 
         /**
          * Bind live-event to this element
-         * @member Rise.RQuery
          * @param  {String} eventType EventType name
          * @param  {Function} handler Handler for event
          * @return {Rise.RQuery}
@@ -1326,7 +1307,6 @@
 
         /**
          * Remove elements from the DOM
-         * @member Rise.RQuery
          * @return {Rise.RQuery}
          */
         remove: function() {
@@ -1339,7 +1319,6 @@
 
         /**
          * Get or set HTML to Elements. If arguments not provided then returns exists HTML string.
-         * @member Rise.RQuery
          * @param  {String|Rise.RQuery} [html] HTML-string
          * @return {Rise.RQuery|String}
          */
@@ -1355,7 +1334,6 @@
 
         /**
          * Append HTML before element's end
-         * @member Rise.RQuery
          * @param  {String|Rise.RQuery|Element} html You can send String or existing Element
          * @return {Rise.RQuery}
          */
@@ -1379,7 +1357,6 @@
 
         /**
          * Prepend HTML after element's begin
-         * @member Rise.RQuery
          * @param  {String|Rise.RQuery|Element} html You can send String or existing Element
          * @return {Rise.RQuery}
          */
@@ -1403,7 +1380,6 @@
 
         /**
          * Set or get inner text. If text not provided then returns text.
-         * @member Rise.RQuery
          * @param  {String} text Text which you want to set in elements
          * @return {Rise.RQuery|String}
          */
@@ -1419,7 +1395,6 @@
 
         /**
          * Remove all child nodes from elements
-         * @member Rise.RQuery
          * @return {Rise.RQuery}
          */
         empty: function() {
@@ -1430,7 +1405,6 @@
 
         /**
          * Clone Element and return it
-         * @member Rise.RQuery
          * @return {Rise.RQuery}
          */
         clone: function() {
@@ -1445,7 +1419,6 @@
 
         /**
          * Get bounding box of node
-         * @member Rise.RQuery
          * @return {Object} Returns object with left, top, bottom, right, width, height properties
          */
         getBoundingBox: function() {
@@ -1486,12 +1459,7 @@
             "widows",
             "zIndex",
             "zoom"
-        ],
-
-        create: function(tag) {
-            Rise.Logger.log('Creating new Element "%s"', tag);
-            return new Rise.RQuery(document.createElement(tag));
-        }
+        ]
     });
 })(this);
 (function(global) {
