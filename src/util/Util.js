@@ -1,7 +1,15 @@
 (function(global) {
+    'use strict';
+
+    /**
+     * Util object
+     * @static
+     * @type {Object}
+     */
     var Util = {
         /**
          * Get type of variable
+         * @static
          * @param  {Mixed} value Variable that might be checked
          * @return {String}       Returns string representation of type
          */
@@ -11,6 +19,7 @@
 
         /**
          * Check if this object
+         * @static
          * @param  {Mixed}  object Value that might be checked
          * @return {Boolean}       Returns true if object
          */
@@ -20,6 +29,7 @@
 
         /**
          * Check if this is number
+         * @static
          * @param  {Mixed}  number Value that might be checked
          * @return {Boolean}       Returns true if number
          */
@@ -33,6 +43,7 @@
 
         /**
          * Check if this array
+         * @static
          * @param  {Mixed}  array Value that might be checked
          * @return {Boolean}      Returns true if array
          */
@@ -42,6 +53,7 @@
 
         /**
          * Check if this is boolean
+         * @static
          * @param  {Mixed}  bool Value that might be checked
          * @return {Boolean}      Returns true if boolean
          */
@@ -51,6 +63,7 @@
 
         /**
          * Check if this function
+         * @static
          * @param  {Mixed}  method Value that might be checked
          * @return {Boolean}       Returns true if function
          */
@@ -60,6 +73,7 @@
 
         /**
          * Check if this is string
+         * @static
          * @param  {Mixed}  string Value that might be checked
          * @return {Boolean}       Returns true if string
          */
@@ -68,7 +82,18 @@
         },
 
         /**
+         * Check if this is undefined
+         * @static
+         * @param  {Mixed}  value Value that might be checked
+         * @return {Boolean}       Returns true if undefined
+         */
+        isUndefined: function(value) {
+            return this.getType(value) == 'undefined';
+        },
+
+        /**
          * Get random string
+         * @static
          * @param  {String} prepend   String which prepends to random string
          * @param  {String} append    String which appends to random string
          * @param  {String} separator String which separate prepender and appender

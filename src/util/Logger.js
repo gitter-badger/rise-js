@@ -1,4 +1,6 @@
 (function(global) {
+    'use strict';
+
     /**
      * Current log level
      * @type {Number}
@@ -63,6 +65,11 @@
         }
     })();
 
+    /**
+     * Logger object
+     * @static
+     * @type {Object}
+     */
     var Logger = {
         /**
          * Allow print out all messages

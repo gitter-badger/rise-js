@@ -1,4 +1,6 @@
 (function(global) {
+    'use strict';
+
     /**
      * Copy properties from parent to target object
      * @param  {Object} source Object from where properties will be copied
@@ -26,6 +28,7 @@
      * @param  {Function} method       Method that need to be wrapped
      * @param  {Function} parentMethod Parent method in other works - this._super();
      * @return {Function}              Returns wrapped function
+     * @private
      */
     function wrapMethod(method, parentMethod) {
         return function() {
@@ -42,18 +45,17 @@
 
     /**
      * Empty function (interface)
-     * @member Rise.Class
      * @private
      */
     function Class() {}
 
     /**
      * Create new Class or extend exists
+     * @static
      * @param {Array} [mixins] Optional parameter. Array of mixins which need to inject in new Class
      * @param {Object} prototype Prototype object for new Class
      * @param {Object} staticProperties Object with static properties for new Class. Will send in Object.defineProperties.
      * @return {Object} Returns new Class
-     * @member Rise.Class
      *
      * @example
      * Rise.Class.extend([prototype])
