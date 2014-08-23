@@ -196,11 +196,16 @@
         /**
          * Start new group in console
          * @static
+         * @param {Boolean} startCollapsed If you set true for first argument, group will be collapsed
          * @return {Rise.Logger}
          */
         startGroup: function() {
             if (isAllowedLevel(this.VERBOSE)) {
-                invokeConsole('group', arguments);
+                if (Rise.Util.isBoolean(arguments[0]) && arguments[0] === true) {
+                    invokeConsole('groupCollapsed', Array.prototype.slice.call(arguments, 1));
+                } else {
+                    invokeConsole('group', arguments);
+                }
             }
 
             return this;

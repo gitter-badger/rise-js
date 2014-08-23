@@ -111,6 +111,296 @@
     global.Rise.Class = Class;
 
 })(this);
+Rise.Font = Rise.Class.extend({
+    init: function() {
+        options = options || {};
+
+        if (!(this instanceof arguments.callee)) {
+            var callee = arguments.callee,
+                newObject = Object.create(callee.prototype);
+            callee.apply(newObject, callee.arguments);
+            return newObject;
+        } else if (Rise.Util.getType(options) == 'string') {
+            options = stringToObject(options);
+        } else if (options instanceof Rise.$) {
+            options = fromNodeElementToObject(options.get(0));
+        } else if (options instanceof Element) {
+            options = fromNodeElementToObject(options);
+        } else {
+            Rise.Logger.warning('Rise.Font -> Options %O not valid', options);
+        }
+
+        Rise.Logger.startGroup('Rise.Font -> Start parsing');
+        Rise.Logger.log('Trying to parse %O', options);
+
+        this.valid = true;
+        this.style = options.style || 'normal';
+        this.variant = options.variant || 'normal';
+        this.weight = options.weight || 'normal';
+        this.size = options.size || 'medium';
+        this.lineHeight = options.lineHeight || 'normal';
+        this.family = options.family || 'serif';
+
+        if (!isFontObjectValid(this)) {
+            this.valid = false;
+            Rise.Logger.warning('Font %O not parsed, reset to defaults', options);
+        }
+
+        Rise.Logger.log('Font %O parsed to Rise.Font %O', options, this);
+        Rise.Logger.endGroup();
+
+        return this;
+    },
+
+    isValid: function() {
+        return this.valid;
+    },
+
+    getStyle: function() {
+        return this.style;
+    },
+
+    setStyle: function(style) {
+        if (isFontStyleValid(style)) {
+            this.style = style;
+        }
+
+        return this;
+    },
+
+    getVariant: function() {
+        return this.variant;
+    },
+
+    setVariant: function(variant) {
+        if (isFontVariantValid(variant)) {
+            this.variant = variant;
+        }
+
+        return this;
+    },
+
+    getWeight: function() {
+        return this.weight;
+    },
+
+    setWeight: function(weight) {
+        if (isFontWeightValid(weight)) {
+            this.weight = weight;
+        }
+
+        return this;
+    },
+
+    getSize: function() {
+        return this.size;
+    },
+
+    setSize: function(size) {
+        if (isFontSizeValid(size)) {
+            this.size = size;
+        }
+
+        return this;
+    },
+
+    getLineHeight: function() {
+        return this.lineHeight;
+    },
+
+    setLineHeight: function(lineHeight) {
+        if (isFontLineHeightValid(lineHeight)) {
+            this.lineHeight = lineHeight;
+        }
+
+        return this;
+    },
+
+    getFamily: function() {
+        return this.family;
+    },
+
+    setFamily: function(family) {
+        if (isFontFamilyValid(family)) {
+            this.family = family;
+        }
+
+        return this;
+    },
+
+    toString: function() {
+        return (
+            [
+                this.style,
+                this.variant,
+                this.weight,
+                this.size,
+                '/' + this.lineHeight,
+                this.family
+            ].join(' ')
+        );
+    }
+});
+
+/**
+ * Map of valid CSS units
+ * @type {Array}
+ * @private
+ */
+var cssUnitsMap = ['em', 'ex', 'pt', 'px', '%'];
+
+/**
+ * Map of valid font styles
+ * @type {Array}
+ * @private
+ */
+var fontStyleMap = ['normal', 'italic', 'oblique', 'inherit'];
+
+/**
+ * Map of valid font variants
+ * @type {Array}
+ * @private
+ */
+var fontVariantMap = ['normal', 'small-caps', 'inherit'];
+
+/**
+ * Map of valid font weight
+ * @type {Array}
+ * @private
+ */
+var fontWeightMap = ['bold', 'bolder', 'lighter', 'normal', '100', '200', '300', '400', '500', '600', '700', '800', '900'];
+
+/**
+ * Map of valid font size constants
+ * @type {Array}
+ * @private
+ */
+var fontSizeMap = ['xx-small', 'x-small', 'smaller', 'small', 'medium', 'large', 'larger', 'x-large', 'xx-large'];
+
+/**
+ * Check if value ends on valid css unit
+ * @param  {String} value Value that need to check
+ * @return {Boolean} True if valid
+ * @private
+ */
+function isCssValueValid(value) {
+    return cssUnitsMap.some(function(unit) {
+        return value.lastIndexOf(unit) != -1;
+    });
+}
+
+/**
+ * Check if this value is valid font-style attribute
+ * @param  {String} value Value that need to check
+ * @return {Boolean} If value valid then true
+ * @private
+ */
+function isFontStyleValid(value) {
+    return fontStyleMap.indexOf(value) != -1;
+}
+
+/**
+ * Check if value is valid font-variant attribute
+ * @param  {String} value Value that need to check
+ * @return {Boolean} True if value is valid
+ * @private
+ */
+function isFontVariantValid(value) {
+    return fontVariantMap.indexOf(value) != -1;
+}
+
+/**
+ * Check if provided value it's valid font-weight attribute
+ * @param  {String} value Font weight value that need to check
+ * @return {Boolean} True if valid
+ * @private
+ */
+function isFontWeightValid(value) {
+    return fontWeightMap.indexOf(value) != -1;
+}
+
+/**
+ * Check if provided value it's valid font size attribute
+ * @param  {String} value Font size that need to check
+ * @return {Boolean} True if valid
+ * @private
+ */
+function isFontSizeValid(value) {
+    return (
+        fontSizeMap.indexOf(value) != -1 ||
+        isCssValueValid(value)
+    );
+}
+
+/**
+ * Check if provided value it's valid font line-height attribute
+ * @param  {String} value Value that need to be checked
+ * @return {Boolean} True if valid
+ * @private
+ */
+function isFontLineHeightValid(value) {
+    return isCssValueValid(value);
+}
+
+/**
+ * Check if provided value it's valid font-family attribute
+ * @param  {String} value Value that need to be checked
+ * @return {Boolean} True if valid
+ * @private
+ */
+function isFontFamilyValid(value) {
+    // TODO: implement
+    return true;
+}
+
+/**
+ * Check if created Rise.Font object is valid
+ * @param {Rise.Font} font Font object that need to be checked
+ * @return {Boolean} True if valid
+ * @private
+ */
+function isFontObjectValid(font) {
+    // FIXME: sometimes it returns false on valid objects
+    return (
+        isFontStyleValid(font.getStyle()) &&
+        isFontVariantValid(font.getVariant()) &&
+        isFontWeightValid(font.getWeight()) &&
+        isFontSizeValid(font.getSize()) &&
+        isFontLineHeightValid(font.getLineHeight()) &&
+        isFontFamilyValid(font.getFamily())
+    );
+}
+
+/**
+ * Parse font string and return object with corresponding values
+ * @param  {String} font Font string that need to parse
+ * @return {Object} Object with font values
+ * @private
+ */
+function stringToObject(font) {
+    // TODO: implement
+    Rise.Logger.warning('Rise.Font -> stringToObject() not realized yet');
+    return {};
+}
+
+/**
+ * Parse node Element for font properties and get font object
+ * @param  {Element|Rise.$} element Node Element from where you want get font properties
+ * @return {Rise.Font}
+ * @private
+ */
+function fromNodeElementToObject(element) {
+    var style = window.getComputedStyle(element, null);
+
+    return {
+        style: style.getPropertyValue('font-style'),
+        variant: style.getPropertyValue('font-variant'),
+        weight: style.getPropertyValue('font-weight'),
+        size: style.getPropertyValue('font-size'),
+        lineHeight: style.getPropertyValue('line-height'),
+        family: style.getPropertyValue('font-family')
+    };
+}
 (function(global) {
     /**
      * Current log level

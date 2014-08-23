@@ -8,7 +8,11 @@
      */
     function copyProperties(source, target, parent) {
         Object.keys(source).forEach(function(key) {
-            if (typeof source[key] == "function" && typeof parent[key] == "function" && /\b_super\b/.test(source[key])) {
+            if (
+                typeof source[key] == "function" &&
+                typeof parent[key] == "function" &&
+                /\b_super\b/.test(source[key])
+            ) {
                 target[key] = wrapMethod(source[key], parent[key]);
             } else {
                 target[key] = source[key];

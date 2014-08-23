@@ -1,17 +1,19 @@
 // jshint ignore:start
 describe('Rise.Logger', function() {
     it('Should exists all log levels', function() {
-        Rise.Logger.VERBOSE.should.be.ok;
-        Rise.Logger.DEBUG.should.be.ok;
-        Rise.Logger.ERROR.should.be.ok;
-        Rise.Logger.WARNING.should.be.ok;
-        Rise.Logger.INFO.should.be.ok;
-        Rise.Logger.OFF.should.be.ok;
+        Rise.Logger.VERBOSE.should.be.an.integer;
+        Rise.Logger.DEBUG.should.be.an.integer;
+        Rise.Logger.ERROR.should.be.an.integer;
+        Rise.Logger.WARNING.should.be.an.integer;
+        Rise.Logger.INFO.should.be.an.integer;
+        Rise.Logger.OFF.should.be.an.integer;
     });
 
     it('Should set and get level', function() {
         Rise.Logger.setLevel(Rise.Logger.VERBOSE);
         Rise.Logger.getLevel().should.be.equal(Rise.Logger.VERBOSE);
+        Rise.Logger.setLevel(Rise.Logger.OFF);
+        Rise.Logger.getLevel().should.be.equal(Rise.Logger.OFF);
     });
 
     it('Should call log', function() {

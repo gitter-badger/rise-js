@@ -1,7 +1,7 @@
 // jshint ignore:start
 describe('Rise.Class', function() {
     it('Should create basic class', function() {
-        var Test = Rise.Class.extend();
+        Rise.Class.extend().should.be.ok;
     });
 
     it('Should create class with prototype, static and mixins', function() {
@@ -14,7 +14,7 @@ describe('Rise.Class', function() {
                 return this.test;
             }
         }, {
-            getTrue: function() {
+            checkStatic: function() {
                 return true;
             }
         }, [{
@@ -25,6 +25,6 @@ describe('Rise.Class', function() {
 
         new Test().checkPrototype().should.be.equal('test');
         new Test().checkMixin().should.be.equal('test');
-        Test.getTrue().should.be.ok;
+        Test.checkStatic().should.be.ok;
     })
 });

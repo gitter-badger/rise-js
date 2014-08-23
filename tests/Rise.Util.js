@@ -1,7 +1,6 @@
 // jshint ignore:start
-
 describe('Rise.Util', function() {
-    it('#getType()', function() {
+    it('Should return correct type', function() {
         Rise.Util.getType({}).should.be.equal('object');
         Rise.Util.getType(123).should.be.equal('number');
         Rise.Util.getType([]).should.be.equal('array');
@@ -10,7 +9,7 @@ describe('Rise.Util', function() {
         Rise.Util.getType('Test').should.be.equal('string');
     });
 
-    it('#isObject()', function() {
+    it('Should check if is object', function() {
         Rise.Util.isObject({}).should.be.ok;
         Rise.Util.isObject(123).should.be.not.ok;
         Rise.Util.isObject([]).should.be.not.ok;
@@ -19,7 +18,7 @@ describe('Rise.Util', function() {
         Rise.Util.isObject('Test').should.be.not.ok;
     });
 
-    it('#isNumber', function() {
+    it('Should check if is number', function() {
         Rise.Util.isNumber({}).should.be.not.ok;
         Rise.Util.isNumber(123).should.be.ok;
         Rise.Util.isNumber([]).should.be.not.ok;
@@ -28,7 +27,7 @@ describe('Rise.Util', function() {
         Rise.Util.isNumber('Test').should.be.not.ok;
     });
 
-    it('#isArray', function() {
+    it('Should check if is array', function() {
         Rise.Util.isArray({}).should.be.not.ok;
         Rise.Util.isArray(123).should.be.not.ok;
         Rise.Util.isArray([]).should.be.ok;
@@ -37,7 +36,7 @@ describe('Rise.Util', function() {
         Rise.Util.isArray('Test').should.be.not.ok;
     });
 
-    it('#isBoolean', function() {
+    it('Should check if is boolean', function() {
         Rise.Util.isBoolean({}).should.be.not.ok;
         Rise.Util.isBoolean(123).should.be.not.ok;
         Rise.Util.isBoolean([]).should.be.not.ok;
@@ -46,7 +45,7 @@ describe('Rise.Util', function() {
         Rise.Util.isBoolean('Test').should.be.not.ok;
     });
 
-    it('#isFunction', function() {
+    it('Should check if is function', function() {
         Rise.Util.isFunction({}).should.be.not.ok;
         Rise.Util.isFunction(123).should.be.not.ok;
         Rise.Util.isFunction([]).should.be.not.ok;
@@ -55,7 +54,7 @@ describe('Rise.Util', function() {
         Rise.Util.isFunction('Test').should.be.not.ok;
     });
 
-    it('#isString', function() {
+    it('Should check if is string', function() {
         Rise.Util.isString({}).should.be.not.ok;
         Rise.Util.isString(123).should.be.not.ok;
         Rise.Util.isString([]).should.be.not.ok;
@@ -64,7 +63,7 @@ describe('Rise.Util', function() {
         Rise.Util.isString('Test').should.be.ok;
     });
 
-    it('#getRandomString', function() {
+    it('Should return random string', function() {
         Rise.Util.getRandomString().should.be.a.string;
         Rise.Util.getRandomString('rise').should.be.a.string;
         Rise.Util.getRandomString('rise', 'suffix').should.be.a.string;

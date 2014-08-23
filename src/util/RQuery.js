@@ -1,0 +1,1 @@
+Rise.RQuery = Rise.$ = Rise.Class.extend({});
