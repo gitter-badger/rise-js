@@ -892,21 +892,6 @@
         },
 
         /**
-         * Get offset of node
-         * @return {Object} Returns object with left and top properties
-         * @example
-         * Rise.$('body').offset(); // Returns {left: 0, top: 0}
-         */
-        offset: function() {
-            var boundingBox = this.get(0).getBoundingClientRect();
-
-            return {
-                top: boundingBox.top + document.body.scrollTop,
-                left: boundingBox.left + document.body.scrollLeft
-            };
-        },
-
-        /**
          * Get node's width
          * @return {Integer} Returns offsetWidth of node
          * @example
@@ -944,19 +929,6 @@
          */
         offsetTop: function() {
             return this.get(0).offsetTop;
-        },
-
-        /**
-         * Get position of node
-         * @return {Object} Returns object with left and top properties
-         * @example
-         * Rise.$('div').position(); // {left: 0, top: 0}
-         */
-        position: function() {
-            return {
-                left: this.offsetLeft(),
-                top: this.offsetTop()
-            };
         },
 
         /**
