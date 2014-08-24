@@ -1,5 +1,44 @@
-// jshint ignore:start
+// jshint ignore:end
 describe('Rise.Util', function() {
+    it('Should properly extend objects', function() {
+        var testObject = Rise.Util.extend({}, {
+            test: 'test'
+        }, {
+            foo: 'test',
+            test: 'test2'
+        });
+        testObject.should.be.eql({
+            foo: 'test',
+            test: 'test2'
+        });
+
+        Rise.Util.extend(testObject, {
+            bar: 'test'
+        });
+        testObject.should.be.eql({
+            foo: 'test',
+            bar: 'test',
+            test: 'test2'
+        });
+    });
+
+    it('Should properly convert string to camelized string', function() {
+        Rise.Util.getCamelizedString('font-family').should.be.equal('fontFamily');
+        Rise.Util.getCamelizedString('fontFamily').should.be.equal('fontFamily');
+    });
+
+    it('Should properly convert string to dashed string', function() {
+        Rise.Util.getDashedString('fontFamily').should.be.equal('font-family');
+        Rise.Util.getDashedString('font-family').should.be.equal('font-family');
+    });
+
+    it('Should return random string', function() {
+        Rise.Util.getRandomString().should.be.a.string;
+        Rise.Util.getRandomString('rise').should.be.a.string;
+        Rise.Util.getRandomString('rise', 'suffix').should.be.a.string;
+        Rise.Util.getRandomString('rise', 'suffix', '-').should.be.a.string;
+    });
+
     it('Should return correct type', function() {
         Rise.Util.getType({}).should.be.equal('object');
         Rise.Util.getType(123).should.be.equal('number');
@@ -77,12 +116,5 @@ describe('Rise.Util', function() {
         Rise.Util.isUndefined(function() {}).should.be.not.ok;
         Rise.Util.isUndefined('Test').should.be.not.ok;
         Rise.Util.isUndefined(undefined).should.be.ok;
-    });
-
-    it('Should return random string', function() {
-        Rise.Util.getRandomString().should.be.a.string;
-        Rise.Util.getRandomString('rise').should.be.a.string;
-        Rise.Util.getRandomString('rise', 'suffix').should.be.a.string;
-        Rise.Util.getRandomString('rise', 'suffix', '-').should.be.a.string;
     });
 });
