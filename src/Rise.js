@@ -4,7 +4,7 @@
      * @type {String}
      * @private
      */
-    var VERSION = '0.0.1 -> alpha';
+    var VERSION = '0.0.1-alpha';
 
     /**
      * Rise constuctor
