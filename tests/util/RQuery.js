@@ -1,4 +1,4 @@
-// jshint ignore:end
+// jshint ignore:start
 describe('Rise.RQuery', function() {
     it('Should shorthand Rise.$ exists globally', function() {
         Rise.$.should.be.ok;
