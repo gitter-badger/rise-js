@@ -7,6 +7,15 @@
          * @constructor
          * @param  {Object} options Font options
          * @return {Rise.Font}      Returns Rise.Font instance
+         * @example
+         * new Rise.Font({
+         *     style: 'normal',
+         *     variant: 'normal',
+         *     weight: 'normal',
+         *     size: 'medium',
+         *     lineHeight: 'normal',
+         *     family: 'serif'
+         * });
          */
         init: function(options) {
             options = options || {};
@@ -22,8 +31,7 @@
             this.family = options.family || 'serif';
 
             if (!Rise.Font.isFontValid(this)) {
-                Rise.Logger.warning('Something wrong with options -> %O', options);
-                Rise.Logger.warning('Rise.Font created with this font -> "%s"', this.toString());
+                Rise.Logger.warning('Rise.Font -> Something wrong with options -> %O', options);
             }
 
             Rise.Logger.log('Instantiated Rise.Font -> %O', this);
@@ -35,6 +43,8 @@
         /**
          * Check if Rise.Font is valid instance
          * @return {Boolean} Returns true if Rise.Font instance valid
+         * @example
+         * new Rise.Font().isValid(); // true
          */
         isValid: function() {
             return Rise.Font.isFontValid(this);
@@ -43,6 +53,8 @@
         /**
          * Get current style
          * @return {String} Returns CSS font style
+         * @example
+         * new Rise.Font().getStyle();
          */
         getStyle: function() {
             return this.style;
@@ -52,6 +64,8 @@
          * Set style to Rise.Font
          * @param {String} style New CSS font style
          * @return {Rise.Font} Returns Rise.Font instance
+         * @example
+         * new Rise.Font().setStyle('normal');
          */
         setStyle: function(style) {
             if (Rise.Font.isFontStyleValid(style)) {
@@ -66,6 +80,8 @@
         /**
          * Get current font variant
          * @return {String} Returns CSS font variant
+         * @example
+         * new Rise.Font().getVariant();
          */
         getVariant: function() {
             return this.variant;
@@ -75,6 +91,8 @@
          * Set font variant to Rise.Font
          * @param {String} variant New CSS font variant
          * @return {Rise.Font} Returns Rise.Font instance
+         * @example
+         * new Rise.Font().setVariant('normal');
          */
         setVariant: function(variant) {
             if (Rise.Font.isFontVariantValid(variant)) {
@@ -89,6 +107,8 @@
         /**
          * Get current font weight
          * @return {String} Returns CSS font weight
+         * @example
+         * new Rise.Font().getWeight();
          */
         getWeight: function() {
             return this.weight;
@@ -98,6 +118,8 @@
          * Set font weight to Rise.Font
          * @param {String} weight New CSS font weight
          * @return {Rise.Font} Returns Rise.Font instance
+         * @example
+         * new Rise.Font().setWeight('normal')
          */
         setWeight: function(weight) {
             if (Rise.Font.isFontWeightValid(weight)) {
@@ -112,6 +134,8 @@
         /**
          * Get current font size
          * @return {String} Returns CSS font size
+         * @example
+         * new Rise.Font().getSize();
          */
         getSize: function() {
             return this.size;
@@ -121,6 +145,8 @@
          * Set font size to Rise.Font
          * @param {String} size New CSS font size
          * @return {Rise.Font} Returns Rise.Font instance
+         * @example
+         * new Rise.Font().setSize('medium');
          */
         setSize: function(size) {
             if (Rise.Font.isFontSizeValid(size)) {
@@ -135,6 +161,8 @@
         /**
          * Get current font line height
          * @return {String} Returns CSS font line-height
+         * @example
+         * new Rise.Font().getLineHeight();
          */
         getLineHeight: function() {
             return this.lineHeight;
@@ -144,6 +172,8 @@
          * Set font line height to Rise.Font
          * @param {String} lineHeight New CSS font line-height
          * @return {Rise.Font} Returns Rise.Font instance
+         * @example
+         * new Rise.Font().setLineHeight('normal');
          */
         setLineHeight: function(lineHeight) {
             if (Rise.Font.isFontLineHeightValid(lineHeight)) {
@@ -158,6 +188,8 @@
         /**
          * Get current font family
          * @return {String} Returns CSS font family
+         * @example
+         * new Rise.Font().getFamily();
          */
         getFamily: function() {
             return this.family;
@@ -167,6 +199,8 @@
          * Set font family to Rise.Font
          * @param {String} family New CSS font family
          * @return {Rise.Font} Returns Rise.Font instance
+         * @example
+         * new Rise.Font().setFamily('serif');
          */
         setFamily: function(family) {
             if (Rise.Font.isFontFamilyValid(family)) {
@@ -181,6 +215,8 @@
         /**
          * Convert Rise.Font to CSS string representation
          * @return {String} Returns CSS string of Rise.Font representation
+         * @example
+         * new Rise.Font().toString();
          */
         toString: function() {
             return (

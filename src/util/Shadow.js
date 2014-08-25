@@ -3,9 +3,9 @@
 
     global.Rise.Shadow = Rise.Class.extend({
         /**
-         * Create new Shadow instance
+         * Create new Rise.Shadow instance
          * @constructor
-         * @param {String|Object} shadow Object with color, blur, offsetX, offsetY attributes or string
+         * @param {Object} shadow Object with color, blur, offsetX, offsetY attributes or string
          * @return {Rise.Shadow} Returns new Rise.Shadow instance
          * @example
          * new Rise.Shadow({
@@ -122,7 +122,7 @@
 
         /**
          * Returns CSS string
-         * @return {String} Returns CSS shadow declaration
+         * @return {String} Returns CSS shadow string representation
          * @example
          * new Rise.Shadow().toString();
          */
@@ -139,7 +139,7 @@
          * Regex that match shadow offsetX, offsetY and blur
          * @static
          * @example
-         * 2px 2px 10px rgba(0,0,0,0.2)
+         * 2px 2px 10px rgba(0, 0, 0, 0.2)
          * rgb(0,255,0) 2px 2px
          */
         shadowRegex: /(?:\s|^)(-?\d+(?:px)?(?:\s?|$))?(-?\d+(?:px)?(?:\s?|$))?(\d+(?:px)?)?(?:\s?|$)(?:$|\s)/,

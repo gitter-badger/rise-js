@@ -1,4 +1,4 @@
-// jshint ignore:end
+// jshint ignore:start
 describe('Rise.Util', function() {
     it('Should properly extend objects', function() {
         var testObject = Rise.Util.extend({}, {
@@ -35,8 +35,11 @@ describe('Rise.Util', function() {
     it('Should return random string', function() {
         Rise.Util.getRandomString().should.be.a.string;
         Rise.Util.getRandomString('rise').should.be.a.string;
+        Rise.Util.getRandomString('rise').should.match(/^rise/g);
         Rise.Util.getRandomString('rise', 'suffix').should.be.a.string;
+        Rise.Util.getRandomString('rise', 'suffix').should.match(/^rise(.+)suffix$/g);
         Rise.Util.getRandomString('rise', 'suffix', '-').should.be.a.string;
+        Rise.Util.getRandomString('rise', 'suffix', '-').should.match(/^rise-(.+)-suffix$/g);
     });
 
     it('Should return correct type', function() {

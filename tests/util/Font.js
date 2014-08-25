@@ -17,26 +17,16 @@ describe('Rise.Font', function() {
         font.toString().should.be.equal('oblique small-caps lighter smaller /2em Arial');
     });
 
-    it('Should create instance from exists Node', function() {
-        var body = document.getElementsByTagName('body')[0],
-            element = document.createElement('div');
-
-        body.appendChild(element);
-        element.style.fontStyle = 'italic';
-        element.style.fontVariant = 'small-caps';
-        element.style.fontWeight = 'lighter';
-        element.style.fontSize = 'smaller';
-        element.style.lineHeight = '20px';
-        element.style.fontFamily = 'Arial';
-
-        var font = Rise.Font.fromNode(element);
-        font.isValid().should.be.ok;
-        font.toString().should.be.equal('italic small-caps 300 13px /20px Arial');
-    });
-
     it('Should properly validate font instance', function() {
-        var font = new Rise.Font();
-        font.isValid().should.be.ok;
+        new Rise.Font().isValid().should.be.ok;
+        new Rise.Font({
+            style: 'oblique',
+            variant: 'small-caps',
+            weight: 'lighter',
+            size: 'smaller',
+            lineHeight: '2em',
+            family: 'Arial'
+        }).isValid().should.be.ok;
     });
 
     it('Should properly get and set values', function() {
@@ -61,6 +51,11 @@ describe('Rise.Font', function() {
         font.getFamily().should.be.equal('Arial');
 
         font.toString().should.be.equal('oblique small-caps lighter smaller /2em Arial');
+    });
+
+    it('Should properly convert to string', function() {
+        var font = new Rise.Font();
+        font.toString().should.be.equal('normal normal normal medium /normal serif');
     });
 
     it('Should properly validate CSS value', function() {
@@ -125,5 +120,34 @@ describe('Rise.Font', function() {
         Rise.Font.isFontLineHeightValid('20em').should.be.ok;
         Rise.Font.isFontLineHeightValid('20px').should.be.ok;
         Rise.Font.isFontLineHeightValid('bad').should.be.not.ok;
+    });
+
+    it('Should properly validate font family', function() {
+        Rise.Font.isFontFamilyValid().should.be.ok;
+    });
+
+    it('Should properly validate font within static method', function() {
+        Rise.Font.isFontValid(new Rise.Font()).should.be.ok;
+    });
+
+    it('Should create instance from exists font string', function() {
+        Rise.Font.fromString('').should.be.an.instanceof(Rise.Font);
+    });
+
+    it('Should create instance from exists Node', function() {
+        var body = document.getElementsByTagName('body')[0],
+            element = document.createElement('div');
+
+        body.appendChild(element);
+        element.style.fontStyle = 'italic';
+        element.style.fontVariant = 'small-caps';
+        element.style.fontWeight = 'lighter';
+        element.style.fontSize = 'smaller';
+        element.style.lineHeight = '20px';
+        element.style.fontFamily = 'Arial';
+
+        var font = Rise.Font.fromNode(element);
+        font.isValid().should.be.ok;
+        font.toString().should.be.equal('italic small-caps 300 13px /20px Arial');
     });
 });

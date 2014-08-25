@@ -1,7 +1,6 @@
 // jshint ignore:start
 describe('Rise.RQuery', function() {
     it('Should shorthand Rise.$ exists globally', function() {
-        Rise.$.should.be.ok;
         Rise.$.should.be.a.function;
         Rise.$.create.should.be.a.function;
     });
@@ -73,6 +72,14 @@ describe('Rise.RQuery', function() {
 
     it('Should properly return offset top', function() {
         Rise.$('#rquery').offsetTop().should.be.equal(200);
+    });
+
+    it('Should properly focus at node', function() {
+        Rise.$('#rquery').focus().should.be.an.instanceof(Rise.RQuery);
+    });
+
+    it('Should properly blur from node', function() {
+        Rise.$('#rquery').blur().should.be.an.instanceof(Rise.RQuery);
     });
 
     it('Should properly filter out nodes', function() {
@@ -159,6 +166,29 @@ describe('Rise.RQuery', function() {
 
         rquery.toggleClass('rquery');
         rquery.hasClass('rquery').should.be.not.ok;
+    });
+
+    it('Should properly bind, unbind event listeners and trigger native event', function() {
+        var clicked = false;
+
+        function onMouseDown(event) {
+            if (!(event instanceof MouseEvent)) {
+                throw new Error();
+            }
+
+            if (event.type !== 'mousedown') {
+                throw new Error();
+            }
+
+            clicked = !clicked;
+        }
+
+        Rise.$('#rquery').on('mousedown', onMouseDown);
+        Rise.$('#rquery').trigger('mousedown');
+        Rise.$('#rquery').off('mousedown', onMouseDown);
+        Rise.$('#rquery').trigger('mousedown');
+
+        clicked.should.be.equal(true);
     });
 
     it('Should properly remove node', function() {

@@ -18,8 +18,8 @@
 
     /**
      * Get current version
+     * @static
      * @return {String} Returns current version
-     * @private
      */
     Rise.getVersion = function() {
         return VERSION;

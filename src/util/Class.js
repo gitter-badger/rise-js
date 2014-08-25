@@ -26,7 +26,7 @@
      * Wrap method with parent method.
      * Useful for create this._super() in subclasses.
      * @param  {Function} method       Method that need to be wrapped
-     * @param  {Function} parentMethod Parent method in other works - this._super();
+     * @param  {Function} parentMethod Parent method, in other words - this._super();
      * @return {Function}              Returns wrapped function
      * @private
      */
@@ -52,9 +52,9 @@
     /**
      * Create new Class or extend exists
      * @static
-     * @param {Array} [mixins] Optional parameter. Array of mixins which need to inject in new Class
-     * @param {Object} prototype Prototype object for new Class
-     * @param {Object} staticProperties Object with static properties for new Class. Will send in Object.defineProperties.
+     * @param {Object} [prototype] Prototype object for new Class
+     * @param {Object} [staticProperties] Object with static properties for new Class
+     * @param {Array}  [mixins] Array of mixins which need to inject in new Class prototype
      * @return {Object} Returns new Class
      *
      * @example

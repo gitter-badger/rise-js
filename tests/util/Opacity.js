@@ -14,19 +14,19 @@ describe('Rise.Opacity', function() {
         var opacity = new Rise.Opacity();
         opacity.get().should.be.equal(0);
 
+        opacity.set(0.3);
+        opacity.get().should.be.equal(70);
+
         opacity.set(40);
         opacity.get().should.be.equal(40);
 
-        opacity.set(0.3);
-        opacity.get().should.be.equal(70);
+        opacity.set(200);
+        opacity.get().should.be.equal(0);
     });
 
     it('Should properly convert to CSS string', function() {
         var opacity = new Rise.Opacity(70);
         opacity.toString().should.be.equal(0.3);
-
-        opacity.set(45);
-        opacity.toString().should.be.equal(0.55);
     });
 
     it('Should properly check for percentage value', function() {

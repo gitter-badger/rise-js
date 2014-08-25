@@ -203,7 +203,7 @@
         /**
          * Start new group in console
          * @static
-         * @param {Boolean} startCollapsed If you set true for first argument, group will be collapsed
+         * @param {Boolean} [startCollapsed] If first argument true, group will be collapsed
          * @return {Rise.Logger}
          */
         startGroup: function() {

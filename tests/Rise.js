@@ -8,6 +8,6 @@ describe('Rise', function() {
 
     it('Should Rise instantiated successfully', function() {
         var rise = new Rise();
-        rise.should.be.ok;
+        rise.should.be.an.instanceof(Rise).and.be.ok;
     });
 });

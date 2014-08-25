@@ -4,11 +4,12 @@
     global.Rise.Opacity = Rise.Class.extend({
         /**
          * Create new Opacity object
+         * @constructor
          * @param {Float} opacity Percentage range [0, 100] (100% - transparent, 0% - blank) or [0, 1] range
          * @return {Rise.Opacity} Returns new Rise.Opacity instance
          * @example
-         * Rise.Opacity(40).toString(); // 0.60
-         * Rise.Opacity(0.20).getOpacity(); // 80
+         * new Rise.Opacity(40).toString(); // 0.60
+         * new Rise.Opacity(0.20).getOpacity(); // 80
          */
         init: function(opacity) {
             opacity = opacity || 0;
@@ -23,7 +24,7 @@
 
         /**
          * Set opacity
-         * @param {Integer} opacity Opacity in percentage range [0, 100]
+         * @param {Integer} opacity Opacity in percentage range [0, 100] or [0, 1] range
          * @return {Rise.Opacity} Returns current Rise.Opacity instance
          * @example
          * new Rise.Opacity(20).set(60).toString(); // 0.4
@@ -33,10 +34,10 @@
                 Rise.Logger.log('"%s" decimal value, converting to percentage', opacity);
                 this.opacity = Rise.Opacity.fromCssToPercentage(opacity);
             } else if (Rise.Opacity.isPercentageValue(opacity)) {
-                Rise.Logger.log('"%s" percentage value, set it to object', opacity);
+                Rise.Logger.log('"%s" percentage value, setting it', opacity);
                 this.opacity = opacity;
             } else {
-                Rise.Logger.warning('%O opacity not parsed, set to 0%', opacity);
+                Rise.Logger.warning('Opacity -> %O not parsed, set to 0%', opacity);
                 this.opacity = 0;
             }
 
@@ -46,6 +47,8 @@
         /**
          * Get opacity in percentage
          * @return {Integer} Returns opacity in range from 0% to 100%
+         * @example
+         * new Rise.Opacity(60).get(); // 60
          */
         get: function() {
             return this.opacity;
@@ -60,7 +63,7 @@
         }
     }, {
         /**
-         * Check if provided value is percentage value in [0, 100] range and not decimal.
+         * Check if provided value is percentage value in [0, 100] range and not decimal
          * @param  {Float} value Value that need to be checked
          * @return {Boolean} True if value is percentage value
          * @static

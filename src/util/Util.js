@@ -12,6 +12,7 @@
          * @param  {Object} destination Destination object will be also modified
          * @param  {Object} source Source objects
          * @return {Object} Returns extended object
+         * @static
          * @example
          * Rise.Util.extend({}, obj1, obj2, obj3);
          */
@@ -72,26 +73,31 @@
 
         /**
          * Get random string
-         * @static
          * @param  {String} prepend   String which prepends to random string
          * @param  {String} append    String which appends to random string
          * @param  {String} separator String which separate prepender and appender
          * @return {String}           Returns random generated string
-         * @memberOf Rise.Util
+         * @static
+         * @example
+         * Rise.Util.getRandomString('preffix', 'suffix', 'separator');
          */
         getRandomString: function(prepend, append, separator) {
-            prepend = prepend === undefined ? '' : prepend;
-            append = append === undefined ? '' : append;
-            separator = separator === undefined ? '' : separator;
+            prepend = this.isUndefined(prepend) ? '' : prepend;
+            append = this.isUndefined(append) ? '' : append;
+            separator = this.isUndefined(separator) ? '' : separator;
 
-            return [prepend, Math.random().toString(36).slice(2), append].join(separator);
+            return [
+                prepend,
+                Math.random().toString(36).slice(2),
+                append
+            ].join(separator);
         },
 
         /**
          * Get type of variable
          * @static
          * @param  {Mixed} value Variable that might be checked
-         * @return {String}       Returns string representation of type
+         * @return {String}      Returns string representation of type
          */
         getType: function(value) {
             return Object.prototype.toString.call(value).replace(/^\[object (.+)\]$/, '$1').toLowerCase();

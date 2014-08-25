@@ -33,6 +33,8 @@
          * @param  {String|Rise.RQuery|Element|Array} selector Selector or exists Element
          * @param  {Element|Document|Window} parent Parent from where selector will parse
          * @return {Rise.RQuery} Returns Rise.RQuery instance
+         * @example
+         * new Rise.RQuery('.selector');
          */
         init: function(selector, parent) {
             selector = selector || window;
@@ -92,6 +94,8 @@
         /**
          * Get elements count
          * @return {Integer} Returns elements count
+         * @example
+         * Rise.$('body').count(); // 1
          */
         count: function() {
             return (this.elements && this.elements.length) || 0;
