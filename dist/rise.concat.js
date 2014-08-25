@@ -806,9 +806,13 @@
 
             if (selector instanceof Rise.RQuery) {
                 this.elements = selector.get();
-            } else if (Rise.Util.isArray(selector) || selector instanceof HTMLCollection) {
+            } else if (
+                Rise.Util.isArray(selector) ||
+                selector instanceof HTMLCollection ||
+                selector instanceof NodeList
+            ) {
                 Array.prototype.forEach.call(selector, pushElement);
-            } else if (selector instanceof Element || selector instanceof Window) {
+            } else if (selector instanceof Element) {
                 this.elements[0] = selector;
             } else if (Rise.Util.isString(selector)) {
                 Array.prototype.forEach.call(parent.querySelectorAll(selector), pushElement);
@@ -999,7 +1003,11 @@
                 this.each(function(element) {
                     Object.keys(attr).forEach(function(key) {
                         Rise.Logger.log('Set key-value "%s" -> "%s" to element %O', key, attr[key], element);
-                        element.setAttribute(key, attr[key]);
+                        if (attr[key] === false) {
+                            element.removeAttribute(key);
+                        } else {
+                            element.setAttribute(key, attr[key]);
+                        }
                     });
                 });
                 Rise.Logger.endGroup();
