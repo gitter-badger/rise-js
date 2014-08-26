@@ -18,6 +18,12 @@
         init: function(shadow) {
             shadow = shadow || {};
 
+            if (shadow instanceof Rise.Shadow) {
+                return shadow;
+            } else if (Rise.Util.isString(shadow)) {
+                return Rise.Shadow.fromString(shadow);
+            }
+
             Rise.Logger.startGroup(true, 'Rise.Shadow -> init()');
             Rise.Logger.log('Trying to parse options -> %O', shadow);
 

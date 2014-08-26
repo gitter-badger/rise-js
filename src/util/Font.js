@@ -17,21 +17,29 @@
          *     family: 'serif'
          * });
          */
-        init: function(options) {
-            options = options || {};
+        init: function(font) {
+            font = font || {};
+
+            if (font instanceof Rise.Font) {
+                return font;
+            } else if (Rise.Util.isString(font)) {
+                return Rise.Font.fromString(font);
+            } else if (font instanceof Element) {
+                return Rise.Font.fromNode(font);
+            }
 
             Rise.Logger.startGroup(true, 'Rise.Font -> init()');
-            Rise.Logger.log('Trying to parse options object -> %O', options);
+            Rise.Logger.log('Trying to parse font object -> %O', font);
 
-            this.style = options.style || 'normal';
-            this.variant = options.variant || 'normal';
-            this.weight = options.weight || 'normal';
-            this.size = options.size || 'medium';
-            this.lineHeight = options.lineHeight || 'normal';
-            this.family = options.family || 'serif';
+            this.style = font.style || 'normal';
+            this.variant = font.variant || 'normal';
+            this.weight = font.weight || 'normal';
+            this.size = font.size || 'medium';
+            this.lineHeight = font.lineHeight || 'normal';
+            this.family = font.family || 'serif';
 
             if (!Rise.Font.isFontValid(this)) {
-                Rise.Logger.warning('Rise.Font -> Something wrong with options -> %O', options);
+                Rise.Logger.warning('Rise.Font -> Something wrong with font -> %O', font);
             }
 
             Rise.Logger.log('Instantiated Rise.Font -> %O', this);

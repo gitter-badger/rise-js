@@ -14,6 +14,10 @@
         init: function(opacity) {
             opacity = opacity || 0;
 
+            if (opacity instanceof Rise.Opacity) {
+                return opacity;
+            }
+
             Rise.Logger.startGroup('Rise.Opacity -> init()');
             Rise.Logger.log('Trying to parse opacity -> "$s"', opacity);
             this.set(opacity);
