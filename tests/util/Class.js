@@ -1,13 +1,13 @@
 // jshint ignore:start
 describe('Rise.Class', function() {
     it('Should create basic class', function() {
-        var newClass = Rise.Class.extend();
-        newClass.should.be.an.instanceof(Rise.Class);
-        newClass.extend.should.be.a.function;
+        var Test = Rise.Class.create();
+        Test.extend.should.be.a.function;
+        new Test().should.be.an.instanceof(Test);
     });
 
     it('Should create class with prototype, static and mixins', function() {
-        var Test = Rise.Class.extend({
+        var Test = Rise.Class.create({
             init: function() {
                 this.test = 'test';
             },
@@ -31,7 +31,7 @@ describe('Rise.Class', function() {
     });
 
     it('Should properly extend from exists class', function() {
-        var Test = new Rise.Class.extend({
+        var Test = Rise.Class.create({
             init: function() {
                 this.test = 'test';
             },
@@ -42,11 +42,11 @@ describe('Rise.Class', function() {
         });
 
         var Foo = Test.extend();
-        new Foo.getTest().should.be.equal('test');
+        new Foo().getTest().should.be.equal('test');
     });
 
     it('Should properly call _super', function() {
-        var Test = new Rise.Class.extend({
+        var Test = Rise.Class.create({
             init: function() {
                 this.test = 'test';
             },

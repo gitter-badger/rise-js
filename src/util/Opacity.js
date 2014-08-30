@@ -3,7 +3,7 @@
 
     global.Rise.Opacity = Rise.Class.create({
         /**
-         * Create new Opacity object
+         * Create new Rise.Opacity object
          * @constructor
          * @param {Float} opacity Percentage range [0, 100] (100% - transparent, 0% - blank) or [0, 1] range
          * @return {Rise.Opacity} Returns new Rise.Opacity instance
@@ -18,7 +18,7 @@
                 return opacity;
             }
 
-            Rise.Logger.startGroup('Rise.Opacity -> init()');
+            Rise.Logger.startGroup(true, 'Rise.Opacity -> init()');
             Rise.Logger.log('Trying to parse opacity -> "$s"', opacity);
             this.set(opacity);
             Rise.Logger.endGroup();
@@ -36,7 +36,7 @@
         set: function(opacity) {
             if (Rise.Opacity.isDecimal01Value(opacity)) {
                 Rise.Logger.log('"%s" decimal value, converting to percentage', opacity);
-                this.opacity = Rise.Opacity.fromCssToPercentage(opacity);
+                this.opacity = Rise.Opacity.convertCssToPercentage(opacity);
             } else if (Rise.Opacity.isPercentageValue(opacity)) {
                 Rise.Logger.log('"%s" percentage value, setting it', opacity);
                 this.opacity = opacity;
@@ -63,7 +63,7 @@
          * @return {String} Returns string which you can apply to CSS
          */
         toString: function() {
-            return Rise.Opacity.fromPercentageToCss(this.opacity);
+            return Rise.Opacity.convertPercentageToCss(this.opacity);
         }
     }, {
         /**
@@ -111,10 +111,10 @@
          * @return {Float} Returns float value in percentage
          * @static
          * @example
-         * Rise.Opacity.fromCssToPercentage(0.40); // 60%
-         * Rise.Opacity.fromCssToPercentage(1); // 0%
+         * Rise.Opacity.convertCssToPercentage(0.40); // 60%
+         * Rise.Opacity.convertCssToPercentage(1); // 0%
          */
-        fromCssToPercentage: function(value) {
+        convertCssToPercentage: function(value) {
             return (100 - (value * 100.0).toFixed(0));
         },
 
@@ -124,10 +124,10 @@
          * @return {Float} Returns float value for CSS opacity
          * @static
          * @example
-         * Rise.Opacity.fromPercentageToCss(60); // 0.40
-         * Rise.Opacity.fromPercentageToCss(0); // 1
+         * Rise.Opacity.convertPercentageToCss(60); // 0.40
+         * Rise.Opacity.convertPercentageToCss(0); // 1
          */
-        fromPercentageToCss: function(value) {
+        convertPercentageToCss: function(value) {
             return (100 - value) / 100.0;
         }
     });

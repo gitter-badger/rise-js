@@ -168,7 +168,7 @@ describe('Rise.RQuery', function() {
         rquery.hasClass('rquery').should.be.not.ok;
     });
 
-    it('Should properly bind, unbind event listeners and trigger native event', function() {
+    it('Should properly bind/unbind events and trigger mouse event', function() {
         var clicked = false;
 
         function onMouseDown(event) {
@@ -184,9 +184,9 @@ describe('Rise.RQuery', function() {
         }
 
         Rise.$('#rquery').on('mousedown', onMouseDown);
-        Rise.$('#rquery').trigger('mousedown');
+        Rise.$('#rquery').triggerMouseEvent('mousedown');
         Rise.$('#rquery').off('mousedown', onMouseDown);
-        Rise.$('#rquery').trigger('mousedown');
+        Rise.$('#rquery').triggerMouseEvent('mousedown');
 
         clicked.should.be.equal(true);
     });

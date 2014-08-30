@@ -1,4 +1,4 @@
-// jshint ignore:start
+// jshint ignore:end
 describe('Rise.Util', function() {
     it('Should properly extend objects', function() {
         var testObject = Rise.Util.extend({}, {
@@ -53,7 +53,7 @@ describe('Rise.Util', function() {
         destination.should.be.eql({
             bar: 'foo',
             test: 'bar'
-        })
+        });
     });
 
     it('Should return correct type', function() {

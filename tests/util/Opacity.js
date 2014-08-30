@@ -45,14 +45,14 @@ describe('Rise.Opacity', function() {
     });
 
     it('Should properly convert from CSS value to percentage value', function() {
-        Rise.Opacity.fromCssToPercentage(0).should.be.equal(100);
-        Rise.Opacity.fromCssToPercentage(0.3).should.be.equal(70);
-        Rise.Opacity.fromCssToPercentage(1).should.be.equal(0);
+        Rise.Opacity.convertCssToPercentage(0).should.be.equal(100);
+        Rise.Opacity.convertCssToPercentage(0.3).should.be.equal(70);
+        Rise.Opacity.convertCssToPercentage(1).should.be.equal(0);
     });
 
     it('Should properly convert from percentage value to CSS value', function() {
-        Rise.Opacity.fromPercentageToCss(0).should.be.equal(1);
-        Rise.Opacity.fromPercentageToCss(70).should.be.equal(0.3);
-        Rise.Opacity.fromPercentageToCss(100).should.be.equal(0);
+        Rise.Opacity.convertPercentageToCss(0).should.be.equal(1);
+        Rise.Opacity.convertPercentageToCss(70).should.be.equal(0.3);
+        Rise.Opacity.convertPercentageToCss(100).should.be.equal(0);
     });
 });

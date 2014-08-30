@@ -4,7 +4,7 @@
      * @type {String}
      * @private
      */
-    var VERSION = '0.0.1-alpha';
+    var VERSION = '0.0.2-alpha';
 
     /**
      * Rise constuctor
@@ -355,7 +355,7 @@
             if (color instanceof Rise.Color) {
                 return color;
             } else if (Rise.Util.isString(color)) {
-                return Rise.Color.fromString(color);
+                return Rise.Color.fromString(color, config);
             } else if (Rise.Util.isObject(color)) {
                 Rise.Logger.startGroup(true, 'Rise.Color -> init()');
                 Rise.Logger.log('Trying to parse color -> %O with config -> %O', color, config);
@@ -684,7 +684,7 @@
                 return false;
             }
 
-            return Rise.Color.hexNamesMap[Rise.Color.rgbToHex(this.red, this.green, this.blue)] || false;
+            return Rise.Color.hexNamesMap[Rise.Color.rgbToHex(this.red, this.green, this.blue).toUpperCase()] || false;
         },
 
         /**
@@ -708,26 +708,9 @@
         toString: function(format) {
             format = format || this.format;
 
-            var isFormatSet = !!format,
-                formattedString = false,
-                hasAlpha = this.alpha < 1 && this.alpha >= 0,
-                needsAlphaFormat = (
-                    hasAlpha &&
-                    !isFormatSet &&
-                    (
-                        format === "hex" ||
-                        format === "hex6" ||
-                        format === "hex3" ||
-                        format === "name"
-                    ));
+            var formattedString = false;
 
-            if (needsAlphaFormat) {
-                if (format === "name" && this.alpha === 0) {
-                    return this.toName();
-                }
-
-                return this.toRgbString();
-            } else if (format === "rgb") {
+            if (format === "rgb") {
                 formattedString = this.toRgbString();
             } else if (format === "prgb") {
                 formattedString = this.toPercentageRgbString();
@@ -842,6 +825,7 @@
                 hue = (Math.round(hsl.h) + amount) % 360;
 
             hsl.h = hue < 0 ? 360 + hue : hue;
+
             return new Rise.Color(hsl);
         },
 
@@ -1525,7 +1509,7 @@
          * @param  {String} color String representation of colour
          * @return {Rise.Color}   Returns Rise.Color instance
          */
-        fromString: function(color) {
+        fromString: function(color, config) {
             var trimLeft = /^[\s,#]+/,
                 trimRight = /\s+$/,
                 named = false,
@@ -1552,57 +1536,61 @@
                     r: match[1],
                     g: match[2],
                     b: match[3]
-                });
+                }, config);
             } else if ((match = Rise.Color.colorRegexMap.rgba.exec(color))) {
                 return new Rise.Color({
                     r: match[1],
                     g: match[2],
                     b: match[3],
                     a: match[4]
-                });
+                }, config);
             } else if ((match = Rise.Color.colorRegexMap.hsl.exec(color))) {
                 return new Rise.Color({
                     h: match[1],
                     s: match[2],
                     l: match[3]
-                });
+                }, config);
             } else if ((match = Rise.Color.colorRegexMap.hsla.exec(color))) {
                 return new Rise.Color({
                     h: match[1],
                     s: match[2],
                     l: match[3],
                     a: match[4]
-                });
+                }, config);
             } else if ((match = Rise.Color.colorRegexMap.hsv.exec(color))) {
                 return new Rise.Color({
                     h: match[1],
                     s: match[2],
                     v: match[3]
-                });
+                }, config);
             } else if ((match = Rise.Color.colorRegexMap.hex8.exec(color))) {
                 return new Rise.Color({
                     a: Rise.Color.convertHexToDecimal(match[1]),
                     r: Rise.Color.convertHexToInteger(match[2]),
                     g: Rise.Color.convertHexToInteger(match[3]),
                     b: Rise.Color.convertHexToInteger(match[4]),
-                    format: named ? "name" : "hex8"
+                }, {
+                    format: config.format || (named ? "name" : "hex8")
                 });
             } else if ((match = Rise.Color.colorRegexMap.hex6.exec(color))) {
                 return new Rise.Color({
                     r: Rise.Color.convertHexToInteger(match[1]),
                     g: Rise.Color.convertHexToInteger(match[2]),
                     b: Rise.Color.convertHexToInteger(match[3]),
-                    format: named ? "name" : "hex"
+                }, {
+                    format: config.format || (named ? "name" : "hex")
                 });
             } else if ((match = Rise.Color.colorRegexMap.hex3.exec(color))) {
                 return new Rise.Color({
                     r: Rise.Color.convertHexToInteger(match[1] + '' + match[1]),
                     g: Rise.Color.convertHexToInteger(match[2] + '' + match[2]),
                     b: Rise.Color.convertHexToInteger(match[3] + '' + match[3]),
-                    format: named ? "name" : "hex"
+                }, {
+                    format: config.format || (named ? "name" : "hex")
                 });
             } else {
                 Rise.Logger.warning('Color -> %O not parsed', color);
+                return false;
             }
 
             return false;
@@ -1688,14 +1676,13 @@
 
             w1 = (w1 + 1) / 2;
             w2 = 1 - w1;
-            rgba = {
+
+            return new Rise.Color({
                 r: rgbB.r * w1 + rgbA.r * w2,
                 g: rgbB.g * w1 + rgbA.g * w2,
                 b: rgbB.b * w1 + rgbA.b * w2,
                 a: rgbB.a * p + rgbA.a * (1 - p)
-            };
-
-            return new Rise.Color(rgba);
+            });
         }
     });
 
@@ -1712,10 +1699,10 @@
 
     global.Rise.Font = Rise.Class.create({
         /**
-         * Create new Font object
+         * Create new Rise.Font instance
          * @constructor
-         * @param  {Object} options Font options
-         * @return {Rise.Font}      Returns Rise.Font instance
+         * @param  {Element|String|Object} options Font options
+         * @return {Rise.Font}                     Returns Rise.Font instance
          * @example
          * new Rise.Font({
          *     style: 'normal',
@@ -1735,24 +1722,27 @@
                 return Rise.Font.fromString(font);
             } else if (font instanceof Element) {
                 return Rise.Font.fromNode(font);
+            } else if (Rise.Util.isObject(font)) {
+                Rise.Logger.startGroup(true, 'Rise.Font -> init()');
+                Rise.Logger.log('Trying to parse font object -> %O', font);
+
+                this.style = font.style || 'normal';
+                this.variant = font.variant || 'normal';
+                this.weight = font.weight || 'normal';
+                this.size = font.size || 'medium';
+                this.lineHeight = font.lineHeight || 'normal';
+                this.family = font.family || 'serif';
+
+                if (!Rise.Font.isFontValid(this)) {
+                    Rise.Logger.warning('Rise.Font -> Something wrong with font -> %O', font);
+                }
+
+                Rise.Logger.log('Instantiated Rise.Font -> %O', this);
+                Rise.Logger.endGroup();
+            } else {
+                Rise.Logger.warning('Font -> %O not parsed', font);
+                return false;
             }
-
-            Rise.Logger.startGroup(true, 'Rise.Font -> init()');
-            Rise.Logger.log('Trying to parse font object -> %O', font);
-
-            this.style = font.style || 'normal';
-            this.variant = font.variant || 'normal';
-            this.weight = font.weight || 'normal';
-            this.size = font.size || 'medium';
-            this.lineHeight = font.lineHeight || 'normal';
-            this.family = font.family || 'serif';
-
-            if (!Rise.Font.isFontValid(this)) {
-                Rise.Logger.warning('Rise.Font -> Something wrong with font -> %O', font);
-            }
-
-            Rise.Logger.log('Instantiated Rise.Font -> %O', this);
-            Rise.Logger.endGroup();
 
             return this;
         },
@@ -2386,7 +2376,7 @@
 
     global.Rise.Opacity = Rise.Class.create({
         /**
-         * Create new Opacity object
+         * Create new Rise.Opacity object
          * @constructor
          * @param {Float} opacity Percentage range [0, 100] (100% - transparent, 0% - blank) or [0, 1] range
          * @return {Rise.Opacity} Returns new Rise.Opacity instance
@@ -2401,7 +2391,7 @@
                 return opacity;
             }
 
-            Rise.Logger.startGroup('Rise.Opacity -> init()');
+            Rise.Logger.startGroup(true, 'Rise.Opacity -> init()');
             Rise.Logger.log('Trying to parse opacity -> "$s"', opacity);
             this.set(opacity);
             Rise.Logger.endGroup();
@@ -2419,7 +2409,7 @@
         set: function(opacity) {
             if (Rise.Opacity.isDecimal01Value(opacity)) {
                 Rise.Logger.log('"%s" decimal value, converting to percentage', opacity);
-                this.opacity = Rise.Opacity.fromCssToPercentage(opacity);
+                this.opacity = Rise.Opacity.convertCssToPercentage(opacity);
             } else if (Rise.Opacity.isPercentageValue(opacity)) {
                 Rise.Logger.log('"%s" percentage value, setting it', opacity);
                 this.opacity = opacity;
@@ -2446,7 +2436,7 @@
          * @return {String} Returns string which you can apply to CSS
          */
         toString: function() {
-            return Rise.Opacity.fromPercentageToCss(this.opacity);
+            return Rise.Opacity.convertPercentageToCss(this.opacity);
         }
     }, {
         /**
@@ -2494,10 +2484,10 @@
          * @return {Float} Returns float value in percentage
          * @static
          * @example
-         * Rise.Opacity.fromCssToPercentage(0.40); // 60%
-         * Rise.Opacity.fromCssToPercentage(1); // 0%
+         * Rise.Opacity.convertCssToPercentage(0.40); // 60%
+         * Rise.Opacity.convertCssToPercentage(1); // 0%
          */
-        fromCssToPercentage: function(value) {
+        convertCssToPercentage: function(value) {
             return (100 - (value * 100.0).toFixed(0));
         },
 
@@ -2507,10 +2497,10 @@
          * @return {Float} Returns float value for CSS opacity
          * @static
          * @example
-         * Rise.Opacity.fromPercentageToCss(60); // 0.40
-         * Rise.Opacity.fromPercentageToCss(0); // 1
+         * Rise.Opacity.convertPercentageToCss(60); // 0.40
+         * Rise.Opacity.convertPercentageToCss(0); // 1
          */
-        fromPercentageToCss: function(value) {
+        convertPercentageToCss: function(value) {
             return (100 - value) / 100.0;
         }
     });
@@ -3010,17 +3000,18 @@
         },
 
         /**
-         * Trigger native event for node
+         * Trigger native mouse event for node
          * @param  {String} eventName Name of event
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
          * @example
-         * Rise.$('button').trigger('click');
+         * Rise.$('button').triggerMouseEvent('click');
          */
-        trigger: function(eventName) {
-            var event = document.createEvent('HTMLEvents');
+        triggerMouseEvent: function(eventName) {
+            var event = document.createEvent('MouseEvents'),
+                element = this.get(0);
 
-            event.initEvent(eventName, true, false);
-            this.get(0).dispatch(event);
+            event.initMouseEvent(eventName, true, false, window);
+            element.dispatchEvent(event);
 
             return this;
         },
@@ -3202,18 +3193,21 @@
                 return shadow;
             } else if (Rise.Util.isString(shadow)) {
                 return Rise.Shadow.fromString(shadow);
+            } else if (Rise.Util.isObject(shadow)) {
+                Rise.Logger.startGroup(true, 'Rise.Shadow -> init()');
+                Rise.Logger.log('Trying to parse options -> %O', shadow);
+
+                this.color = shadow.color ? new Rise.Color(shadow.color) : new Rise.Color('black');
+                this.blur = shadow.blur || 0;
+                this.offsetX = shadow.offsetX || 0;
+                this.offsetY = shadow.offsetY || 0;
+
+                Rise.Logger.log('Instantiated new Rise.Shadow -> %O', this);
+                Rise.Logger.endGroup();
+            } else {
+                Rise.Logger.warning('Shadow -> %O not parsed', shadow);
+                return false;
             }
-
-            Rise.Logger.startGroup(true, 'Rise.Shadow -> init()');
-            Rise.Logger.log('Trying to parse options -> %O', shadow);
-
-            this.color = new Rise.Color(shadow.color) || new Rise.Color('black');
-            this.blur = shadow.blur || 0;
-            this.offsetX = shadow.offsetX || 0;
-            this.offsetY = shadow.offsetY || 0;
-
-            Rise.Logger.log('Instantiated new Rise.Shadow -> %O', this);
-            Rise.Logger.endGroup();
 
             return this;
         },
@@ -3341,8 +3335,8 @@
         fromString: function(shadow) {
             shadow = shadow.trim();
 
-            var offsetsAndBlur = shadowRegex.exec(shadow) || [],
-                color = shadow.replace(shadowRegex, '') || 'rgb(0,0,0)';
+            var offsetsAndBlur = Rise.Shadow.shadowRegex.exec(shadow) || [],
+                color = shadow.replace(Rise.Shadow.shadowRegex, '') || 'rgb(0, 0, 0)';
 
             return new Rise.Shadow({
                 color: new Rise.Color(color),

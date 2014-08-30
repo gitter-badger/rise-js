@@ -3,10 +3,10 @@
 
     global.Rise.Font = Rise.Class.create({
         /**
-         * Create new Font object
+         * Create new Rise.Font instance
          * @constructor
-         * @param  {Object} options Font options
-         * @return {Rise.Font}      Returns Rise.Font instance
+         * @param  {Element|String|Object} options Font options
+         * @return {Rise.Font}                     Returns Rise.Font instance
          * @example
          * new Rise.Font({
          *     style: 'normal',
@@ -26,24 +26,27 @@
                 return Rise.Font.fromString(font);
             } else if (font instanceof Element) {
                 return Rise.Font.fromNode(font);
+            } else if (Rise.Util.isObject(font)) {
+                Rise.Logger.startGroup(true, 'Rise.Font -> init()');
+                Rise.Logger.log('Trying to parse font object -> %O', font);
+
+                this.style = font.style || 'normal';
+                this.variant = font.variant || 'normal';
+                this.weight = font.weight || 'normal';
+                this.size = font.size || 'medium';
+                this.lineHeight = font.lineHeight || 'normal';
+                this.family = font.family || 'serif';
+
+                if (!Rise.Font.isFontValid(this)) {
+                    Rise.Logger.warning('Rise.Font -> Something wrong with font -> %O', font);
+                }
+
+                Rise.Logger.log('Instantiated Rise.Font -> %O', this);
+                Rise.Logger.endGroup();
+            } else {
+                Rise.Logger.warning('Font -> %O not parsed', font);
+                return false;
             }
-
-            Rise.Logger.startGroup(true, 'Rise.Font -> init()');
-            Rise.Logger.log('Trying to parse font object -> %O', font);
-
-            this.style = font.style || 'normal';
-            this.variant = font.variant || 'normal';
-            this.weight = font.weight || 'normal';
-            this.size = font.size || 'medium';
-            this.lineHeight = font.lineHeight || 'normal';
-            this.family = font.family || 'serif';
-
-            if (!Rise.Font.isFontValid(this)) {
-                Rise.Logger.warning('Rise.Font -> Something wrong with font -> %O', font);
-            }
-
-            Rise.Logger.log('Instantiated Rise.Font -> %O', this);
-            Rise.Logger.endGroup();
 
             return this;
         },

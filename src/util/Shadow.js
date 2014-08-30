@@ -22,18 +22,21 @@
                 return shadow;
             } else if (Rise.Util.isString(shadow)) {
                 return Rise.Shadow.fromString(shadow);
+            } else if (Rise.Util.isObject(shadow)) {
+                Rise.Logger.startGroup(true, 'Rise.Shadow -> init()');
+                Rise.Logger.log('Trying to parse options -> %O', shadow);
+
+                this.color = shadow.color ? new Rise.Color(shadow.color) : new Rise.Color('black');
+                this.blur = shadow.blur || 0;
+                this.offsetX = shadow.offsetX || 0;
+                this.offsetY = shadow.offsetY || 0;
+
+                Rise.Logger.log('Instantiated new Rise.Shadow -> %O', this);
+                Rise.Logger.endGroup();
+            } else {
+                Rise.Logger.warning('Shadow -> %O not parsed', shadow);
+                return false;
             }
-
-            Rise.Logger.startGroup(true, 'Rise.Shadow -> init()');
-            Rise.Logger.log('Trying to parse options -> %O', shadow);
-
-            this.color = new Rise.Color(shadow.color) || new Rise.Color('black');
-            this.blur = shadow.blur || 0;
-            this.offsetX = shadow.offsetX || 0;
-            this.offsetY = shadow.offsetY || 0;
-
-            Rise.Logger.log('Instantiated new Rise.Shadow -> %O', this);
-            Rise.Logger.endGroup();
 
             return this;
         },
@@ -161,8 +164,8 @@
         fromString: function(shadow) {
             shadow = shadow.trim();
 
-            var offsetsAndBlur = shadowRegex.exec(shadow) || [],
-                color = shadow.replace(shadowRegex, '') || 'rgb(0,0,0)';
+            var offsetsAndBlur = Rise.Shadow.shadowRegex.exec(shadow) || [],
+                color = shadow.replace(Rise.Shadow.shadowRegex, '') || 'rgb(0, 0, 0)';
 
             return new Rise.Shadow({
                 color: new Rise.Color(color),

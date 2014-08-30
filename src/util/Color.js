@@ -29,7 +29,7 @@
             if (color instanceof Rise.Color) {
                 return color;
             } else if (Rise.Util.isString(color)) {
-                return Rise.Color.fromString(color);
+                return Rise.Color.fromString(color, config);
             } else if (Rise.Util.isObject(color)) {
                 Rise.Logger.startGroup(true, 'Rise.Color -> init()');
                 Rise.Logger.log('Trying to parse color -> %O with config -> %O', color, config);
@@ -358,7 +358,7 @@
                 return false;
             }
 
-            return Rise.Color.hexNamesMap[Rise.Color.rgbToHex(this.red, this.green, this.blue)] || false;
+            return Rise.Color.hexNamesMap[Rise.Color.rgbToHex(this.red, this.green, this.blue).toUpperCase()] || false;
         },
 
         /**
@@ -382,26 +382,9 @@
         toString: function(format) {
             format = format || this.format;
 
-            var isFormatSet = !!format,
-                formattedString = false,
-                hasAlpha = this.alpha < 1 && this.alpha >= 0,
-                needsAlphaFormat = (
-                    hasAlpha &&
-                    !isFormatSet &&
-                    (
-                        format === "hex" ||
-                        format === "hex6" ||
-                        format === "hex3" ||
-                        format === "name"
-                    ));
+            var formattedString = false;
 
-            if (needsAlphaFormat) {
-                if (format === "name" && this.alpha === 0) {
-                    return this.toName();
-                }
-
-                return this.toRgbString();
-            } else if (format === "rgb") {
+            if (format === "rgb") {
                 formattedString = this.toRgbString();
             } else if (format === "prgb") {
                 formattedString = this.toPercentageRgbString();
@@ -516,6 +499,7 @@
                 hue = (Math.round(hsl.h) + amount) % 360;
 
             hsl.h = hue < 0 ? 360 + hue : hue;
+
             return new Rise.Color(hsl);
         },
 
@@ -1199,7 +1183,7 @@
          * @param  {String} color String representation of colour
          * @return {Rise.Color}   Returns Rise.Color instance
          */
-        fromString: function(color) {
+        fromString: function(color, config) {
             var trimLeft = /^[\s,#]+/,
                 trimRight = /\s+$/,
                 named = false,
@@ -1226,57 +1210,61 @@
                     r: match[1],
                     g: match[2],
                     b: match[3]
-                });
+                }, config);
             } else if ((match = Rise.Color.colorRegexMap.rgba.exec(color))) {
                 return new Rise.Color({
                     r: match[1],
                     g: match[2],
                     b: match[3],
                     a: match[4]
-                });
+                }, config);
             } else if ((match = Rise.Color.colorRegexMap.hsl.exec(color))) {
                 return new Rise.Color({
                     h: match[1],
                     s: match[2],
                     l: match[3]
-                });
+                }, config);
             } else if ((match = Rise.Color.colorRegexMap.hsla.exec(color))) {
                 return new Rise.Color({
                     h: match[1],
                     s: match[2],
                     l: match[3],
                     a: match[4]
-                });
+                }, config);
             } else if ((match = Rise.Color.colorRegexMap.hsv.exec(color))) {
                 return new Rise.Color({
                     h: match[1],
                     s: match[2],
                     v: match[3]
-                });
+                }, config);
             } else if ((match = Rise.Color.colorRegexMap.hex8.exec(color))) {
                 return new Rise.Color({
                     a: Rise.Color.convertHexToDecimal(match[1]),
                     r: Rise.Color.convertHexToInteger(match[2]),
                     g: Rise.Color.convertHexToInteger(match[3]),
                     b: Rise.Color.convertHexToInteger(match[4]),
-                    format: named ? "name" : "hex8"
+                }, {
+                    format: config.format || (named ? "name" : "hex8")
                 });
             } else if ((match = Rise.Color.colorRegexMap.hex6.exec(color))) {
                 return new Rise.Color({
                     r: Rise.Color.convertHexToInteger(match[1]),
                     g: Rise.Color.convertHexToInteger(match[2]),
                     b: Rise.Color.convertHexToInteger(match[3]),
-                    format: named ? "name" : "hex"
+                }, {
+                    format: config.format || (named ? "name" : "hex")
                 });
             } else if ((match = Rise.Color.colorRegexMap.hex3.exec(color))) {
                 return new Rise.Color({
                     r: Rise.Color.convertHexToInteger(match[1] + '' + match[1]),
                     g: Rise.Color.convertHexToInteger(match[2] + '' + match[2]),
                     b: Rise.Color.convertHexToInteger(match[3] + '' + match[3]),
-                    format: named ? "name" : "hex"
+                }, {
+                    format: config.format || (named ? "name" : "hex")
                 });
             } else {
                 Rise.Logger.warning('Color -> %O not parsed', color);
+                return false;
             }
 
             return false;
@@ -1362,14 +1350,13 @@
 
             w1 = (w1 + 1) / 2;
             w2 = 1 - w1;
-            rgba = {
+
+            return new Rise.Color({
                 r: rgbB.r * w1 + rgbA.r * w2,
                 g: rgbB.g * w1 + rgbA.g * w2,
                 b: rgbB.b * w1 + rgbA.b * w2,
                 a: rgbB.a * p + rgbA.a * (1 - p)
-            };
-
-            return new Rise.Color(rgba);
+            });
         }
     });
 

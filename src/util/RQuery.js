@@ -493,17 +493,18 @@
         },
 
         /**
-         * Trigger native event for node
+         * Trigger native mouse event for node
          * @param  {String} eventName Name of event
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
          * @example
-         * Rise.$('button').trigger('click');
+         * Rise.$('button').triggerMouseEvent('click');
          */
-        trigger: function(eventName) {
-            var event = document.createEvent('HTMLEvents');
+        triggerMouseEvent: function(eventName) {
+            var event = document.createEvent('MouseEvents'),
+                element = this.get(0);
 
-            event.initEvent(eventName, true, false);
-            this.get(0).dispatch(event);
+            event.initMouseEvent(eventName, true, false, window);
+            element.dispatchEvent(event);
 
             return this;
         },
