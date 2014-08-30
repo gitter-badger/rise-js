@@ -1290,16 +1290,10 @@
          * @static
          */
         fromRatio: function(color, config) {
-            Rise.Logger.startGroup('Rise.Color.fromRatio');
+            var newColor = {};
 
             if (Rise.Util.isObject(color)) {
-                Rise.Logger.log('Color %O is object. Start parsing from object.', color);
-
-                var newColor = {};
-
                 Object.keys(color).forEach(function(key) {
-                    Rise.Logger.log('Processing %s property in color object', key);
-
                     if (key === "a") {
                         newColor[key] = color[key];
                     } else {
@@ -1309,9 +1303,6 @@
 
                 color = newColor;
             }
-
-            Rise.Logger.log('Parsed successfully and created new Rise.Color object');
-            Rise.Logger.endGroup();
 
             return new Rise.Color(color, config);
         },
@@ -1324,8 +1315,6 @@
          * @static
          */
         equals: function(firstColor, secondColor) {
-            Rise.Logger.log('Start checking for equals %O and %O colors', firstColor, secondColor);
-
             if (!firstColor || !secondColor) {
                 return false;
             }
@@ -1339,7 +1328,6 @@
          * @static
          */
         random: function() {
-            Rise.Logger.log('Starts generating random color');
             return Rise.Color.fromRatio({
                 r: Math.random(),
                 g: Math.random(),
@@ -1357,8 +1345,6 @@
          */
         mix: function(firstColor, secondColor, amount) {
             amount = amount === 0 ? 0 : (amount || 50);
-
-            Rise.Logger.log('Start mixing %O and %O colors by %i amount', firstColor, secondColor, amount);
 
             var rgbA = new Rise.Color(firstColor).toRgb(),
                 rgbB = new Rise.Color(secondColor).toRgb(),
@@ -1382,8 +1368,6 @@
                 b: rgbB.b * w1 + rgbA.b * w2,
                 a: rgbB.a * p + rgbA.a * (1 - p)
             };
-
-            Rise.Logger.log('Successfully mixed colors returns %O color', rgba);
 
             return new Rise.Color(rgba);
         }
