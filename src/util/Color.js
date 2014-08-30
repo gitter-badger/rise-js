@@ -188,6 +188,7 @@
         /**
          * Set alpha channel for this color
          * @param {Float} value Float value of alpha channel in 0-1 range
+         * @return {Rise.Color} Returns Rise.Color instance
          */
         setAlpha: function(value) {
             this.alpha = Rise.Color.boundAlpha(value);
@@ -236,7 +237,7 @@
 
         /**
          * Convert color to HSL
-         * @return {Object} Object with h,s,l,a properties
+         * @return {Object} Object with h, s, l, a properties
          */
         toHsl: function() {
             var hsl = Rise.Color.rgbToHsl(this.red, this.green, this.blue);
@@ -300,7 +301,7 @@
 
         /**
          * Convert color to RGB
-         * @return {Object} Returns object with r,g,b,a properties
+         * @return {Object} Returns object with r, g, b, a properties
          */
         toRgb: function() {
             return {
@@ -357,7 +358,7 @@
                 return false;
             }
 
-            return Rise.Color.hexNamesMap[Rise.Color.rgbToHex(this.red, this.green, this.blue, true)] || false;
+            return Rise.Color.hexNamesMap[Rise.Color.rgbToHex(this.red, this.green, this.blue)] || false;
         },
 
         /**
@@ -365,7 +366,7 @@
          * @param  {String} secondColor Second color
          * @return {String} Returns DX Filter format for this color
          */
-        toFilter: function(secondColor) {
+        toFilterString: function(secondColor) {
             var hex8String = '#' + Rise.Color.rgbaToHex(this.red, this.green, this.blue, this.alpha),
                 secondHex8String = secondColor ? new Rise.Color(secondColor).toHex8String() : hex8String,
                 gradientType = this.gradientType ? "GradientType = 1, " : "";
@@ -423,7 +424,7 @@
 
         /**
          * Make color more lighten
-         * @param {Integer} amount Custom amount for lighten level in 0-100 range
+         * @param {Integer} amount Custom amount for lighten level in [0, 100] range
          * @return {Rise.Color} Returns new color
          */
         lighten: function(amount) {
@@ -477,14 +478,14 @@
 
             var hsl = this.toHsl();
             hsl.s -= amount / 100;
-            hsl.s = clamp01(hsl.s);
+            hsl.s = Rise.Color.clamp01(hsl.s);
 
             return new Rise.Color(hsl);
         },
 
         /**
          * Saturate the color
-         * @param {Integer} amount Custom amount for saturate level in 0-100 range
+         * @param {Integer} amount Custom amount for saturate level in [0, 100] range
          * @return {Rise.Color} Returns new color
          */
         saturate: function(amount) {
@@ -542,7 +543,7 @@
 
         /**
          * Get complement combinations for this color
-         * @return {Array} Returns array of Rise.Color
+         * @return {Rise.Color} Returns Rise.Color instance with complementary color
          */
         complement: function() {
             var hsl = this.toHsl();
