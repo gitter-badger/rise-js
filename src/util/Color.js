@@ -566,8 +566,7 @@
         }
     }, {
         /**
-         * Map of CSS colours.
-         * This map simplify select colours when Rise.Color('aqua') i.e. called.
+         * Map of CSS colours. This map simplify select colours when set by name i.e. 'aqua'.
          * @type {Object}
          * @static
          */
@@ -726,16 +725,14 @@
          * Flip key-values in object
          * @param  {Object} object Object which you want to flip
          * @return {Object} Returns flipped object
-         * @private
+         * @static
          */
         flip: function(object) {
             var flipped = {};
 
-            for (var i in object) {
-                if (object.hasOwnProperty(i)) {
-                    flipped[object[i]] = i;
-                }
-            }
+            Object.keys(object).forEach(function(key) {
+                flipped[object[key]] = key;
+            });
 
             return flipped;
         },
@@ -744,7 +741,7 @@
          * Bounds alpha channel to [0, 1] range
          * @param  {Float} a Alpha value
          * @return {Float}   Returns incoming value if valid and 1 otherwise
-         * @private
+         * @static
          */
         boundAlpha: function(a) {
             a = parseFloat(a);
@@ -761,7 +758,7 @@
          * @param  {Integer} n
          * @param  {Integer} max
          * @return {Float}
-         * @private
+         * @static
          */
         bound01: function(value, max) {
             if (Rise.Color.isOnePointZero(value)) {
@@ -786,7 +783,7 @@
          * Force a number between 0 and 1
          * @param  {Integer} value
          * @return {Integer}
-         * @private
+         * @static
          */
         clamp01: function(value) {
             return Math.min(1, Math.max(0, value));
@@ -796,7 +793,7 @@
          * Parse a base-16 hex value into a base-10 integer
          * @param  {String} value HEX value
          * @return {Integer}    Returns parsed number
-         * @private
+         * @static
          */
         parseIntFromHex: function(value) {
             return parseInt(value, 16);
@@ -806,27 +803,31 @@
          * Check if number it's 1.0
          * @param  {Float}  value Value for check
          * @return {Boolean}   Returns true if it's 1.0
-         * @private
+         * @static
          */
         isOnePointZero: function(value) {
-            return Rise.Util.getType(value) == 'string' && value.indexOf('.') != -1 && parseFloat(value) === 1;
+            return (
+                Rise.Util.isString(value) &&
+                value.indexOf('.') != -1 &&
+                parseFloat(value) === 1
+            );
         },
 
         /**
          * Check if string is a percentage
          * @param  {String} value Value that might be checked
          * @return {Boolean} True if percentage
-         * @private
+         * @static
          */
         isPercentage: function(value) {
-            return Rise.Util.getType(value) == 'string' && value.indexOf('%') != -1;
+            return Rise.Util.isString(value) && value.indexOf('%') != -1;
         },
 
         /**
          * Force a HEX value to have 2 chars
          * @param  {String} c Value that must be padded
          * @return {String} Returns padded string
-         * @private
+         * @static
          */
         pad2: function(value) {
             return value.length == 1 ? '0' + value : '' + value;
@@ -836,7 +837,7 @@
          * Replace a decimal with it's percentage value
          * @param  {Integer} n Decimal value
          * @return {String}   Returns this value in percentage value
-         * @private
+         * @static
          */
         convertToPercentage: function(value) {
             if (value <= 1) {
@@ -850,7 +851,7 @@
          * Convert a decimal to a HEX value
          * @param  {Integer} value Decimal value
          * @return {String} Returns HEX string
-         * @private
+         * @static
          */
         convertDecimalToHex: function(value) {
             return Math.round(parseFloat(value) * 255).toString(16);
@@ -860,7 +861,7 @@
          * Convert a HEX value to a decimal
          * @param  {String} value HEX value
          * @return {Integer}   Returns decimal value
-         * @private
+         * @static
          */
         convertHexToDecimal: function(value) {
             return (parseIntFromHex(value) / 255);
@@ -869,7 +870,7 @@
         /**
          * IIFE that returns object with regex for color's strings
          * @return {Object}
-         * @private
+         * @static
          */
         colorRegexMap: (function() {
             var cssInteger = "[-\\+]?\\d+%?",
@@ -894,7 +895,7 @@
          * Parse string by regex and returns object
          * @param  {String} color Color in string
          * @return {Object} Object with format property and values for colour profile
-         * @private
+         * @static
          */
         stringToObject: function(color) {
             var trimLeft = /^[\s,#]+/,
@@ -951,7 +952,7 @@
                 };
             } else if ((match = Rise.Color.colorRegexMap.hex8.exec(color))) {
                 return {
-                    a: convertHexToDecimal(match[1]),
+                    a: Rise.Color.convertHexToDecimal(match[1]),
                     r: Rise.Color.parseIntFromHex(match[2]),
                     g: Rise.Color.parseIntFromHex(match[3]),
                     b: Rise.Color.parseIntFromHex(match[4]),
@@ -980,7 +981,7 @@
          * Convert input color from string or object to RGB profile
          * @param  {Mixed} color
          * @return {Object} Returns object with properties which inititalized in Rise.Color constructor
-         * @private
+         * @static
          */
         inputToRgb: function(color) {
             var rgb = {
@@ -992,25 +993,25 @@
                 valid = false,
                 format = false;
 
-            if (Rise.Util.getType(color) == 'string') {
+            if (Rise.Util.isString(color)) {
                 color = Rise.Color.stringToObject(color);
             }
 
-            if (Rise.Util.getType(color) == 'object') {
+            if (Rise.Util.isObject(color)) {
                 if (color.hasOwnProperty('r') && color.hasOwnProperty('g') && color.hasOwnProperty('b')) {
                     rgb = Rise.Color.rgbToRgb(color.r, color.g, color.b);
                     valid = true;
                     format = String(color.r).substr(-1) === "%" ? "prgb" : "rgb";
                 } else if (color.hasOwnProperty('h') && color.hasOwnProperty('s') && color.hasOwnProperty('v')) {
-                    color.s = convertToPercentage(color.s);
-                    color.v = convertToPercentage(color.v);
-                    rgb = hsvToRgb(color.h, color.s, color.v);
+                    color.s = Rise.Color.convertToPercentage(color.s);
+                    color.v = Rise.Color.convertToPercentage(color.v);
+                    rgb = Rise.Color.hsvToRgb(color.h, color.s, color.v);
                     valid = true;
                     format = "hsv";
                 } else if (color.hasOwnProperty('h') && color.hasOwnProperty('s') && color.hasOwnProperty('l')) {
-                    color.s = convertToPercentage(color.s);
-                    color.l = convertToPercentage(color.l);
-                    rgb = hslToRgb(color.h, color.s, color.l);
+                    color.s = Rise.Color.convertToPercentage(color.s);
+                    color.l = Rise.Color.convertToPercentage(color.l);
+                    rgb = Rise.Color.hslToRgb(color.h, color.s, color.l);
                     valid = true;
                     format = "hsl";
                 }
@@ -1034,13 +1035,12 @@
 
         /**
          * Convert RGB colour to RGB.
-         * Better to use this because here processing
-         * handling of bound or percentage in RGB profile.
+         * Better to use this because here processing handling of bound or percentage in RGB profile.
          * @param  {Integer} r Red channel
          * @param  {Integer} g Green channel
          * @param  {Integer} b Blue channel
          * @return {Object}   Object with r,g,b properties
-         * @private
+         * @static
          */
         rgbToRgb: function(r, g, b) {
             return {
@@ -1056,6 +1056,7 @@
          * @param  {Integer} g Green channel
          * @param  {Integer} b Blue channel
          * @return {Object}   Object with h,s,l properties
+         * @static
          */
         rgbToHsl: function(r, g, b) {
             r = Rise.Color.bound01(r, 255);
@@ -1099,7 +1100,7 @@
          * @param  {Integer} s Saturation channel
          * @param  {Integer} l Lightness channel
          * @return {Object}   Object with r,g,b properties
-         * @private
+         * @static
          */
         hslToRgb: function(h, s, l) {
             h = Rise.Color.bound01(h, 360);
@@ -1141,6 +1142,7 @@
          * @param  {Integer} g Green channel
          * @param  {Integer} b Blue channel
          * @return {Object}   Object with h,s,v properties
+         * @static
          */
         rgbToHsv: function(r, g, b) {
             r = Rise.Color.bound01(r, 255);
@@ -1185,7 +1187,7 @@
          * @param  {Integer} s Saturation channel
          * @param  {Integer} v Value channel
          * @return {Object}   Object with r,g,b properties
-         * @private
+         * @static
          */
         hsvToRgb: function(h, s, v) {
             h = Rise.Color.bound01(h, 360) * 6;
@@ -1216,7 +1218,7 @@
          * @param  {Integer} b Blue channel
          * @param  {Boolean} allow3Char Allow 3 char notation in HEX
          * @return {String} HEX in string
-         * @private
+         * @static
          */
         rgbToHex: function(r, g, b, allow3Char) {
             var hex = [
@@ -1244,11 +1246,11 @@
          * @param  {Integer} b Blue channel
          * @param  {Float} a Alpha channel
          * @return {String}   Returns HEX 8 string
-         * @private
+         * @static
          */
         rgbaToHex: function(r, g, b, a) {
             var hex = [
-                Rise.Color.pad2(convertDecimalToHex(a)),
+                Rise.Color.pad2(Rise.Color.convertDecimalToHex(a)),
                 Rise.Color.pad2(Math.round(r).toString(16)),
                 Rise.Color.pad2(Math.round(g).toString(16)),
                 Rise.Color.pad2(Math.round(b).toString(16))
@@ -1267,7 +1269,7 @@
         fromRatio: function(color, config) {
             Rise.Logger.startGroup('Rise.Color.fromRatio');
 
-            if (Rise.Util.getType(color) == 'object') {
+            if (Rise.Util.isObject(color)) {
                 Rise.Logger.log('Color %O is object. Start parsing from object.', color);
 
                 var newColor = {};
@@ -1279,7 +1281,7 @@
                         if (i === "a") {
                             newColor[i] = color[i];
                         } else {
-                            newColor[i] = convertToPercentage(color[i]);
+                            newColor[i] = Rise.Color.convertToPercentage(color[i]);
                         }
                     }
                 }
@@ -1317,7 +1319,7 @@
          */
         random: function() {
             Rise.Logger.log('Starts generating random color');
-            return new Rise.Color.fromRatio({
+            return Rise.Color.fromRatio({
                 r: Math.random(),
                 g: Math.random(),
                 b: Math.random()
