@@ -23,8 +23,7 @@
          *     a: 1
          * })
          */
-
-        init: function() {
+        init: function(color, config) {
             color = color || 'black';
             config = config || {};
 
@@ -238,9 +237,9 @@
          */
         toPercentageRgb: function() {
             return {
-                r: Math.round(bound01(this.red, 255) * 100) + "%",
-                g: Math.round(bound01(this.green, 255) * 100) + "%",
-                b: Math.round(bound01(this.blue, 255) * 100) + "%",
+                r: Math.round(Rise.Color.bound01(this.red, 255) * 100) + "%",
+                g: Math.round(Rise.Color.bound01(this.green, 255) * 100) + "%",
+                b: Math.round(Rise.Color.bound01(this.blue, 255) * 100) + "%",
                 a: this.alpha
             };
         },
@@ -251,8 +250,8 @@
          */
         toPercentageRgbString: function() {
             return (this.alpha == 1) ?
-                "rgb(" + Math.round(Rise.Color.bound01(this.red, 255) * 100) + "%, " + Math.round(Rise.Color.bound01(this.green, 255) * 100) + "%, " + Math.round(Rise.Color.bound01(this.blue, 255) * 100) + "%)" :
-                "rgba(" + Math.round(Rise.Color.bound01(this.red, 255) * 100) + "%, " + Math.round(Rise.Color.bound01(this.green, 255) * 100) + "%, " + Math.round(Rise.Color.bound01(this.blue, 255) * 100) + "%, " + this.roundA + ")";
+                "rgb(" + Math.round(Rise.Color.Rise.Color.bound01(this.red, 255) * 100) + "%, " + Math.round(Rise.Color.Rise.Color.bound01(this.green, 255) * 100) + "%, " + Math.round(Rise.Color.Rise.Color.bound01(this.blue, 255) * 100) + "%)" :
+                "rgba(" + Math.round(Rise.Color.Rise.Color.bound01(this.red, 255) * 100) + "%, " + Math.round(Rise.Color.Rise.Color.bound01(this.green, 255) * 100) + "%, " + Math.round(Rise.Color.Rise.Color.bound01(this.blue, 255) * 100) + "%, " + this.roundA + ")";
         },
 
         /**
@@ -570,166 +569,158 @@
          * Map of CSS colours.
          * This map simplify select colours when Rise.Color('aqua') i.e. called.
          * @type {Object}
-         * @private
+         * @static
          */
-        cssColorNamesMap: {
-            aliceblue: "f0f8ff",
-            antiquewhite: "faebd7",
-            aqua: "0ff",
-            aquamarine: "7fffd4",
-            azure: "f0ffff",
-            beige: "f5f5dc",
-            bisque: "ffe4c4",
-            black: "000",
-            blanchedalmond: "ffebcd",
-            blue: "00f",
-            blueviolet: "8a2be2",
-            brown: "a52a2a",
-            burlywood: "deb887",
-            burntsienna: "ea7e5d",
-            cadetblue: "5f9ea0",
-            chartreuse: "7fff00",
-            chocolate: "d2691e",
-            coral: "ff7f50",
-            cornflowerblue: "6495ed",
-            cornsilk: "fff8dc",
-            crimson: "dc143c",
-            cyan: "0ff",
-            darkblue: "00008b",
-            darkcyan: "008b8b",
-            darkgoldenrod: "b8860b",
-            darkgray: "a9a9a9",
+        colorNamesMap: {
+            aliceblue: "F0F8FF",
+            antiquewhite: "FAEBD7",
+            aqua: "00FFFF",
+            aquamarine: "7FFFD4",
+            azure: "F0FFFF",
+            beige: "F5F5DC",
+            bisque: "FFE4C4",
+            black: "000000",
+            blanchedalmond: "FFEBCD",
+            blue: "0000FF",
+            blueviolet: "8A2BE2",
+            brown: "A52A2A",
+            burlywood: "DEB887",
+            burntsienna: "EA7E5D",
+            cadetblue: "5F9EA0",
+            chartreuse: "7FFF00",
+            chocolate: "D2691E",
+            coral: "FF7F50",
+            cornflowerblue: "6495ED",
+            cornsilk: "FFF8DC",
+            crimson: "DC143C",
+            cyan: "00FFFF",
+            darkblue: "00008B",
+            darkcyan: "008B8B",
+            darkgoldenrod: "B8860B",
+            darkgray: "A9A9A9",
             darkgreen: "006400",
-            darkgrey: "a9a9a9",
-            darkkhaki: "bdb76b",
-            darkmagenta: "8b008b",
-            darkolivegreen: "556b2f",
-            darkorange: "ff8c00",
-            darkorchid: "9932cc",
-            darkred: "8b0000",
-            darksalmon: "e9967a",
-            darkseagreen: "8fbc8f",
-            darkslateblue: "483d8b",
-            darkslategray: "2f4f4f",
-            darkslategrey: "2f4f4f",
-            darkturquoise: "00ced1",
-            darkviolet: "9400d3",
-            deeppink: "ff1493",
-            deepskyblue: "00bfff",
+            darkgrey: "A9A9A9",
+            darkkhaki: "BDB76B",
+            darkmagenta: "8B008B",
+            darkolivegreen: "556B2F",
+            darkorange: "FF8C00",
+            darkorchid: "9932CC",
+            darkred: "8B0000",
+            darksalmon: "E9967A",
+            darkseagreen: "8FBC8F",
+            darkslateblue: "483D8B",
+            darkslategray: "2F4F4F",
+            darkslategrey: "2F4F4F",
+            darkturquoise: "00CED1",
+            darkviolet: "9400D3",
+            deeppink: "FF1493",
+            deepskyblue: "00BFFF",
             dimgray: "696969",
             dimgrey: "696969",
-            dodgerblue: "1e90ff",
-            firebrick: "b22222",
-            floralwhite: "fffaf0",
-            forestgreen: "228b22",
-            fuchsia: "f0f",
-            gainsboro: "dcdcdc",
-            ghostwhite: "f8f8ff",
-            gold: "ffd700",
-            goldenrod: "daa520",
+            dodgerblue: "1E90FF",
+            firebrick: "B22222",
+            floralwhite: "FFFAF0",
+            forestgreen: "228B22",
+            fuchsia: "FF00FF",
+            gainsboro: "DCDCDC",
+            ghostwhite: "F8F8FF",
+            gold: "FFD700",
+            goldenrod: "DAA520",
             gray: "808080",
             green: "008000",
-            greenyellow: "adff2f",
+            greenyellow: "ADFF2F",
             grey: "808080",
-            honeydew: "f0fff0",
-            hotpink: "ff69b4",
-            indianred: "cd5c5c",
-            indigo: "4b0082",
-            ivory: "fffff0",
-            khaki: "f0e68c",
-            lavender: "e6e6fa",
-            lavenderblush: "fff0f5",
-            lawngreen: "7cfc00",
-            lemonchiffon: "fffacd",
-            lightblue: "add8e6",
-            lightcoral: "f08080",
-            lightcyan: "e0ffff",
-            lightgoldenrodyellow: "fafad2",
-            lightgray: "d3d3d3",
-            lightgreen: "90ee90",
-            lightgrey: "d3d3d3",
-            lightpink: "ffb6c1",
-            lightsalmon: "ffa07a",
-            lightseagreen: "20b2aa",
-            lightskyblue: "87cefa",
-            lightslategray: "789",
-            lightslategrey: "789",
-            lightsteelblue: "b0c4de",
-            lightyellow: "ffffe0",
-            lime: "0f0",
-            limegreen: "32cd32",
-            linen: "faf0e6",
-            magenta: "f0f",
+            honeydew: "F0FFF0",
+            hotpink: "FF69B4",
+            indianred: "CD5C5C",
+            indigo: "4B0082",
+            ivory: "FFFFF0",
+            khaki: "F0E68C",
+            lavender: "E6E6FA",
+            lavenderblush: "FFF0F5",
+            lawngreen: "7CFC00",
+            lemonchiffon: "FFFACD",
+            lightblue: "ADD8E6",
+            lightcoral: "F08080",
+            lightcyan: "E0FFFF",
+            lightgoldenrodyellow: "FAFAD2",
+            lightgray: "D3D3D3",
+            lightgreen: "90EE90",
+            lightgrey: "D3D3D3",
+            lightpink: "FFB6C1",
+            lightsalmon: "FFA07A",
+            lightseagreen: "20B2AA",
+            lightskyblue: "87CEFA",
+            lightslategray: "778899",
+            lightslategrey: "778899",
+            lightsteelblue: "B0C4DE",
+            lightyellow: "FFFFE0",
+            lime: "00FF00",
+            limegreen: "32CD32",
+            linen: "FAF0E6",
+            magenta: "FF00FF",
             maroon: "800000",
-            mediumaquamarine: "66cdaa",
-            mediumblue: "0000cd",
-            mediumorchid: "ba55d3",
-            mediumpurple: "9370db",
-            mediumseagreen: "3cb371",
-            mediumslateblue: "7b68ee",
-            mediumspringgreen: "00fa9a",
-            mediumturquoise: "48d1cc",
-            mediumvioletred: "c71585",
+            mediumaquamarine: "66CDAA",
+            mediumblue: "0000CD",
+            mediumorchid: "BA55D3",
+            mediumpurple: "9370DB",
+            mediumseagreen: "3CB371",
+            mediumslateblue: "7B68EE",
+            mediumspringgreen: "00FA9A",
+            mediumturquoise: "48D1CC",
+            mediumvioletred: "C71585",
             midnightblue: "191970",
-            mintcream: "f5fffa",
-            mistyrose: "ffe4e1",
-            moccasin: "ffe4b5",
-            navajowhite: "ffdead",
+            mintcream: "F5FFFA",
+            mistyrose: "FFE4E1",
+            moccasin: "FFE4B5",
+            navajowhite: "FFDEAD",
             navy: "000080",
-            oldlace: "fdf5e6",
+            oldlace: "FDF5E6",
             olive: "808000",
-            olivedrab: "6b8e23",
-            orange: "ffa500",
-            orangered: "ff4500",
-            orchid: "da70d6",
-            palegoldenrod: "eee8aa",
-            palegreen: "98fb98",
-            paleturquoise: "afeeee",
-            palevioletred: "db7093",
-            papayawhip: "ffefd5",
-            peachpuff: "ffdab9",
-            peru: "cd853f",
-            pink: "ffc0cb",
-            plum: "dda0dd",
-            powderblue: "b0e0e6",
+            olivedrab: "6B8E23",
+            orange: "FFA500",
+            orangered: "FF4500",
+            orchid: "DA70D6",
+            palegoldenrod: "EEE8AA",
+            palegreen: "98FB98",
+            paleturquoise: "AFEEEE",
+            palevioletred: "DB7093",
+            papayawhip: "FFEFD5",
+            peachpuff: "FFDAB9",
+            peru: "CD853F",
+            pink: "FFC0CB",
+            plum: "DDA0DD",
+            powderblue: "B0E0E6",
             purple: "800080",
-            red: "f00",
-            rosybrown: "bc8f8f",
-            royalblue: "4169e1",
-            saddlebrown: "8b4513",
-            salmon: "fa8072",
-            sandybrown: "f4a460",
-            seagreen: "2e8b57",
-            seashell: "fff5ee",
-            sienna: "a0522d",
-            silver: "c0c0c0",
-            skyblue: "87ceeb",
-            slateblue: "6a5acd",
+            red: "FF0000",
+            rosybrown: "BC8F8F",
+            royalblue: "4169E1",
+            saddlebrown: "8B4513",
+            salmon: "FA8072",
+            sandybrown: "F4A460",
+            seagreen: "2E8B57",
+            seashell: "FFF5EE",
+            sienna: "A0522D",
+            silver: "C0C0C0",
+            skyblue: "87CEEB",
+            slateblue: "6A5ACD",
             slategray: "708090",
             slategrey: "708090",
-            snow: "fffafa",
-            springgreen: "00ff7f",
-            steelblue: "4682b4",
-            tan: "d2b48c",
+            snow: "FFFAFA",
+            springgreen: "00FF7F",
+            steelblue: "4682B4",
+            tan: "D2B48C",
             teal: "008080",
-            thistle: "d8bfd8",
-            tomato: "ff6347",
-            turquoise: "40e0d0",
-            violet: "ee82ee",
-            wheat: "f5deb3",
-            white: "fff",
-            whitesmoke: "f5f5f5",
-            yellow: "ff0",
-            yellowgreen: "9acd32"
+            thistle: "D8BFD8",
+            tomato: "FF6347",
+            turquoise: "40E0D0",
+            violet: "EE82EE",
+            wheat: "F5DEB3",
+            white: "FFFFFF",
+            whitesmoke: "F5F5F5",
+            yellow: "FFFF00",
+            yellowgreen: "9ACD32"
         },
-
-        /**
-         * Map of HEX colours names.
-         * HEX value as key and it name as value in object.
-         * @type {Object}
-         * @private
-         */
-        hexNamesMap: Rise.Color.flip(cssColorNamesMap),
 
         /**
          * Flip key-values in object
@@ -773,11 +764,11 @@
          * @private
          */
         bound01: function(value, max) {
-            if (isOnePointZero(value)) {
+            if (Rise.Color.isOnePointZero(value)) {
                 value = "100%";
             }
 
-            var isPercentageValue = isPercentage(value);
+            var isPercentageValue = Rise.Color.isPercentage(value);
             value = Math.min(max, Math.max(0, parseFloat(value)));
 
             if (isPercentageValue) {
@@ -913,8 +904,8 @@
 
             color = color.replace(trimLeft, '').replace(trimRight, '').toLowerCase();
 
-            if (cssColorNamesMap[color]) {
-                color = cssColorNamesMap[color];
+            if (Rise.Color.colorNamesMap[color]) {
+                color = Rise.Color.colorNamesMap[color];
                 named = true;
             } else if (color == 'transparent') {
                 return {
@@ -926,58 +917,58 @@
                 };
             }
 
-            if ((match = colorRegexMap.rgb.exec(color))) {
+            if ((match = Rise.Color.colorRegexMap.rgb.exec(color))) {
                 return {
                     r: match[1],
                     g: match[2],
                     b: match[3]
                 };
-            } else if ((match = colorRegexMap.rgba.exec(color))) {
+            } else if ((match = Rise.Color.colorRegexMap.rgba.exec(color))) {
                 return {
                     r: match[1],
                     g: match[2],
                     b: match[3],
                     a: match[4]
                 };
-            } else if ((match = colorRegexMap.hsl.exec(color))) {
+            } else if ((match = Rise.Color.colorRegexMap.hsl.exec(color))) {
                 return {
                     h: match[1],
                     s: match[2],
                     l: match[3]
                 };
-            } else if ((match = colorRegexMap.hsla.exec(color))) {
+            } else if ((match = Rise.Color.colorRegexMap.hsla.exec(color))) {
                 return {
                     h: match[1],
                     s: match[2],
                     l: match[3],
                     a: match[4]
                 };
-            } else if ((match = colorRegexMap.hsv.exec(color))) {
+            } else if ((match = Rise.Color.colorRegexMap.hsv.exec(color))) {
                 return {
                     h: match[1],
                     s: match[2],
                     v: match[3]
                 };
-            } else if ((match = colorRegexMap.hex8.exec(color))) {
+            } else if ((match = Rise.Color.colorRegexMap.hex8.exec(color))) {
                 return {
                     a: convertHexToDecimal(match[1]),
-                    r: parseIntFromHex(match[2]),
-                    g: parseIntFromHex(match[3]),
-                    b: parseIntFromHex(match[4]),
+                    r: Rise.Color.parseIntFromHex(match[2]),
+                    g: Rise.Color.parseIntFromHex(match[3]),
+                    b: Rise.Color.parseIntFromHex(match[4]),
                     format: named ? "name" : "hex8"
                 };
-            } else if ((match = colorRegexMap.hex6.exec(color))) {
+            } else if ((match = Rise.Color.colorRegexMap.hex6.exec(color))) {
                 return {
-                    r: parseIntFromHex(match[1]),
-                    g: parseIntFromHex(match[2]),
-                    b: parseIntFromHex(match[3]),
+                    r: Rise.Color.parseIntFromHex(match[1]),
+                    g: Rise.Color.parseIntFromHex(match[2]),
+                    b: Rise.Color.parseIntFromHex(match[3]),
                     format: named ? "name" : "hex"
                 };
-            } else if ((match = colorRegexMap.hex3.exec(color))) {
+            } else if ((match = Rise.Color.colorRegexMap.hex3.exec(color))) {
                 return {
-                    r: parseIntFromHex(match[1] + '' + match[1]),
-                    g: parseIntFromHex(match[2] + '' + match[2]),
-                    b: parseIntFromHex(match[3] + '' + match[3]),
+                    r: Rise.Color.parseIntFromHex(match[1] + '' + match[1]),
+                    g: Rise.Color.parseIntFromHex(match[2] + '' + match[2]),
+                    b: Rise.Color.parseIntFromHex(match[3] + '' + match[3]),
                     format: named ? "name" : "hex"
                 };
             }
@@ -1002,12 +993,12 @@
                 format = false;
 
             if (Rise.Util.getType(color) == 'string') {
-                color = stringToObject(color);
+                color = Rise.Color.stringToObject(color);
             }
 
             if (Rise.Util.getType(color) == 'object') {
                 if (color.hasOwnProperty('r') && color.hasOwnProperty('g') && color.hasOwnProperty('b')) {
-                    rgb = rgbToRgb(color.r, color.g, color.b);
+                    rgb = Rise.Color.rgbToRgb(color.r, color.g, color.b);
                     valid = true;
                     format = String(color.r).substr(-1) === "%" ? "prgb" : "rgb";
                 } else if (color.hasOwnProperty('h') && color.hasOwnProperty('s') && color.hasOwnProperty('v')) {
@@ -1029,7 +1020,7 @@
                 }
             }
 
-            alpha = boundAlpha(alpha);
+            alpha = Rise.Color.boundAlpha(alpha);
 
             return {
                 valid: valid,
@@ -1053,9 +1044,9 @@
          */
         rgbToRgb: function(r, g, b) {
             return {
-                r: bound01(r, 255) * 255,
-                g: bound01(g, 255) * 255,
-                b: bound01(b, 255) * 255
+                r: Rise.Color.bound01(r, 255) * 255,
+                g: Rise.Color.bound01(g, 255) * 255,
+                b: Rise.Color.bound01(b, 255) * 255
             };
         },
 
@@ -1067,9 +1058,9 @@
          * @return {Object}   Object with h,s,l properties
          */
         rgbToHsl: function(r, g, b) {
-            r = bound01(r, 255);
-            g = bound01(g, 255);
-            b = bound01(b, 255);
+            r = Rise.Color.bound01(r, 255);
+            g = Rise.Color.bound01(g, 255);
+            b = Rise.Color.bound01(b, 255);
 
             var max = Math.max(r, g, b),
                 min = Math.min(r, g, b),
@@ -1111,9 +1102,9 @@
          * @private
          */
         hslToRgb: function(h, s, l) {
-            h = bound01(h, 360);
-            s = bound01(s, 100);
-            l = bound01(l, 100);
+            h = Rise.Color.bound01(h, 360);
+            s = Rise.Color.bound01(s, 100);
+            l = Rise.Color.bound01(l, 100);
 
             function hue2rgb(p, q, t) {
                 if (t < 0) t += 1;
@@ -1152,9 +1143,9 @@
          * @return {Object}   Object with h,s,v properties
          */
         rgbToHsv: function(r, g, b) {
-            r = bound01(r, 255);
-            g = bound01(g, 255);
-            b = bound01(b, 255);
+            r = Rise.Color.bound01(r, 255);
+            g = Rise.Color.bound01(g, 255);
+            b = Rise.Color.bound01(b, 255);
 
             var max = Math.max(r, g, b),
                 min = Math.min(r, g, b),
@@ -1197,9 +1188,9 @@
          * @private
          */
         hsvToRgb: function(h, s, v) {
-            h = bound01(h, 360) * 6;
-            s = bound01(s, 100);
-            v = bound01(v, 100);
+            h = Rise.Color.bound01(h, 360) * 6;
+            s = Rise.Color.bound01(s, 100);
+            v = Rise.Color.bound01(v, 100);
 
             var i = Math.floor(h),
                 f = h - i,
@@ -1229,9 +1220,9 @@
          */
         rgbToHex: function(r, g, b, allow3Char) {
             var hex = [
-                pad2(Math.round(r).toString(16)),
-                pad2(Math.round(g).toString(16)),
-                pad2(Math.round(b).toString(16))
+                Rise.Color.pad2(Math.round(r).toString(16)),
+                Rise.Color.pad2(Math.round(g).toString(16)),
+                Rise.Color.pad2(Math.round(b).toString(16))
             ];
 
             if (
@@ -1257,10 +1248,10 @@
          */
         rgbaToHex: function(r, g, b, a) {
             var hex = [
-                pad2(convertDecimalToHex(a)),
-                pad2(Math.round(r).toString(16)),
-                pad2(Math.round(g).toString(16)),
-                pad2(Math.round(b).toString(16))
+                Rise.Color.pad2(convertDecimalToHex(a)),
+                Rise.Color.pad2(Math.round(r).toString(16)),
+                Rise.Color.pad2(Math.round(g).toString(16)),
+                Rise.Color.pad2(Math.round(b).toString(16))
             ];
 
             return hex.join("");
@@ -1458,4 +1449,12 @@
             return bestColor;
         }
     });
+
+    /**
+     * Map of HEX colours names.
+     * HEX value as key and it name as value in object.
+     * @type {Object}
+     * @static
+     */
+    Rise.Color.hexNamesMap = Rise.Color.flip(Rise.Color.colorNamesMap);
 })(this);
