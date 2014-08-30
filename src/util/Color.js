@@ -37,22 +37,33 @@
             } else if (Rise.Util.isString(color)) {
                 return Rise.Color.fromString(color);
             } else if (Rise.Util.isObject(color)) {
+                Rise.Logger.startGroup(true, 'Rise.Color -> init()');
+                Rise.Logger.log('Trying to parse color -> %O with config -> %O', color, config);
+
                 if (color.hasOwnProperty('r') && color.hasOwnProperty('g') && color.hasOwnProperty('b')) {
+                    Rise.Logger.log('Convert RGB -> %O', color);
+
                     rgb = Rise.Color.rgbToRgb(color.r, color.g, color.b);
                     valid = true;
                     format = String(color.r).substr(-1) === "%" ? "prgb" : "rgb";
                 } else if (color.hasOwnProperty('h') && color.hasOwnProperty('s') && color.hasOwnProperty('v')) {
+                    Rise.Logger.log('Convert HSV -> %O', color);
+
                     color.s = Rise.Color.convertDecimalToPercentage(color.s);
                     color.v = Rise.Color.convertDecimalToPercentage(color.v);
                     rgb = Rise.Color.hsvToRgb(color.h, color.s, color.v);
                     valid = true;
                     format = "hsv";
                 } else if (color.hasOwnProperty('h') && color.hasOwnProperty('s') && color.hasOwnProperty('l')) {
+                    Rise.Logger.log('Convert HSL -> %O', color);
+
                     color.s = Rise.Color.convertDecimalToPercentage(color.s);
                     color.l = Rise.Color.convertDecimalToPercentage(color.l);
                     rgb = Rise.Color.hslToRgb(color.h, color.s, color.l);
                     valid = true;
                     format = "hsl";
+                } else {
+                    Rise.Logger.warning('Color object -> %O not parsed', color);
                 }
 
                 if (color.hasOwnProperty('a')) {
@@ -61,25 +72,17 @@
 
                 alpha = Rise.Color.boundAlpha(alpha);
 
-                return {
-                    valid: valid,
-                    format: color.format || format,
-                    r: Math.min(255, Math.max(rgb.r, 0)),
-                    g: Math.min(255, Math.max(rgb.g, 0)),
-                    b: Math.min(255, Math.max(rgb.b, 0)),
-                    a: alpha
-                };
-
-                Rise.Logger.startGroup(true, 'Rise.Color -> init()');
-                Rise.Logger.log('Trying to parse color -> %O with config -> %O', color, config);
+                rgb.r = Math.min(255, Math.max(rgb.r, 0));
+                rgb.g = Math.min(255, Math.max(rgb.g, 0));
+                rgb.b = Math.min(255, Math.max(rgb.b, 0));
 
                 this.red = rgb.r < 1 ? Math.round(rgb.r) : rgb.r;
                 this.green = rgb.g < 1 ? Math.round(rgb.g) : rgb.g;
                 this.blue = rgb.b < 1 ? Math.round(rgb.b) : rgb.b;
-                this.alpha = rgb.a;
-                this.valid = rgb.valid;
+                this.alpha = alpha;
+                this.valid = valid;
                 this.roundA = Math.round(100 * this.alpha) / 100;
-                this.format = config.format || rgb.format;
+                this.format = config.format || format;
                 this.gradientType = config.gradientType;
 
                 if (!this.valid) {
@@ -89,7 +92,7 @@
                 Rise.Logger.log('Instantiated new Rise.Color instance -> %O', this);
                 Rise.Logger.endGroup();
             } else {
-                Rise.Logger.error('Color -> %O couldn\'t be parsed', color);
+                Rise.Logger.warning('Color -> %O not parsed', color);
             }
 
             return this;
@@ -918,92 +921,6 @@
         },
 
         /**
-         * Create new Rise.Color instance from string colour
-         * @param  {String} color String representation of colour
-         * @return {Rise.Color}   Returns Rise.Color instance
-         */
-        fromString: function(color) {
-            var trimLeft = /^[\s,#]+/,
-                trimRight = /\s+$/,
-                named = false,
-                match;
-
-            color = color.replace(trimLeft, '').replace(trimRight, '').toLowerCase();
-
-            if (Rise.Color.colorNamesMap[color]) {
-                color = Rise.Color.colorNamesMap[color];
-                named = true;
-            } else if (color == 'transparent') {
-                return new Rise.Color({
-                    r: 0,
-                    g: 0,
-                    b: 0,
-                    a: 0
-                }, {
-                    format: "name"
-                });
-            }
-
-            if ((match = Rise.Color.colorRegexMap.rgb.exec(color))) {
-                return new Rise.Color({
-                    r: match[1],
-                    g: match[2],
-                    b: match[3]
-                });
-            } else if ((match = Rise.Color.colorRegexMap.rgba.exec(color))) {
-                return new Rise.Color({
-                    r: match[1],
-                    g: match[2],
-                    b: match[3],
-                    a: match[4]
-                });
-            } else if ((match = Rise.Color.colorRegexMap.hsl.exec(color))) {
-                return new Rise.Color({
-                    h: match[1],
-                    s: match[2],
-                    l: match[3]
-                });
-            } else if ((match = Rise.Color.colorRegexMap.hsla.exec(color))) {
-                return new Rise.Color({
-                    h: match[1],
-                    s: match[2],
-                    l: match[3],
-                    a: match[4]
-                });
-            } else if ((match = Rise.Color.colorRegexMap.hsv.exec(color))) {
-                return new Rise.Color({
-                    h: match[1],
-                    s: match[2],
-                    v: match[3]
-                });
-            } else if ((match = Rise.Color.colorRegexMap.hex8.exec(color))) {
-                return new Rise.Color({
-                    a: Rise.Color.convertHexToDecimal(match[1]),
-                    r: Rise.Color.convertHexToInteger(match[2]),
-                    g: Rise.Color.convertHexToInteger(match[3]),
-                    b: Rise.Color.convertHexToInteger(match[4]),
-                    format: named ? "name" : "hex8"
-                });
-            } else if ((match = Rise.Color.colorRegexMap.hex6.exec(color))) {
-                return new Rise.Color({
-                    r: Rise.Color.convertHexToInteger(match[1]),
-                    g: Rise.Color.convertHexToInteger(match[2]),
-                    b: Rise.Color.convertHexToInteger(match[3]),
-                    format: named ? "name" : "hex"
-                });
-            } else if ((match = Rise.Color.colorRegexMap.hex3.exec(color))) {
-                return new Rise.Color({
-                    r: Rise.Color.convertHexToInteger(match[1] + '' + match[1]),
-                    g: Rise.Color.convertHexToInteger(match[2] + '' + match[2]),
-                    b: Rise.Color.convertHexToInteger(match[3] + '' + match[3]),
-                    format: named ? "name" : "hex"
-                });
-            }
-
-            return false;
-        },
-
-        /**
          * Convert RGB colour to RGB.
          * Better to use this because here processing handling of bound or percentage in RGB profile.
          * @param  {Integer} r Red channel
@@ -1227,6 +1144,94 @@
             ];
 
             return hex.join("");
+        },
+
+        /**
+         * Create new Rise.Color instance from string colour
+         * @param  {String} color String representation of colour
+         * @return {Rise.Color}   Returns Rise.Color instance
+         */
+        fromString: function(color) {
+            var trimLeft = /^[\s,#]+/,
+                trimRight = /\s+$/,
+                named = false,
+                match;
+
+            color = color.replace(trimLeft, '').replace(trimRight, '').toLowerCase();
+
+            if (Rise.Color.colorNamesMap[color]) {
+                color = Rise.Color.colorNamesMap[color];
+                named = true;
+            } else if (color == 'transparent') {
+                return new Rise.Color({
+                    r: 0,
+                    g: 0,
+                    b: 0,
+                    a: 0
+                }, {
+                    format: "name"
+                });
+            }
+
+            if ((match = Rise.Color.colorRegexMap.rgb.exec(color))) {
+                return new Rise.Color({
+                    r: match[1],
+                    g: match[2],
+                    b: match[3]
+                });
+            } else if ((match = Rise.Color.colorRegexMap.rgba.exec(color))) {
+                return new Rise.Color({
+                    r: match[1],
+                    g: match[2],
+                    b: match[3],
+                    a: match[4]
+                });
+            } else if ((match = Rise.Color.colorRegexMap.hsl.exec(color))) {
+                return new Rise.Color({
+                    h: match[1],
+                    s: match[2],
+                    l: match[3]
+                });
+            } else if ((match = Rise.Color.colorRegexMap.hsla.exec(color))) {
+                return new Rise.Color({
+                    h: match[1],
+                    s: match[2],
+                    l: match[3],
+                    a: match[4]
+                });
+            } else if ((match = Rise.Color.colorRegexMap.hsv.exec(color))) {
+                return new Rise.Color({
+                    h: match[1],
+                    s: match[2],
+                    v: match[3]
+                });
+            } else if ((match = Rise.Color.colorRegexMap.hex8.exec(color))) {
+                return new Rise.Color({
+                    a: Rise.Color.convertHexToDecimal(match[1]),
+                    r: Rise.Color.convertHexToInteger(match[2]),
+                    g: Rise.Color.convertHexToInteger(match[3]),
+                    b: Rise.Color.convertHexToInteger(match[4]),
+                    format: named ? "name" : "hex8"
+                });
+            } else if ((match = Rise.Color.colorRegexMap.hex6.exec(color))) {
+                return new Rise.Color({
+                    r: Rise.Color.convertHexToInteger(match[1]),
+                    g: Rise.Color.convertHexToInteger(match[2]),
+                    b: Rise.Color.convertHexToInteger(match[3]),
+                    format: named ? "name" : "hex"
+                });
+            } else if ((match = Rise.Color.colorRegexMap.hex3.exec(color))) {
+                return new Rise.Color({
+                    r: Rise.Color.convertHexToInteger(match[1] + '' + match[1]),
+                    g: Rise.Color.convertHexToInteger(match[2] + '' + match[2]),
+                    b: Rise.Color.convertHexToInteger(match[3] + '' + match[3]),
+                    format: named ? "name" : "hex"
+                });
+            } else {
+                Rise.Logger.warning('Color -> %O not parsed', color);
+            }
+
+            return false;
         },
 
         /**
