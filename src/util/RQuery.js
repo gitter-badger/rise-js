@@ -26,7 +26,7 @@
         return new Rise.RQuery(document.createElement(tag));
     };
 
-    global.Rise.RQuery = Rise.Class.extend({
+    global.Rise.RQuery = Rise.Class.create({
         /**
          * Create new Rise.RQuery instance
          * @constructor

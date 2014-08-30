@@ -58,11 +58,11 @@
      * @return {Object} Returns new Class
      *
      * @example
-     * Rise.Class.extend([prototype])
-     * Rise.Class.extend([prototype], [staticProperties])
-     * Rise.Class.extend([prototype], [staticProperties], [mixins])
+     * Rise.Class.create([prototype])
+     * Rise.Class.create([prototype], [staticProperties])
+     * Rise.Class.create([prototype], [staticProperties], [mixins])
      */
-    Class.extend = function(prototype, staticProperties, mixins) {
+    Class.create = function(prototype, staticProperties, mixins) {
         prototype = prototype || {};
         staticProperties = staticProperties || {};
         mixins = mixins || [];
@@ -73,7 +73,7 @@
 
         Constructor.prototype = Object.create(this.prototype);
         Constructor.prototype.constructor = Constructor;
-        Constructor.extend = Class.extend;
+        Constructor.extend = Class.create;
 
         copyProperties(staticProperties, Constructor, this);
         copyProperties(prototype, Constructor.prototype, this.prototype);

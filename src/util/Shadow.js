@@ -1,7 +1,7 @@
 (function(global) {
     'use strict';
 
-    global.Rise.Shadow = Rise.Class.extend({
+    global.Rise.Shadow = Rise.Class.create({
         /**
          * Create new Rise.Shadow instance
          * @constructor

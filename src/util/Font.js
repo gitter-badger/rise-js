@@ -1,7 +1,7 @@
 (function(global) {
     'use strict';
 
-    global.Rise.Font = Rise.Class.extend({
+    global.Rise.Font = Rise.Class.create({
         /**
          * Create new Font object
          * @constructor

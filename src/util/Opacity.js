@@ -1,7 +1,7 @@
 (function(global) {
     'use strict';
 
-    global.Rise.Opacity = Rise.Class.extend({
+    global.Rise.Opacity = Rise.Class.create({
         /**
          * Create new Opacity object
          * @constructor

@@ -1,13 +1,7 @@
-////////////////////////////////////////////////
-// TinyColor v1.0.0                           //
-// https://github.com/bgrins/tinycolor        //
-// Brian Grinstead, MIT License               //
-// Refactored and modified by Eugene Obrezkov //
-////////////////////////////////////////////////
 (function(global) {
     'use strict';
 
-    global.Rise.Color = Rise.Class.extend({
+    global.Rise.Color = Rise.Class.create({
         /**
          * Create new Rise.Color instance
          * @constructor
