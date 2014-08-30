@@ -8,6 +8,7 @@ module.exports = function(gulp) {
     gulp.task('build-js', function() {
         gulp.src([
             path.resolve(__dirname, '../src/Rise.js'),
+            path.resolve(__dirname, '../src/util/Util.js'),
             path.resolve(__dirname, '../src/util/**/*.js'),
             path.resolve(__dirname, '../src/**/*.js')
         ])

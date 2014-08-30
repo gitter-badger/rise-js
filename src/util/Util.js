@@ -94,6 +94,27 @@
         },
 
         /**
+         * Flip key-values in object
+         * @param  {Object} object Object which you want to flip
+         * @return {Object} Returns flipped object
+         * @static
+         * @example
+         * var flipped = Rise.Util.flipObject({
+         *     foo: 'bar',
+         *     bar: 'test'
+         * });
+         */
+        flipObject: function(object) {
+            var flipped = {};
+
+            Object.keys(object).forEach(function(key) {
+                flipped[object[key]] = key;
+            });
+
+            return flipped;
+        },
+
+        /**
          * Get type of variable
          * @static
          * @param  {Mixed} value Variable that might be checked

@@ -42,6 +42,20 @@ describe('Rise.Util', function() {
         Rise.Util.getRandomString('rise', 'suffix', '-').should.match(/^rise-(.+)-suffix$/g);
     });
 
+    it('Should properly flip object', function() {
+        var source = {
+                foo: 'bar',
+                bar: 'test'
+            },
+            destination = {};
+
+        destination = Rise.Util.flipObject(source);
+        destination.should.be.eql({
+            bar: 'foo',
+            test: 'bar'
+        })
+    });
+
     it('Should return correct type', function() {
         Rise.Util.getType({}).should.be.equal('object');
         Rise.Util.getType(123).should.be.equal('number');
