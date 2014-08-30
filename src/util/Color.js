@@ -525,7 +525,7 @@
          * @param {Integer} slices Count of slices
          * @return {Array} Returns array of Rise.Color
          */
-        analogous: function(results, slices) {
+        getAnalogous: function(results, slices) {
             results = results || 6;
             slices = slices || 30;
 
@@ -542,10 +542,10 @@
         },
 
         /**
-         * Get complement combinations for this color
+         * Get complementary combinations for this color
          * @return {Rise.Color} Returns Rise.Color instance with complementary color
          */
-        complement: function() {
+        getComplementary: function() {
             var hsl = this.toHsl();
             hsl.h = (hsl.h + 180) % 360;
             return new Rise.Color(hsl);
@@ -556,7 +556,7 @@
          * @param {Integer} results Count of results
          * @return {Array} Returns array of Rise.Color
          */
-        monochromatic: function(results) {
+        getMonochromatic: function(results) {
             results = results || 6;
 
             var hsv = this.toHsv(),
@@ -582,7 +582,7 @@
          * Get splitcomplement combinations for this color
          * @return {Array} Returns array of Rise.Color
          */
-        splitComplement: function() {
+        getSplitComplementary: function() {
             var hsl = this.toHsl(),
                 h = hsl.h;
 
@@ -605,7 +605,7 @@
          * Get triad combinations for this color
          * @return {Array} Returns array of Rise.Color
          */
-        triad: function() {
+        getTriad: function() {
             var hsl = this.toHsl(),
                 h = hsl.h;
 
@@ -628,7 +628,7 @@
          * Get tetrad combinations for this color
          * @return {Array} Returns array of Rise.Color
          */
-        tetrad: function() {
+        getTetrad: function() {
             var hsl = this.toHsl(),
                 h = hsl.h;
 
