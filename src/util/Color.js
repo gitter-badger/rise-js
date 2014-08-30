@@ -64,11 +64,10 @@
                     alpha = color.a;
                 }
 
-                alpha = Rise.Color.boundAlpha(alpha);
-
                 rgb.r = Math.min(255, Math.max(rgb.r, 0));
                 rgb.g = Math.min(255, Math.max(rgb.g, 0));
                 rgb.b = Math.min(255, Math.max(rgb.b, 0));
+                alpha = Rise.Color.boundAlpha(alpha);
 
                 this.red = rgb.r < 1 ? Math.round(rgb.r) : rgb.r;
                 this.green = rgb.g < 1 ? Math.round(rgb.g) : rgb.g;
@@ -80,7 +79,7 @@
                 this.gradientType = config.gradientType;
 
                 if (!this.valid) {
-                    Rise.Logger.warning('Color -> %O have errors', color);
+                    Rise.Logger.warning('Rise.Color -> %O have errors', color);
                 }
 
                 Rise.Logger.log('Instantiated new Rise.Color instance -> %O', this);
@@ -122,6 +121,60 @@
          */
         getFormat: function() {
             return this.format;
+        },
+
+        /**
+         * Get red channel
+         * @return {Integer} Returns red channel value
+         */
+        getRed: function() {
+            return this.red;
+        },
+
+        /**
+         * Set red channel
+         * @param {Integer} value Red channel in [0, 255] range
+         * @return {Rise.Color} Returns Rise.Color instance
+         */
+        setRed: function(value) {
+            this.red = Math.min(255, Math.max(value, 0));
+            return this;
+        },
+
+        /**
+         * Get green channel
+         * @return {Integer} Returns green channel value
+         */
+        getGreen: function() {
+            return this.green;
+        },
+
+        /**
+         * Set green channel
+         * @param {Integer} value Green channel in [0, 255] range
+         * @return {Rise.Color} Returns Rise.Color instance
+         */
+        setGreen: function(value) {
+            this.green = Math.min(255, Math.max(value, 0));
+            return this;
+        },
+
+        /**
+         * Get blue channel
+         * @return {Integer} Returns blue channel value
+         */
+        getBlue: function() {
+            return this.blue;
+        },
+
+        /**
+         * Set blue channel
+         * @param {Integer} value Blue channel in [0, 255] range
+         * @return {Rise.Color} Returns Rise.Color instance
+         */
+        setBlue: function(value) {
+            this.blue = Math.min(255, Math.max(value, 0));
+            return this;
         },
 
         /**
