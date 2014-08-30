@@ -2,6 +2,15 @@
 <html>
 
 <head>
+    <style type="text/css">
+    #rquery {
+        width: 200px;
+        height: 200px;
+        left: 200px;
+        top: 200px;
+        position: fixed;
+    }
+    </style>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +20,7 @@
 
 <body>
     <div id="mocha"></div>
+    <div id="rquery"></div>
 
     <script src="dist/rise.min.js"></script>
     <script src="node_modules/gulp-mocha/node_modules/mocha/mocha.js"></script>
@@ -21,6 +31,14 @@
 
     <!--SCRIPTS-->
     <script src="tests/Rise.js"></script>
+    <script src="tests/util/Class.js"></script>
+    <script src="tests/util/Color.js"></script>
+    <script src="tests/util/Font.js"></script>
+    <script src="tests/util/Logger.js"></script>
+    <script src="tests/util/Opacity.js"></script>
+    <script src="tests/util/RQuery.js"></script>
+    <script src="tests/util/Shadow.js"></script>
+    <script src="tests/util/Util.js"></script>
     <!--SCRIPTS END-->
 
     <script>
