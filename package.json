@@ -17,7 +17,7 @@
     "license": "Apache-2.0",
     "main": "dist/rise.min.js",
     "scripts": {
-        "test": "gulp run-tests"
+        "test": "gulp build"
     },
     "repository": {
         "type": "git",
