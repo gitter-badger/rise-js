@@ -6,7 +6,7 @@
     },
     "contributors": [],
     "name": "rise-js",
-    "version": "0.0.2-4",
+    "version": "0.0.2-5",
     "description": "",
     "keywords": [],
     "homepage": "http://ghaiklor.github.io/rise-js",
@@ -17,7 +17,7 @@
     "license": "Apache-2.0",
     "main": "dist/rise.min.js",
     "scripts": {
-        "test": "gulp build"
+        "test": "gulp run-tests"
     },
     "repository": {
         "type": "git",
