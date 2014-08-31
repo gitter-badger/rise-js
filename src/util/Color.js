@@ -104,7 +104,7 @@
          * @return {Boolean} Returns true if color is light
          */
         isLight: function() {
-            return !this.isDark();
+            return this.isDark();
         },
 
         /**
