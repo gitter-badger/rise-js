@@ -3,7 +3,7 @@ var bump = require('gulp-bump'),
 
 module.exports = function(gulp) {
     gulp.task('bump-version', function() {
-        gulp.src(path.resolve(__dirname, '../package.json'))
+        return gulp.src(path.resolve(__dirname, '../package.json'))
             .pipe(bump({
                 type: 'prerelease'
                 // type: 'patch'

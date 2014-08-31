@@ -1,8 +1,9 @@
 Edge version
 ===
 
+- Fix gulp tasks dependency order;
 - Travis CI configured;
-- Start work with documentation;
+- Basic documentation;
 
 Version 0.0.1
 ===

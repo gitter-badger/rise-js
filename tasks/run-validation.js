@@ -3,7 +3,7 @@ var jshint = require('gulp-jshint'),
 
 module.exports = function(gulp) {
     gulp.task('run-validation', function() {
-        gulp.src(path.resolve(__dirname, '../src/**/*.js'))
+        return gulp.src(path.resolve(__dirname, '../src/**/*.js'))
             .pipe(jshint())
             .pipe(jshint.reporter('jshint-stylish'));
     });
