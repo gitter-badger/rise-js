@@ -16,6 +16,9 @@
     },
     "license": "Apache-2.0",
     "main": "dist/rise.min.js",
+    "scripts": {
+        "test": "gulp run-tests"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/ghaiklor/rise-js.git"
