@@ -1,4 +1,4 @@
-// jshint ignore:end
+// jshint ignore:start
 describe('Rise.Util', function() {
     it('Should properly extend objects', function() {
         var testObject = Rise.Util.extend({}, {
@@ -23,13 +23,13 @@ describe('Rise.Util', function() {
     });
 
     it('Should properly convert string to camelized string', function() {
-        Rise.Util.getCamelizedString('font-family').should.be.equal('fontFamily');
-        Rise.Util.getCamelizedString('fontFamily').should.be.equal('fontFamily');
+        Rise.Util.toCamelizedString('font-family').should.be.equal('fontFamily');
+        Rise.Util.toCamelizedString('fontFamily').should.be.equal('fontFamily');
     });
 
     it('Should properly convert string to dashed string', function() {
-        Rise.Util.getDashedString('fontFamily').should.be.equal('font-family');
-        Rise.Util.getDashedString('font-family').should.be.equal('font-family');
+        Rise.Util.toDashedString('fontFamily').should.be.equal('font-family');
+        Rise.Util.toDashedString('font-family').should.be.equal('font-family');
     });
 
     it('Should return random string', function() {

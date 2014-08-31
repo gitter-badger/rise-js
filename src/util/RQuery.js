@@ -287,7 +287,7 @@
             pseudoElement = pseudoElement || null;
 
             if (Rise.Util.isString(css)) {
-                return window.getComputedStyle(this.get(0), pseudoElement).getPropertyValue(Rise.Util.getDashedString(css));
+                return window.getComputedStyle(this.get(0), pseudoElement).getPropertyValue(Rise.Util.toDashedString(css));
             } else if (Rise.Util.isObject(css)) {
                 Rise.Logger.startGroup(true, 'Rise.RQuery.css() -> Set CSS');
                 this.each(function(element) {
@@ -295,11 +295,11 @@
                         Rise.Logger.log('Set key-value "%s" -> "%s" to element %O', key, css[key], element);
 
                         if (css[key] === false) {
-                            element.style.removeProperty(Rise.Util.getDashedString(key));
+                            element.style.removeProperty(Rise.Util.toDashedString(key));
                         } else if (isNaN(css[key]) || Rise.RQuery.cssNumbersMap.indexOf(key) != -1) {
-                            element.style[Rise.Util.getCamelizedString(key)] = css[key];
+                            element.style[Rise.Util.toCamelizedString(key)] = css[key];
                         } else {
-                            element.style[Rise.Util.getCamelizedString(key)] = css[key] + 'px';
+                            element.style[Rise.Util.toCamelizedString(key)] = css[key] + 'px';
                         }
                     });
                 });

@@ -30,16 +30,12 @@
                 Rise.Logger.startGroup(true, 'Rise.Font -> init()');
                 Rise.Logger.log('Trying to parse font object -> %O', font);
 
-                this.style = font.style || 'normal';
-                this.variant = font.variant || 'normal';
-                this.weight = font.weight || 'normal';
-                this.size = font.size || 'medium';
-                this.lineHeight = font.lineHeight || 'normal';
-                this.family = font.family || 'serif';
-
-                if (!Rise.Font.isFontValid(this)) {
-                    Rise.Logger.warning('Rise.Font -> Something wrong with font -> %O', font);
-                }
+                this.setStyle(font.style || 'normal');
+                this.setVariant(font.variant || 'normal');
+                this.setWeight(font.weight || 'normal');
+                this.setSize(font.size || 'medium');
+                this.setLineHeight(font.lineHeight || 'normal');
+                this.setFamily(font.family || 'serif');
 
                 Rise.Logger.log('Instantiated Rise.Font -> %O', this);
                 Rise.Logger.endGroup();

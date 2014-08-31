@@ -26,10 +26,10 @@
                 Rise.Logger.startGroup(true, 'Rise.Shadow -> init()');
                 Rise.Logger.log('Trying to parse options -> %O', shadow);
 
-                this.color = shadow.color ? new Rise.Color(shadow.color) : new Rise.Color('black');
-                this.blur = shadow.blur || 0;
-                this.offsetX = shadow.offsetX || 0;
-                this.offsetY = shadow.offsetY || 0;
+                this.setColor(shadow.color || 'black');
+                this.setBlur(shadow.blur || 0);
+                this.setOffsetX(shadow.offsetX || 0);
+                this.setOffsetY(shadow.offsetY || 0);
 
                 Rise.Logger.log('Instantiated new Rise.Shadow -> %O', this);
                 Rise.Logger.endGroup();
