@@ -3,7 +3,7 @@ var linker = require('gulp-linker'),
 
 module.exports = function(gulp) {
     gulp.task('linker-dev', function() {
-        gulp.src(path.resolve(__dirname, '../index.html'))
+        return gulp.src(path.resolve(__dirname, '../index.html'))
             .pipe(linker({
                 scripts: [
                     path.resolve(__dirname, '../src/Rise.js'),

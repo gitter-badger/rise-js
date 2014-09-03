@@ -1,7 +1,7 @@
-// jshint ignore:end
+// jshint ignore:start
 describe('Rise.Util', function() {
-    it('Should properly extend objects', function() {
-        var testObject = Rise.Util.extend({}, {
+    it('Should properly assign (extend) objects', function() {
+        var testObject = Rise.Util.assign({}, {
             test: 'test'
         }, {
             foo: 'test',
@@ -12,7 +12,7 @@ describe('Rise.Util', function() {
             test: 'test2'
         });
 
-        Rise.Util.extend(testObject, {
+        Rise.Util.assign(testObject, {
             bar: 'test'
         });
         testObject.should.be.eql({
@@ -23,21 +23,26 @@ describe('Rise.Util', function() {
     });
 
     it('Should properly convert string to camelized string', function() {
-        Rise.Util.getCamelizedString('font-family').should.be.equal('fontFamily');
-        Rise.Util.getCamelizedString('fontFamily').should.be.equal('fontFamily');
+        Rise.Util.toCamelizedString('font-family').should.be.equal('fontFamily');
+        Rise.Util.toCamelizedString('fontFamily').should.be.equal('fontFamily');
+        Rise.Util.toCamelizedString('very-big-some-thing').should.be.equal('veryBigSomeThing');
     });
 
     it('Should properly convert string to dashed string', function() {
-        Rise.Util.getDashedString('fontFamily').should.be.equal('font-family');
-        Rise.Util.getDashedString('font-family').should.be.equal('font-family');
+        Rise.Util.toDashedString('fontFamily').should.be.equal('font-family');
+        Rise.Util.toDashedString('font-family').should.be.equal('font-family');
+        Rise.Util.toDashedString('veryBigSomeThing').should.be.equal('very-big-some-thing');
     });
 
     it('Should return random string', function() {
         Rise.Util.getRandomString().should.be.a.string;
+
         Rise.Util.getRandomString('rise').should.be.a.string;
         Rise.Util.getRandomString('rise').should.match(/^rise/g);
+
         Rise.Util.getRandomString('rise', 'suffix').should.be.a.string;
         Rise.Util.getRandomString('rise', 'suffix').should.match(/^rise(.+)suffix$/g);
+
         Rise.Util.getRandomString('rise', 'suffix', '-').should.be.a.string;
         Rise.Util.getRandomString('rise', 'suffix', '-').should.match(/^rise-(.+)-suffix$/g);
     });

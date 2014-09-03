@@ -16,12 +16,15 @@
 
             if (opacity instanceof Rise.Opacity) {
                 return opacity;
+            } else if (Rise.Util.isNumber(opacity)) {
+                Rise.Logger.startGroup(true, 'Rise.Opacity -> init()');
+                Rise.Logger.log('Trying to parse opacity -> "$s"', opacity);
+                this.set(opacity);
+                Rise.Logger.endGroup();
+            } else {
+                Rise.Logger.warning('Opacity -> %O not parsed', opacity);
+                return false;
             }
-
-            Rise.Logger.startGroup(true, 'Rise.Opacity -> init()');
-            Rise.Logger.log('Trying to parse opacity -> "$s"', opacity);
-            this.set(opacity);
-            Rise.Logger.endGroup();
 
             return this;
         },

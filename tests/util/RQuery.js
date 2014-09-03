@@ -183,12 +183,12 @@ describe('Rise.RQuery', function() {
             clicked = !clicked;
         }
 
-        Rise.$('#rquery').on('mousedown', onMouseDown);
-        Rise.$('#rquery').triggerMouseEvent('mousedown');
-        Rise.$('#rquery').off('mousedown', onMouseDown);
-        Rise.$('#rquery').triggerMouseEvent('mousedown');
+        Rise.$('#rquery').on('mousedown', onMouseDown).should.be.an.instanceof(Rise.RQuery);
+        Rise.$('#rquery').triggerMouseEvent('mousedown').should.be.an.instanceof(Rise.RQuery);
+        Rise.$('#rquery').off('mousedown', onMouseDown).should.be.an.instanceof(Rise.RQuery);
+        Rise.$('#rquery').triggerMouseEvent('mousedown').should.be.an.instanceof(Rise.RQuery);
 
-        clicked.should.be.equal(true);
+        clicked.should.be.ok;
     });
 
     it('Should properly remove node', function() {
@@ -213,7 +213,7 @@ describe('Rise.RQuery', function() {
         rquery.html('');
     });
 
-    it('Should properly append and prepend HTML', function() {
+    it('Should properly append/prepend HTML', function() {
         var rquery = Rise.$('#rquery').empty();
 
         rquery.append('test');
@@ -241,7 +241,7 @@ describe('Rise.RQuery', function() {
         rquery.empty();
     });
 
-    it('Should properly set and get text content', function() {
+    it('Should properly set/get text content', function() {
         var rquery = Rise.$('#rquery');
 
         rquery.text().should.be.equal('');

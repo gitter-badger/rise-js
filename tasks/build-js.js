@@ -5,13 +5,13 @@ var concat = require('gulp-concat'),
     path = require('path');
 
 module.exports = function(gulp) {
-    gulp.task('build-js', function() {
-        gulp.src([
-            path.resolve(__dirname, '../src/Rise.js'),
-            path.resolve(__dirname, '../src/util/Util.js'),
-            path.resolve(__dirname, '../src/util/**/*.js'),
-            path.resolve(__dirname, '../src/**/*.js')
-        ])
+    gulp.task('build-js', ['clean'], function() {
+        return gulp.src([
+                path.resolve(__dirname, '../src/Rise.js'),
+                path.resolve(__dirname, '../src/util/Util.js'),
+                path.resolve(__dirname, '../src/util/**/*.js'),
+                path.resolve(__dirname, '../src/**/*.js')
+            ])
             .pipe(concat('rise.concat.js'))
             .pipe(gulp.dest('./dist'))
             .pipe(rename('rise.min.js'))

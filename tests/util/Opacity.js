@@ -10,6 +10,11 @@ describe('Rise.Opacity', function() {
         opacity.get().should.be.equal(0);
     });
 
+    it('Should properly create from exists instance', function() {
+        var opacity = new Rise.Opacity(40);
+        new Rise.Opacity(opacity).get().should.be.equal(40);
+    });
+
     it('Should properly get and set opacity', function() {
         var opacity = new Rise.Opacity();
         opacity.get().should.be.equal(0);
