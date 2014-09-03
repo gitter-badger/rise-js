@@ -1,20 +1,23 @@
 Edge version
 ===
 
+Version 0.0.2
+===
+- Realize canvas prototype and basic functions in Rise instance;
+- Realize get/set dimensions and config;
+- Realize Rise.Math module;
 - Fix gulp tasks dependency order;
 - Travis CI configured;
 - Basic documentation;
-- Realized Rise.Math module;
 - Many small improvements, optimization and typo fixes;
 
 Version 0.0.1
 ===
-
-- Realized Rise.Class;
-- Realized Rise.Color;
-- Realized Rise.Font;
-- Realized Rise.Logger;
-- Realized Rise.Opacity;
-- Realized Rise.RQuery;
-- Realized Rise.Shadow;
-- Realized Rise.Util;
+- Realize Rise.Class;
+- Realize Rise.Color;
+- Realize Rise.Font;
+- Realize Rise.Logger;
+- Realize Rise.Opacity;
+- Realize Rise.RQuery;
+- Realize Rise.Shadow;
+- Realize Rise.Util;

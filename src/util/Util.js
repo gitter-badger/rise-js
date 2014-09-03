@@ -8,15 +8,15 @@
      */
     global.Rise.Util = {
         /**
-         * Extend object
+         * Assign (extend) objects
          * @param  {Object} destination Destination object will be also modified
          * @param  {Object} source Source objects
          * @return {Object} Returns extended object
          * @static
          * @example
-         * Rise.Util.extend({}, obj1, obj2, obj3);
+         * Rise.Util.assign({}, obj1, obj2, obj3);
          */
-        extend: function() {
+        assign: function() {
             /**
              * Copy source object to destination object
              * @this {Rise.Util}
@@ -26,7 +26,7 @@
             var copyObject = function(key) {
                 if (source[key] && source[key].constructor && source[key].constructor === Object) {
                     destination[key] = destination[key] || {};
-                    this.extend(destination[key], source[key]);
+                    this.assign(destination[key], source[key]);
                 } else {
                     destination[key] = source[key];
                 }

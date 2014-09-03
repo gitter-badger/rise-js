@@ -288,7 +288,7 @@
          */
         isCssValueValid: function(value) {
             return Rise.Font.unitsMap.some(function(unit) {
-                return value.lastIndexOf(unit) != -1;
+                return value && value.lastIndexOf(unit) != -1;
             });
         },
 

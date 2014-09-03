@@ -295,6 +295,9 @@ describe('Rise.Color', function() {
         color.should.be.an.instanceof(Rise.Color);
         color.toHexString().should.be.equal('#000000');
 
+        new Rise.Color(color).toHexString().should.be.equal('#000000');
+        new Rise.Color('white').toHexString().should.be.equal('#FFFFFF');
+
         new Rise.Color({
             r: 1,
             g: 1,
@@ -383,7 +386,7 @@ describe('Rise.Color', function() {
         color.toHexString().should.be.equal('#FFFFFF');
     });
 
-    it("Should properly set alpha channel", function() {
+    it("Should properly get/set alpha channel", function() {
         var color = new Rise.Color("rgba(255, 0, 0, 1)");
         color.getAlpha().should.be.equal(1);
 
@@ -455,12 +458,18 @@ describe('Rise.Color', function() {
         colorConversions.forEach(function(colorItem) {
             var color = new Rise.Color(colorItem.hex);
             color.toHexString().should.be.equal(new Rise.Color(color.toHex()).toHexString());
+            color.toHexString().should.be.equal(new Rise.Color(color.toHexString()).toHexString());
         });
     });
 
     it("Should properly parse/convert HSV", function() {
         new Rise.Color('hsv 251.1 0.887 .918').toHsvString().should.be.equal('hsv(251, 89%, 92%)');
         new Rise.Color('hsv 251.1 0.887 0.918').toHsvString().should.be.equal('hsv(251, 89%, 92%)');
+        new Rise.Color({
+            h: 251,
+            s: 100,
+            v: 0.92
+        }).toHsvString().should.be.equal('hsv(251, 100%, 92%)');
 
         colorConversions.forEach(function(colorItem) {
             var color = new Rise.Color(colorItem.hex),
@@ -501,40 +510,34 @@ describe('Rise.Color', function() {
 
     it('Should properly return name of color', function() {
         new Rise.Color("#f00").toName().should.be.equal("red");
+        new Rise.Color("#FFFFFF").toName().should.be.equal("white");
+        new Rise.Color("#000000").toName().should.be.equal("black");
         new Rise.Color("#fa0a0a").toName().should.be.equal(false);
     });
 
     it("Should properly return string", function() {
-        var transparentColor = new Rise.Color({
-                r: 255,
-                g: 0,
-                b: 0,
-                a: 0
-            }),
-            redColor = new Rise.Color({
-                r: 255,
-                g: 0,
-                b: 0,
-                a: 0.5
-            });
+        var color = new Rise.Color({
+            r: 255,
+            g: 0,
+            b: 0,
+            a: 0.5
+        });
 
-        transparentColor.toString('name').should.be.equal('transparent');
+        color.toString('rgb').should.be.equal('rgba(255, 0, 0, 0.5)');
+        color.toString('hex').should.be.equal('#80FF0000');
+        color.toString('hsv').should.be.equal('hsva(0, 100%, 100%, 0.5)');
+        color.toString('hsl').should.be.equal('hsla(0, 100%, 50%, 0.5)');
+        color.toString("name").should.be.not.ok;
 
-        redColor.toString('rgb').should.be.equal('rgba(255, 0, 0, 0.5)');
-        redColor.toString('hex').should.be.equal('#80FF0000');
-        redColor.toString('hsv').should.be.equal('hsva(0, 100%, 100%, 0.5)');
-        redColor.toString('hsl').should.be.equal('hsla(0, 100%, 50%, 0.5)');
-        redColor.toString("name").should.be.not.ok;
+        color.setAlpha(0);
+        color.toString('name').should.be.equal('transparent');
 
-        redColor.setAlpha(0);
-        redColor.toString('name').should.be.equal('transparent');
-
-        redColor.setAlpha(1);
-        redColor.toString('rgb').should.be.equal('rgb(255, 0, 0)');
-        redColor.toString('hex').should.be.equal('#FF0000');
-        redColor.toString('hsv').should.be.equal('hsv(0, 100%, 100%)');
-        redColor.toString('hsl').should.be.equal('hsl(0, 100%, 50%)');
-        redColor.toString("name").should.be.equal('red');
+        color.setAlpha(1);
+        color.toString('rgb').should.be.equal('rgb(255, 0, 0)');
+        color.toString('hex').should.be.equal('#FF0000');
+        color.toString('hsv').should.be.equal('hsv(0, 100%, 100%)');
+        color.toString('hsl').should.be.equal('hsl(0, 100%, 50%)');
+        color.toString("name").should.be.equal('red');
     });
 
     it("Should properly make lighten", function() {
@@ -756,8 +759,6 @@ describe('Rise.Color', function() {
     });
 
     it("Should properly check for equals colors", function() {
-        new Rise.Color("010101").toHexString().should.be.equal("#010101");
-
         Rise.Color.equals("#ff0000", "#ff0000").should.be.ok;
         Rise.Color.equals("#ff0000", "rgb(255, 0, 0)").should.be.ok;
         Rise.Color.equals("ff0000", "#ff0000").should.be.ok;
