@@ -87,14 +87,6 @@
         },
 
         /**
-         * Get parent node
-         * @return {Rise.RQuery} Returns Rise.RQuery instance
-         */
-        getParentNode: function() {
-            return this.parentNode;
-        },
-
-        /**
          * Set parent node
          * @param {Rise.RQuery|Element} node
          * @return {Rise} Returns Rise instance
@@ -105,11 +97,11 @@
         },
 
         /**
-         * Get canvas node
+         * Get parent node
          * @return {Rise.RQuery} Returns Rise.RQuery instance
          */
-        getCanvasNode: function() {
-            return this.canvasNode;
+        getParentNode: function() {
+            return this.parentNode;
         },
 
         /**
@@ -120,6 +112,14 @@
         setCanvasNode: function(node) {
             this.canvasNode = Rise.$(node);
             return this;
+        },
+
+        /**
+         * Get canvas node
+         * @return {Rise.RQuery} Returns Rise.RQuery instance
+         */
+        getCanvasNode: function() {
+            return this.canvasNode;
         },
 
         /**
@@ -247,6 +247,23 @@
          */
         getHtml: function() {
             return this.getParentNode().html();
+        },
+
+        /**
+         * Add element to canvas
+         * @param {Rise.Element} element Rise.Element instance that you want to add
+         * @return {Rise} Returns Rise instance
+         * @example
+         * var element = new Rise.TextElement();
+         * var canvas = new Rise();
+         * canvas.addElement(element);
+         */
+        addElement: function(element) {
+            if (element instanceof Rise.Element) {
+                this.getCanvasNode().append(element.getNode());
+            }
+
+            return this;
         }
     });
 
@@ -3372,6 +3389,37 @@
                 offsetX: parseInt(offsetsAndBlur[1], 10) || 0,
                 offsetY: parseInt(offsetsAndBlur[2], 10) || 0
             });
+        }
+    });
+})(this);
+(function(global) {
+    'use strict';
+
+    global.Rise.Element = Rise.Class.create({
+        /**
+         * Create basic element
+         * @return {Rise.Element} Returns Rise.Element instance
+         */
+        init: function() {
+            return this;
+        },
+
+        /**
+         * Get Element's node
+         * @return {Rise.RQuery} Returns Rise.RQuery instance
+         */
+        getNode: function() {
+            return this.node;
+        },
+
+        /**
+         * Set Element's node
+         * @param {Rise.RQuery} node Element's node which contains all nodes that needs for Element
+         * @return {Rise.Element} Returns Rise.Element instance
+         */
+        setNode: function(node) {
+            this.node = Rise.$(node);
+            return this;
         }
     });
 })(this);

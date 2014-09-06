@@ -10,6 +10,8 @@ module.exports = function(gulp) {
                 path.resolve(__dirname, '../src/Rise.js'),
                 path.resolve(__dirname, '../src/util/Util.js'),
                 path.resolve(__dirname, '../src/util/**/*.js'),
+                path.resolve(__dirname, '../src/Element.js'),
+                path.resolve(__dirname, '../src/element/**/*.js'),
                 path.resolve(__dirname, '../src/**/*.js')
             ])
             .pipe(concat('rise.concat.js'))

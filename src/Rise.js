@@ -87,14 +87,6 @@
         },
 
         /**
-         * Get parent node
-         * @return {Rise.RQuery} Returns Rise.RQuery instance
-         */
-        getParentNode: function() {
-            return this.parentNode;
-        },
-
-        /**
          * Set parent node
          * @param {Rise.RQuery|Element} node
          * @return {Rise} Returns Rise instance
@@ -105,11 +97,11 @@
         },
 
         /**
-         * Get canvas node
+         * Get parent node
          * @return {Rise.RQuery} Returns Rise.RQuery instance
          */
-        getCanvasNode: function() {
-            return this.canvasNode;
+        getParentNode: function() {
+            return this.parentNode;
         },
 
         /**
@@ -120,6 +112,14 @@
         setCanvasNode: function(node) {
             this.canvasNode = Rise.$(node);
             return this;
+        },
+
+        /**
+         * Get canvas node
+         * @return {Rise.RQuery} Returns Rise.RQuery instance
+         */
+        getCanvasNode: function() {
+            return this.canvasNode;
         },
 
         /**
@@ -247,6 +247,23 @@
          */
         getHtml: function() {
             return this.getParentNode().html();
+        },
+
+        /**
+         * Add element to canvas
+         * @param {Rise.Element} element Rise.Element instance that you want to add
+         * @return {Rise} Returns Rise instance
+         * @example
+         * var element = new Rise.TextElement();
+         * var canvas = new Rise();
+         * canvas.addElement(element);
+         */
+        addElement: function(element) {
+            if (element instanceof Rise.Element) {
+                this.getCanvasNode().append(element.getNode());
+            }
+
+            return this;
         }
     });
 
