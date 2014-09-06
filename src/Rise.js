@@ -57,18 +57,17 @@
             }
         } else if (selector instanceof Element) {
             this.setConfig(defaultConfig, config);
+            this.setParentNode(selector);
+            this.setCanvasNode(Rise.$.create('div'));
 
-            this.parentNode = Rise.$(selector);
-            this.canvasNode = Rise.$.create('div');
-
-            this.canvasNode
+            this.getCanvasNode()
                 .css(this.getConfig('canvas.css'))
                 .css({
                     width: this.getConfig('canvas.width'),
                     height: this.getConfig('canvas.height')
                 });
 
-            this.parentNode.append(this.canvasNode);
+            this.getParentNode().append(this.getCanvasNode());
         } else {
             Rise.Logger.error('Selector -> %O not parsed', selector);
             return false;
@@ -87,11 +86,31 @@
         },
 
         /**
+         * Set parent node
+         * @param {Rise.RQuery|Element} node
+         * @return {Rise} Returns Rise instance
+         */
+        setParentNode: function(node) {
+            this.parentNode = Rise.$(node);
+            return this;
+        },
+
+        /**
          * Get canvas node
          * @return {Rise.RQuery} Returns Rise.RQuery instance
          */
         getCanvasNode: function() {
             return this.canvasNode;
+        },
+
+        /**
+         * Set canvas node
+         * @param {Rise.RQuery|Element} node
+         * @return {Rise} Returns Rise instance
+         */
+        setCanvasNode: function(node) {
+            this.canvasNode = Rise.$(node);
+            return this;
         },
 
         /**

@@ -15,25 +15,42 @@ describe('Rise', function() {
         new Rise(document.createElement('div')).should.be.an.instanceof(Rise).and.be.ok;
     });
 
-    it('Should properly return parent node', function() {
+    it('Should properly get/set parent node', function() {
         var rise = new Rise('#rise-test');
 
         rise.getParentNode().should.be.an.instanceof(Rise.RQuery);
         rise.getParentNode().is('div').should.be.ok;
+
+        rise.setParentNode(Rise.$.create('a')).should.be.an.instanceof(Rise);
+        rise.getParentNode().should.be.an.instanceof(Rise.RQuery);
+        rise.getParentNode().is('a').should.be.ok;
     });
 
-    it('Should properly return canvas node', function() {
+    it('Should properly get/set canvas node', function() {
         var rise = new Rise('#rise-test');
 
         rise.getCanvasNode().should.be.an.instanceof(Rise.RQuery);
         rise.getCanvasNode().is('div').should.be.ok;
+
+        rise.setCanvasNode(Rise.$.create('span')).should.be.an.instanceof(Rise);
+        rise.getCanvasNode().should.be.an.instanceof(Rise.RQuery);
+        rise.getCanvasNode().is('span').should.be.ok;
     });
 
     it('Should properly get/set config', function() {
-        var rise = new Rise('#rise-test');
+        var rise = new Rise('#rise-test', {
+            foo: 'test',
+            bar: {
+                key: 'value'
+            }
+        });
+
+        rise.getConfig('foo').should.be.equal('test');
+        rise.getConfig('bar.key').should.be.equal('value');
 
         rise.setConfig({
-            foo: 'bar',
+            foo: 'bar'
+        }, {
             bar: {
                 foo: 'bar'
             }
@@ -41,10 +58,12 @@ describe('Rise', function() {
 
         rise.getConfig('foo').should.be.equal('bar');
         rise.getConfig('bar.foo').should.be.equal('bar');
+        rise.getConfig('bar.key').should.be.equal('value');
         rise.getConfig().should.containEql({
             foo: 'bar',
             bar: {
-                foo: 'bar'
+                foo: 'bar',
+                key: 'value'
             }
         });
     });

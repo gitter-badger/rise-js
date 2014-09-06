@@ -46,24 +46,28 @@
             var node = Rise.$(selector);
 
             if (node.count() === 0) {
-                Rise.Logger.error('Selector -> %s not founded', selector);
-                return false;
+                Rise.Logger.error('Selector -> %s nodes not founded', selector);
             } else {
+                if (node.count() > 1) {
+                    Rise.Logger.warning('Selector -> %s has found more than 1 nodes');
+                    Rise.Logger.warning('Initializing only for node -> %O', noge.get(0));
+                }
+
                 return new Rise(node.get(0), config);
             }
         } else if (selector instanceof Element) {
-            this.config = Rise.Util.assign({}, defaultConfig, config);
-            this.parentNode = Rise.$(selector);
-            this.canvasNode = Rise.$.create('div');
+            this.setConfig(defaultConfig, config);
+            this.setParentNode(selector);
+            this.setCanvasNode(Rise.$.create('div'));
 
-            this.canvasNode
+            this.getCanvasNode()
+                .css(this.getConfig('canvas.css'))
                 .css({
                     width: this.getConfig('canvas.width'),
                     height: this.getConfig('canvas.height')
-                })
-                .css(this.getConfig('canvas.css'));
+                });
 
-            this.parentNode.append(this.canvasNode);
+            this.getParentNode().append(this.getCanvasNode());
         } else {
             Rise.Logger.error('Selector -> %O not parsed', selector);
             return false;
@@ -82,6 +86,16 @@
         },
 
         /**
+         * Set parent node
+         * @param {Rise.RQuery|Element} node
+         * @return {Rise} Returns Rise instance
+         */
+        setParentNode: function(node) {
+            this.parentNode = Rise.$(node);
+            return this;
+        },
+
+        /**
          * Get canvas node
          * @return {Rise.RQuery} Returns Rise.RQuery instance
          */
@@ -90,18 +104,29 @@
         },
 
         /**
+         * Set canvas node
+         * @param {Rise.RQuery|Element} node
+         * @return {Rise} Returns Rise instance
+         */
+        setCanvasNode: function(node) {
+            this.canvasNode = Rise.$(node);
+            return this;
+        },
+
+        /**
          * Update configuration object
-         * @param {Object} config New configuration object
+         * @param {Object} [config] New configuration object
          * @return {Rise} Returns Rise instance
          * @example
-         * Rise.setConfig({
-         *     draggable: {
-         *         enabled: true
-         *     }
-         * });
+         * Rise.setConfig(config1, config2, config3);
          */
-        setConfig: function(config) {
-            Rise.Util.assign(this.config, config);
+        setConfig: function() {
+            this.config = this.config || {};
+
+            for (var i = 0; i < arguments.length; i++) {
+                Rise.Util.assign(this.config, arguments[i]);
+            }
+
             return this;
         },
 
