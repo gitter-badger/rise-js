@@ -56,7 +56,8 @@
                 return new Rise(node.get(0), config);
             }
         } else if (selector instanceof Element) {
-            this.config = Rise.Util.assign({}, defaultConfig, config);
+            this.setConfig(defaultConfig, config);
+
             this.parentNode = Rise.$(selector);
             this.canvasNode = Rise.$.create('div');
 
@@ -95,17 +96,18 @@
 
         /**
          * Update configuration object
-         * @param {Object} config New configuration object
+         * @param {Object} [config] New configuration object
          * @return {Rise} Returns Rise instance
          * @example
-         * Rise.setConfig({
-         *     draggable: {
-         *         enabled: true
-         *     }
-         * });
+         * Rise.setConfig(config1, config2, config3);
          */
-        setConfig: function(config) {
-            Rise.Util.assign(this.config, config);
+        setConfig: function() {
+            this.config = this.config || {};
+
+            for (var i = 0; i < arguments.length; i++) {
+                Rise.Util.assign(this.config, arguments[i]);
+            }
+
             return this;
         },
 
