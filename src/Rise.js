@@ -46,9 +46,13 @@
             var node = Rise.$(selector);
 
             if (node.count() === 0) {
-                Rise.Logger.error('Selector -> %s not founded', selector);
-                return false;
+                Rise.Logger.error('Selector -> %s nodes not founded', selector);
             } else {
+                if (node.count() > 1) {
+                    Rise.Logger.warning('Selector -> %s has found more than 1 nodes');
+                    Rise.Logger.warning('Initializing only for node -> %O', noge.get(0));
+                }
+
                 return new Rise(node.get(0), config);
             }
         } else if (selector instanceof Element) {
@@ -57,11 +61,11 @@
             this.canvasNode = Rise.$.create('div');
 
             this.canvasNode
+                .css(this.getConfig('canvas.css'))
                 .css({
                     width: this.getConfig('canvas.width'),
                     height: this.getConfig('canvas.height')
-                })
-                .css(this.getConfig('canvas.css'));
+                });
 
             this.parentNode.append(this.canvasNode);
         } else {
