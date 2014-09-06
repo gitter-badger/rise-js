@@ -15,6 +15,11 @@ describe('Rise', function() {
         new Rise(document.createElement('div')).should.be.an.instanceof(Rise).and.be.ok;
     });
 
+    it('Should properly call update method', function() {
+        var rise = new Rise('#rise-test');
+        rise.update().should.be.an.instanceof(Rise);
+    });
+
     it('Should properly get/set parent node', function() {
         var rise = new Rise('#rise-test');
 
@@ -94,6 +99,18 @@ describe('Rise', function() {
             width: 200,
             height: 200
         });
+    });
+
+    it('Should properly get/set HTML', function() {
+        var rise = new Rise('#rise-test');
+
+        rise.getHtml().should.be.a.string;
+        rise.setHtml('<span>Test</span>').should.be.an.instanceof(Rise);
+        rise.getHtml().should.be.equal('<span>Test</span>');
+
+        rise.getCanvasNode().should.be.an.instanceof(Rise.RQuery);
+        rise.getCanvasNode().is('span').should.be.ok;
+        rise.getParentNode().find('span').count().should.be.equal(1);
     });
 
     it('Should properly return current version', function() {

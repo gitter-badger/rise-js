@@ -78,6 +78,15 @@
 
     Rise.prototype = Object.create({
         /**
+         * Updates Rise instance (canvas) and does needed operation after some changes
+         * @return {Rise} Returns Rise instance
+         */
+        update: function() {
+            this.setCanvasNode(this.getParentNode().children());
+            return this;
+        },
+
+        /**
          * Get parent node
          * @return {Rise.RQuery} Returns Rise.RQuery instance
          */
@@ -219,6 +228,25 @@
                 width: this.getWidth(),
                 height: this.getHeight()
             };
+        },
+
+        /**
+         * Set HTML
+         * @param {String} html HTML string that need to set
+         * @return {Rise} Returns Rise instance
+         */
+        setHtml: function(html) {
+            this.getParentNode().html(html);
+            this.update();
+            return this;
+        },
+
+        /**
+         * Get HTML
+         * @return {String} Returns HTML string
+         */
+        getHtml: function() {
+            return this.getParentNode().html();
         }
     });
 
