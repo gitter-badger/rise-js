@@ -4,7 +4,7 @@ describe('Rise.Element', function() {
         Rise.Element.should.be.a.function;
     });
 
-    it('Should properly create new instance', function() {
+    it('Should properly instantiate', function() {
         var element = new Rise.Element();
         element.should.be.an.instanceof(Rise.Element);
     });
@@ -15,5 +15,11 @@ describe('Rise.Element', function() {
         element.setNode(Rise.$.create('div')).should.be.an.instanceof(Rise.Element);
         element.getNode().should.be.an.instanceof(Rise.RQuery);
         element.getNode().is('div').should.be.ok;
+    });
+
+    it('Should properly return type', function() {
+        var element = new Rise.Element();
+        element.getType().should.be.a.string;
+        element.getType().should.be.equal('Basic');
     });
 });

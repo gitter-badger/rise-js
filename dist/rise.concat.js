@@ -6,7 +6,7 @@
      * @type {String}
      * @private
      */
-    var VERSION = '0.0.3-alpha';
+    var VERSION = '0.0.3';
 
     /**
      * Default configuration object
@@ -78,7 +78,9 @@
 
     Rise.prototype = Object.create({
         /**
-         * Updates Rise instance (canvas) and does needed operation after some changes
+         * Updates Rise instance (canvas) and does needed operation after some changes.
+         * This method must implements features which will fix smth after smth changes.
+         * I.e. after setHtml it will fix canvasNode property for appropriate new canvas node.
          * @return {Rise} Returns Rise instance
          */
         update: function() {
@@ -215,7 +217,6 @@
         setDimensions: function(width, height) {
             this.setWidth(width);
             this.setHeight(height);
-
             return this;
         },
 
@@ -254,13 +255,19 @@
          * @param {Rise.Element} element Rise.Element instance that you want to add
          * @return {Rise} Returns Rise instance
          * @example
-         * var element = new Rise.TextElement();
          * var canvas = new Rise();
+         * var element = new Rise.TextElement();
          * canvas.addElement(element);
          */
         addElement: function(element) {
-            if (element instanceof Rise.Element) {
+            if (
+                element instanceof Rise.Element &&
+                element.getType() &&
+                element.getNode
+            ) {
                 this.getCanvasNode().append(element.getNode());
+            } else {
+                Rise.Logger.error("Can't add element -> %O. It's not an Rise Element.", element);
             }
 
             return this;
@@ -3397,10 +3404,17 @@
 
     global.Rise.Element = Rise.Class.create({
         /**
+         * Field that declare what exactly type of this element
+         * @type {String}
+         */
+        type: 'Basic',
+
+        /**
          * Create basic element
          * @return {Rise.Element} Returns Rise.Element instance
          */
         init: function() {
+            this.setNode(Rise.$.create('span').text('Basic Element'));
             return this;
         },
 
@@ -3419,6 +3433,39 @@
          */
         setNode: function(node) {
             this.node = Rise.$(node);
+            return this;
+        },
+
+        /**
+         * Get type of Element
+         * @return {String} Returns type of Element
+         */
+        getType: function() {
+            return this.type;
+        }
+    });
+})(this);
+(function(global) {
+    'use strict';
+
+    global.Rise.TextElement = Rise.Element.extend({
+        /**
+         * Declare type of Element
+         * @type {String}
+         */
+        type: 'Text',
+
+        /**
+         * Create new Rise.TextElement instance
+         * @constructor
+         * @param  {Object} options Additional options for TextElement
+         * @return {Rise.TextElement}         Returns Rise.TextElement instance
+         */
+        init: function(options) {
+            var textNode = Rise.$.create('span').text('test node');
+
+            this._super();
+            this.setNode(textNode);
             return this;
         }
     });

@@ -6,7 +6,7 @@
      * @type {String}
      * @private
      */
-    var VERSION = '0.0.3-alpha';
+    var VERSION = '0.0.3';
 
     /**
      * Default configuration object
@@ -78,7 +78,9 @@
 
     Rise.prototype = Object.create({
         /**
-         * Updates Rise instance (canvas) and does needed operation after some changes
+         * Updates Rise instance (canvas) and does needed operation after some changes.
+         * This method must implements features which will fix smth after smth changes.
+         * I.e. after setHtml it will fix canvasNode property for appropriate new canvas node.
          * @return {Rise} Returns Rise instance
          */
         update: function() {
@@ -215,7 +217,6 @@
         setDimensions: function(width, height) {
             this.setWidth(width);
             this.setHeight(height);
-
             return this;
         },
 
@@ -254,13 +255,19 @@
          * @param {Rise.Element} element Rise.Element instance that you want to add
          * @return {Rise} Returns Rise instance
          * @example
-         * var element = new Rise.TextElement();
          * var canvas = new Rise();
+         * var element = new Rise.TextElement();
          * canvas.addElement(element);
          */
         addElement: function(element) {
-            if (element instanceof Rise.Element) {
+            if (
+                element instanceof Rise.Element &&
+                element.getType() &&
+                element.getNode
+            ) {
                 this.getCanvasNode().append(element.getNode());
+            } else {
+                Rise.Logger.error("Can't add element -> %O. It's not an Rise Element.", element);
             }
 
             return this;

@@ -113,6 +113,17 @@ describe('Rise', function() {
         rise.getParentNode().find('span').count().should.be.equal(1);
     });
 
+    it('Should properly add new Element', function() {
+        var rise = new Rise('#rise-test'),
+            element = new Rise.Element();
+
+        rise.getCanvasNode().children().count().should.be.equal(0);
+        rise.addElement(element).should.be.an.instanceof(Rise);
+        rise.getCanvasNode().children().count().should.be.equal(1);
+        rise.getCanvasNode().empty().should.be.an.instanceof(Rise.RQuery);
+        rise.getCanvasNode().children().count().should.be.equal(0);
+    });
+
     it('Should properly return current version', function() {
         Rise.getVersion().should.be.a.string;
     });
