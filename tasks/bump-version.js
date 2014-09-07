@@ -5,8 +5,8 @@ module.exports = function(gulp) {
     gulp.task('bump-version', function() {
         return gulp.src(path.resolve(__dirname, '../package.json'))
             .pipe(bump({
-                // type: 'prerelease'
-                type: 'patch'
+                type: 'prerelease'
+                // type: 'patch'
                 // type: 'minor'
                 // type: 'major'
             }))
