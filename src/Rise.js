@@ -6,7 +6,7 @@
      * @type {String}
      * @private
      */
-    var VERSION = '0.0.2';
+    var VERSION = '0.0.3';
 
     /**
      * Default configuration object
@@ -46,24 +46,28 @@
             var node = Rise.$(selector);
 
             if (node.count() === 0) {
-                Rise.Logger.error('Selector -> %s not founded', selector);
-                return false;
+                Rise.Logger.error('Selector -> %s nodes not founded', selector);
             } else {
+                if (node.count() > 1) {
+                    Rise.Logger.warning('Selector -> %s has found more than 1 nodes');
+                    Rise.Logger.warning('Initializing only for node -> %O', noge.get(0));
+                }
+
                 return new Rise(node.get(0), config);
             }
         } else if (selector instanceof Element) {
-            this.config = Rise.Util.assign({}, defaultConfig, config);
-            this.parentNode = Rise.$(selector);
-            this.canvasNode = Rise.$.create('div');
+            this.setConfig(defaultConfig, config);
+            this.setParentNode(selector);
+            this.setCanvasNode(Rise.$.create('div'));
 
-            this.canvasNode
+            this.getCanvasNode()
+                .css(this.getConfig('canvas.css'))
                 .css({
                     width: this.getConfig('canvas.width'),
                     height: this.getConfig('canvas.height')
-                })
-                .css(this.getConfig('canvas.css'));
+                });
 
-            this.parentNode.append(this.canvasNode);
+            this.getParentNode().append(this.getCanvasNode());
         } else {
             Rise.Logger.error('Selector -> %O not parsed', selector);
             return false;
@@ -74,11 +78,42 @@
 
     Rise.prototype = Object.create({
         /**
+         * Updates Rise instance (canvas) and does needed operation after some changes.
+         * This method must implements features which will fix smth after smth changes.
+         * I.e. after setHtml it will fix canvasNode property for appropriate new canvas node.
+         * @return {Rise} Returns Rise instance
+         */
+        update: function() {
+            this.setCanvasNode(this.getParentNode().children());
+            return this;
+        },
+
+        /**
+         * Set parent node
+         * @param {Rise.RQuery|Element} node
+         * @return {Rise} Returns Rise instance
+         */
+        setParentNode: function(node) {
+            this.parentNode = Rise.$(node);
+            return this;
+        },
+
+        /**
          * Get parent node
          * @return {Rise.RQuery} Returns Rise.RQuery instance
          */
         getParentNode: function() {
             return this.parentNode;
+        },
+
+        /**
+         * Set canvas node
+         * @param {Rise.RQuery|Element} node
+         * @return {Rise} Returns Rise instance
+         */
+        setCanvasNode: function(node) {
+            this.canvasNode = Rise.$(node);
+            return this;
         },
 
         /**
@@ -91,17 +126,18 @@
 
         /**
          * Update configuration object
-         * @param {Object} config New configuration object
+         * @param {Object} [config] New configuration object
          * @return {Rise} Returns Rise instance
          * @example
-         * Rise.setConfig({
-         *     draggable: {
-         *         enabled: true
-         *     }
-         * });
+         * Rise.setConfig(config1, config2, config3);
          */
-        setConfig: function(config) {
-            Rise.Util.assign(this.config, config);
+        setConfig: function() {
+            this.config = this.config || {};
+
+            for (var i = 0; i < arguments.length; i++) {
+                Rise.Util.assign(this.config, arguments[i]);
+            }
+
             return this;
         },
 
@@ -181,7 +217,6 @@
         setDimensions: function(width, height) {
             this.setWidth(width);
             this.setHeight(height);
-
             return this;
         },
 
@@ -194,6 +229,48 @@
                 width: this.getWidth(),
                 height: this.getHeight()
             };
+        },
+
+        /**
+         * Set HTML
+         * @param {String} html HTML string that need to set
+         * @return {Rise} Returns Rise instance
+         */
+        setHtml: function(html) {
+            this.getParentNode().html(html);
+            this.update();
+            return this;
+        },
+
+        /**
+         * Get HTML
+         * @return {String} Returns HTML string
+         */
+        getHtml: function() {
+            return this.getParentNode().html();
+        },
+
+        /**
+         * Add element to canvas
+         * @param {Rise.Element} element Rise.Element instance that you want to add
+         * @return {Rise} Returns Rise instance
+         * @example
+         * var canvas = new Rise();
+         * var element = new Rise.TextElement();
+         * canvas.addElement(element);
+         */
+        addElement: function(element) {
+            if (
+                element instanceof Rise.Element &&
+                element.getType() &&
+                element.getNode
+            ) {
+                this.getCanvasNode().append(element.getNode());
+            } else {
+                Rise.Logger.error("Can't add element -> %O. It's not an Rise Element.", element);
+            }
+
+            return this;
         }
     });
 

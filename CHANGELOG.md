@@ -1,6 +1,17 @@
 Edge version
 ===
 
+Version 0.0.3
+===
+- Basic Rise.Element class;
+- Rise.TextElement realized with basic features;
+- Rise.addElement method that add to appropriate canvas created Element;
+- Realize warning that shows when you apply Rise to more that one node at once;
+- Rise.setConfig now applies many objects at once;
+- getter and setter for parent/canvas nodes;
+- getter and setter for canvas html;
+- update method that recalculates common variables and properties;
+
 Version 0.0.2
 ===
 - Realize canvas prototype and basic functions in Rise instance;
