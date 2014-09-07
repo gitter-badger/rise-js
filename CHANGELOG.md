@@ -4,6 +4,11 @@ Changelog
 Edge version
 ---
 
+Version 0.0.4
+---
+- Write contributing docs;
+- Support for overriding default Gulp configuration object in tasks/local.json;
+
 Version 0.0.3
 ---
 - Basic Rise.Element class;

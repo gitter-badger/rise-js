@@ -1,7 +1,7 @@
-Authors
+RiseJS Author and core developer
 ===
 
-1. Eugene Obrezkov (aka ghaiklor)
+Eugene Obrezkov (aka ghaiklor)
 
 - [VK](http://vk.com/ghaiklor_xakep)
 - [Facebook](https://www.facebook.com/ghaiklor)
