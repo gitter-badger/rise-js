@@ -6,8 +6,8 @@ var gulp = require('gulp'),
     configLocation = path.resolve(__dirname, 'tasks/local.json'),
     config = extend({
         appRoot: '/var/www/rise-js/',
-        bumpVersionType: 'prerelease',
-        // bumpVersionType: 'patch',
+        // bumpVersionType: 'prerelease',
+        bumpVersionType: 'patch',
         // bumpVersionType: 'minor',
         // bumpVersionType: 'major',
         sourceMap: [
