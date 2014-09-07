@@ -1,8 +1,18 @@
-Edge version
+Changelog
 ===
 
+Edge version
+---
+
+Version 0.0.4
+---
+- Support for overriding default Gulp configuration object in tasks/local.json;
+- Write contributing docs;
+- Write basic README.md;
+- Update licence to MIT;
+
 Version 0.0.3
-===
+---
 - Basic Rise.Element class;
 - Rise.TextElement realized with basic features;
 - Rise.addElement method that add to appropriate canvas created Element;
@@ -13,7 +23,7 @@ Version 0.0.3
 - update method that recalculates common variables and properties;
 
 Version 0.0.2
-===
+---
 - Realize canvas prototype and basic functions in Rise instance;
 - Realize get/set dimensions and config;
 - Realize Rise.Math module;
@@ -23,7 +33,7 @@ Version 0.0.2
 - Many small improvements, optimization and typo fixes;
 
 Version 0.0.1
-===
+---
 - Realize Rise.Class;
 - Realize Rise.Color;
 - Realize Rise.Font;

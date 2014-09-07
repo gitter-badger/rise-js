@@ -1,11 +1,17 @@
-*Eugene Obrezkov aka ghaiklor*
+RiseJS author and core developer
+===
 
-[VK](http://vk.com/ghaiklor_xakep)
+Eugene Obrezkov (aka ghaiklor)
 
-[Facebook](https://www.facebook.com/ghaiklor)
+- [VK](http://vk.com/ghaiklor_xakep)
+- [Facebook](https://www.facebook.com/ghaiklor)
+- [Twitter](https://twitter.com/ghaiklor)
+- [GMail](mailto:ghaiklor@gmail.com)
+- [Habrahabr](http://habrahabr.ru/users/ghaiklor/)
+- [Stack Overflow](http://stackoverflow.com/users/2357633/eugene-obrezkov)
+- [GitHub](https://github.com/ghaiklor)
 
-[Twitter](https://twitter.com/ghaiklor)
+Contributors
+===
 
-[Stack Overflow](http://stackoverflow.com/users/2357633/eugene-obrezkov)
-
-[GitHub](https://github.com/ghaiklor)
+We dont have contributors... yet :(

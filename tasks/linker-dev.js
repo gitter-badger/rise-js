@@ -1,22 +1,17 @@
 var linker = require('gulp-linker'),
     path = require('path');
 
-module.exports = function(gulp) {
+module.exports = function(gulp, config) {
     gulp.task('linker-dev', function() {
         return gulp.src(path.resolve(__dirname, '../index.html'))
             .pipe(linker({
-                scripts: [
-                    path.resolve(__dirname, '../src/Rise.js'),
-                    path.resolve(__dirname, '../src/util/Util.js'),
-                    path.resolve(__dirname, '../src/util/**/*.js'),
-                    path.resolve(__dirname, '../src/Element.js'),
-                    path.resolve(__dirname, '../src/element/**/*.js'),
-                    path.resolve(__dirname, '../src/**/*.js')
-                ],
+                scripts: config.sourceMap.map(function(item) {
+                    return path.resolve(__dirname, item);
+                }),
                 startTag: '<!--SCRIPTS-->',
                 endTag: '<!--SCRIPTS END-->',
                 fileTmpl: '<script src="%s"></script>',
-                appRoot: '/var/www/rise-js/'
+                appRoot: config.appRoot
             }))
             .pipe(gulp.dest('./'));
     });

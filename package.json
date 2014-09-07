@@ -6,7 +6,7 @@
     },
     "contributors": [],
     "name": "rise-js",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "",
     "keywords": [],
     "homepage": "http://ghaiklor.github.io/rise-js",
@@ -14,7 +14,7 @@
         "url": "https://github.com/ghaiklor/rise-js/issues",
         "email": "ghaiklor@gmail.com"
     },
-    "license": "Apache-2.0",
+    "license": "MIT",
     "main": "dist/rise.min.js",
     "scripts": {
         "test": "gulp run-tests"
@@ -25,6 +25,7 @@
     },
     "devDependencies": {
         "del": "latest",
+        "extend": "latest",
         "gulp": "latest",
         "gulp-bump": "latest",
         "gulp-concat": "latest",
