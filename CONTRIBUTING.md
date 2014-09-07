@@ -123,9 +123,7 @@ npm install
 ### Run RiseJS locally
 You can create virtual host that points to your project folder and will open `index.html`. Or you can just open `index.html` as file in your browser.
 
-**//TODO**: create in `tasks/local.js` file that will not be commited to repository.
-
-**_Note_**: if you will get error that assets not found, run `gulp linker-dev`. This task will inject assets URL into `index.html` relative to your current location.
+**_Note_**: if you will get error that assets not found, check relative URLs in `tasks/local.json` and run `gulp linker-dev`. This task will inject assets URL into `index.html` relative to your current location.
 
 Project structure
 ---
@@ -141,15 +139,77 @@ Gulp tasks
 ---
 Each task that can be done with Gulp writed and located under `tasks/` folder.
 
-When gulp is running, it's automatically require all files `*.js` located under this folder and execute them. So add new task it's not a problem. For example, simple task will looks like this:
+When Gulp is running, it's automatically require all files `*.js` located under this folder and execute them.
+
+### Add new Gulp task
+When you decide to add new task it's not a problem.
+
+Each file under `tasks` folder **MUST** have `.js` extension. Your js-file must exports function with 2 arguments: gulp and gulp config objects.
+
+For example, simple task will looks like this:
 
 ```javascript
-module.exports = function(gulp) {
-    gulp.task('default', function() {
-        return gulp.src(); // And other stuff
+// tasks/my-new-task.js
+var path = require('path'),
+    gulpModule = require('gulpModule');
+
+module.exports = function(gulp, config) {
+    gulp.task('my-new-task', function() {
+        return gulp.src(config.sourceMap).pipe(gulpModule()).pipe(gulp.dest('./'));
+        // And so on
     });
 };
 ```
+
+### Gulp default config
+Default config object located in `gulpfile.js`
+
+```javascript
+appRoot: '/var/www/rise-js/',
+bumpVersionType: 'prerelease',
+sourceMap: [
+    "../src/Rise.js",
+    "../src/util/Util.js",
+    "../src/util/**/*.js",
+    "../src/Element.js",
+    "../src/element/**/*.js",
+    "../src/**/*.js"
+]
+```
+
+### Gulp local config
+
+You can create `tasks/local.json` file, where overrides default Gulp configuration. For example, you have problem that `appRoot` variable for linker tasks differents in different environments. So, in the result, you will got always conflicting relative URLs in `index.html` and `run-tests.html` on making commit.
+
+How fix that? Just create `tasks/local.json` file and set `appRoot` property to fit your needs. If you store your project at `/srv/http/rise-js/` then set `appRoot` in your local config to `srv/http/rise-js`.
+
+I'm using also Windows sometimes and always had problems with URLs. So I create `local.json` file that resolves the problem.
+
+```javascript
+{
+    "appRoot": "C:/Users/ghaiklor/Documents/GitHub/rise-js/"
+}
+```
+
+### List of tasks
+
+- `gulp build-js` - Run concatenate and minifying source files into `dist/` and create source maps for build.
+
+- `gulp build` - Wrapper for `clean`, `run-validation`, `run-tests`, `bump-version` and `build-js` tasks.
+
+- `gulp bump-version` - Bump version in `package.json`.
+
+- `gulp clean` - Cleans `dist/` folder from old build.
+
+- `gulp` or `gulp default` - Default task. Wrapper for `linker-dev` and `watch` tasks.
+
+- `gulp linker-dev` - Link all source files to `index.html`.
+
+- `gulp run-tests` - Link all test cases from `tests/` into `run-tests.html` and run tests.
+
+- `gulp run-validation` - Run jshint validation for all files located under `src/` folder.
+
+- `gulp watch` - Start watching for all source files and triggers livereload when changes was saved.
 
 Tests
 ---

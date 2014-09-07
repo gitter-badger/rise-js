@@ -2,7 +2,7 @@ var mocha = require('gulp-mocha-phantomjs'),
     linker = require('gulp-linker'),
     path = require('path');
 
-module.exports = function(gulp) {
+module.exports = function(gulp, config) {
     gulp.task('run-tests', ['build-js'], function() {
         return gulp.src(path.resolve(__dirname, '../run-tests.html'))
             .pipe(linker({
@@ -12,7 +12,7 @@ module.exports = function(gulp) {
                 startTag: '<!--SCRIPTS-->',
                 endTag: '<!--SCRIPTS END-->',
                 fileTmpl: '<script src="%s"></script>',
-                appRoot: '/var/www/rise-js/'
+                appRoot: config.appRoot
             }))
             .pipe(gulp.dest('./'))
             .pipe(mocha({

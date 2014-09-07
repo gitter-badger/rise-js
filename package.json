@@ -6,7 +6,7 @@
     },
     "contributors": [],
     "name": "rise-js",
-    "version": "0.0.4-0",
+    "version": "0.0.4-3",
     "description": "",
     "keywords": [],
     "homepage": "http://ghaiklor.github.io/rise-js",
@@ -25,6 +25,7 @@
     },
     "devDependencies": {
         "del": "latest",
+        "extend": "latest",
         "gulp": "latest",
         "gulp-bump": "latest",
         "gulp-concat": "latest",
