@@ -14,7 +14,7 @@
         "url": "https://github.com/ghaiklor/rise-js/issues",
         "email": "ghaiklor@gmail.com"
     },
-    "license": "Apache-2.0",
+    "license": "MIT",
     "main": "dist/rise.min.js",
     "scripts": {
         "test": "gulp run-tests"

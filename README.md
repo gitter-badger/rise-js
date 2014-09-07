@@ -52,6 +52,4 @@ Examples
 ===
 //TODO: fill it
 
-**Copyright** 2014 Eugene Obrezkov
-
-[Apache License](https://github.com/ghaiklor/rise-js/blob/master/LICENSE)
+Copyright (c) 2014 Eugene Obrezkov - [MIT License](https://github.com/ghaiklor/rise-js/blob/master/LICENSE)

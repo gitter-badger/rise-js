@@ -6,8 +6,10 @@ Edge version
 
 Version 0.0.4
 ---
-- Write contributing docs;
 - Support for overriding default Gulp configuration object in tasks/local.json;
+- Write contributing docs;
+- Write basic README.md;
+- Update licence to MIT;
 
 Version 0.0.3
 ---
