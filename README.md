@@ -10,10 +10,9 @@ RiseJS - is a JavaScript library that provides interactive editor on top of html
 Latest builds
 ---
 
-| Release | Build status |
-|---------|--------------|
-| [stable](https://github.com/ghaiklor/rise-js/tree/master) | [![Build Status](https://travis-ci.org/ghaiklor/rise-js.svg?branch=master)](https://travis-ci.org/ghaiklor/rise-js) |
-| [edge](https://github.com/ghaiklor/rise-js/tree/dev) | [![Build Status](https://travis-ci.org/ghaiklor/rise-js.svg?branch=dev)](https://travis-ci.org/ghaiklor/rise-js) |
+| [Stable Release](https://github.com/ghaiklor/rise-js/tree/master) | [Edge Release](https://github.com/ghaiklor/rise-js/tree/dev) | Coverage |
+|:---:|:---:|:---:|
+| [![Build Status](https://travis-ci.org/ghaiklor/rise-js.svg?branch=master)](https://travis-ci.org/ghaiklor/rise-js) | [![Build Status](https://travis-ci.org/ghaiklor/rise-js.svg?branch=dev)](https://travis-ci.org/ghaiklor/rise-js) | [![Coverage Status](https://img.shields.io/coveralls/ghaiklor/rise-js.svg)](https://coveralls.io/r/ghaiklor/rise-js) |
 
 Features
 ---
