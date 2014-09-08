@@ -123,7 +123,7 @@ npm install
 ### Run RiseJS locally
 You can create virtual host that points to your project folder and will open `index.html`. Or you can just open `index.html` as file in your browser.
 
-**_Note_**: if you will get error that assets not found, check relative URLs in `tasks/local.json` and run `gulp linker-dev`. This task will inject assets URL into `index.html` relative to your current location.
+**_Note_**: if you will get error that assets not found, check relative URLs in `tasks/local.json` (more about it in Gulp section) and run `gulp linker-dev`. This task will inject assets URL into `index.html` relative to your current location.
 
 Project structure
 ---
@@ -161,25 +161,15 @@ module.exports = function(gulp, config) {
 };
 ```
 
-### Gulp default config
-Default config object located in `gulpfile.js`
+### Gulp configuration
 
-```javascript
-appRoot: '/var/www/rise-js/',
-bumpVersionType: 'prerelease',
-sourceMap: [
-    "../src/Rise.js",
-    "../src/util/Util.js",
-    "../src/util/**/*.js",
-    "../src/Element.js",
-    "../src/element/**/*.js",
-    "../src/**/*.js"
-]
-```
+Default Gulp configuration is located in `gulpfile.js`. **DON'T** change this file until you really need do something here. If you want override default configuration, you **MUST** use `tasks/local.json`.
 
-### Gulp local config
+In default Gulp configuration we are set appRoot folder, source dependency order, type of bump version and more. In general, defaults Gulp configuration enough for start development right from box.
 
-You can create `tasks/local.json` file, where overrides default Gulp configuration. For example, you have problem that `appRoot` variable for linker tasks differents in different environments. So, in the result, you will got always conflicting relative URLs in `index.html` and `run-tests.html` on making commit.
+But if for some reasons you need override default configuration - create `tasks/local.json` file. This file is excluded from git, so you can not worry about conflicts in configuration files and don't need modify `gulpfile.js`.
+
+For example, you have problem that `appRoot` variable for linker tasks differents in different environments. So, in the result, you will got always conflicting relative URLs in `index.html` and `run-tests.html` on making commit.
 
 How fix that? Just create `tasks/local.json` file and set `appRoot` property to fit your needs. If you store your project at `/srv/http/rise-js/` then set `appRoot` in your local config to `srv/http/rise-js`.
 
@@ -193,7 +183,9 @@ I'm using also Windows sometimes and always had problems with URLs. So I create 
 
 ### List of tasks
 
-- `gulp build-js` - Run concatenate and minifying source files into `dist/` and create source maps for build.
+At the moment of writing this article, we had create this tasks:
+
+- `gulp build-js` - Run concatenating and minifying source files into `dist/` and create source maps for build.
 
 - `gulp build` - Wrapper for `clean`, `run-validation`, `run-tests`, `bump-version` and `build-js` tasks.
 
@@ -219,6 +211,8 @@ When you create new feature or fix some bug, you **MUST** write test case for it
 
 For run tests just call `gulp run-tests`.
 
+**_Note_**: `gulp run-tests` task included into `gulp build` task.
+
 Versions
 ---
 We are using "Semantic Versioning". You can find rules how to use it [here](http://semver.org/).
@@ -237,7 +231,7 @@ Build
 ---
 When you ready to create new build, make sure that this steps will be executed.
 
-Change in `tasks/bump-version.js` type `prerelease` to type `patch` or anything else what you need.
+Change in `tasks/local.js` property `bumpVersionType` to `patch` or anything else what you need.
 
 Available types for versions: `prerelease`, `patch`, `minor`, `major`.
 

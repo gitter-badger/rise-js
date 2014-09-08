@@ -7,14 +7,11 @@ var gulp = require('gulp'),
     config = extend({
         appRoot: '/var/www/rise-js/',
         bumpVersionType: 'prerelease',
-        // bumpVersionType: 'patch',
-        // bumpVersionType: 'minor',
-        // bumpVersionType: 'major',
         sourceMap: [
             "../src/Rise.js",
+            "../src/Element.js",
             "../src/util/Util.js",
             "../src/util/**/*.js",
-            "../src/Element.js",
             "../src/element/**/*.js",
             "../src/**/*.js"
         ]
