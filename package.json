@@ -6,9 +6,13 @@
     },
     "contributors": [],
     "name": "rise-js",
-    "version": "0.0.4",
-    "description": "",
-    "keywords": [],
+    "version": "0.0.5",
+    "description": "JavaScript library that provides interactive editor on top of html elements",
+    "keywords": [
+        "html",
+        "interactive",
+        "editor"
+    ],
     "homepage": "http://ghaiklor.github.io/rise-js",
     "bugs": {
         "url": "https://github.com/ghaiklor/rise-js/issues",

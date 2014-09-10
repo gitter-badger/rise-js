@@ -6,18 +6,17 @@ var gulp = require('gulp'),
     configLocation = path.resolve(__dirname, 'tasks/local.json'),
     config = extend({
         appRoot: '/var/www/rise-js/',
-        // bumpVersionType: 'prerelease',
-        bumpVersionType: 'patch',
-        // bumpVersionType: 'minor',
-        // bumpVersionType: 'major',
+        bumpVersionType: 'prerelease',
         sourceMap: [
-            "../src/Rise.js",
-            "../src/util/Util.js",
-            "../src/util/**/*.js",
-            "../src/Element.js",
-            "../src/element/**/*.js",
-            "../src/**/*.js"
-        ]
+            "src/Rise.js",
+            "src/util/Util.js",
+            "src/util/**/*.js",
+            "src/Element.js",
+            "src/element/**/*.js",
+            "src/**/*.js"
+        ].map(function(item) {
+            return path.resolve(__dirname, item);
+        })
     }, fs.existsSync(configLocation) ? require(configLocation) : {}),
 
     tasks = require('require-all')({

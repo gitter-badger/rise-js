@@ -6,9 +6,7 @@ var concat = require('gulp-concat'),
 
 module.exports = function(gulp, config) {
     gulp.task('build-js', ['clean'], function() {
-        return gulp.src(config.sourceMap.map(function(item) {
-                return path.resolve(__dirname, item);
-            }))
+        return gulp.src(config.sourceMap)
             .pipe(concat('rise.concat.js'))
             .pipe(gulp.dest('./dist'))
             .pipe(rename('rise.min.js'))

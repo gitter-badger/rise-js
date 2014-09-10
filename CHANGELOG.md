@@ -3,6 +3,8 @@ Changelog
 
 Edge version
 ---
+- Small typo fixes in documentation;
+- Fixes in gulp config -> sourceMap that maps resolved paths right to config;
 
 Version 0.0.4
 ---
