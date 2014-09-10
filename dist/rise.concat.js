@@ -6,7 +6,7 @@
      * @type {String}
      * @private
      */
-    var VERSION = '0.0.5-alpha';
+    var VERSION = '0.0.6';
 
     /**
      * Default configuration object
