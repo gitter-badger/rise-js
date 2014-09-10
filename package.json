@@ -28,6 +28,7 @@
         "url": "https://github.com/ghaiklor/rise-js.git"
     },
     "devDependencies": {
+        "coveralls": "latest",
         "del": "latest",
         "extend": "latest",
         "gulp": "latest",
@@ -41,7 +42,9 @@
         "gulp-rename": "latest",
         "gulp-sourcemaps": "latest",
         "gulp-uglify": "latest",
+        "istanbul": "latest",
         "jshint-stylish": "latest",
+        "mocha": "latest",
         "require-all": "latest",
         "should": "latest"
     }
