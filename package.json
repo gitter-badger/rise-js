@@ -36,6 +36,7 @@
         "gulp-jshint": "latest",
         "gulp-linker": "latest",
         "gulp-livereload": "latest",
+        "gulp-mocha": "latest",
         "gulp-mocha-phantomjs": "latest",
         "gulp-rename": "latest",
         "gulp-sourcemaps": "latest",
