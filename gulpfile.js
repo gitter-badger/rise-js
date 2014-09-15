@@ -9,6 +9,7 @@ var gulp = require('gulp'),
         bumpVersionType: 'prerelease',
         sourceMap: [
             "src/Rise.js",
+            "src/DI.js",
             "src/util/Util.js",
             "src/util/**/*.js",
             "src/Element.js",

@@ -15,10 +15,10 @@
      */
     var defaultConfig = {
         canvas: {
-            width: 640,
-            height: 480,
+            width: 600,
+            height: 500,
             css: {
-                outline: '1px solid black',
+                boxShadow: '0px 0px 1px 1px #000000',
                 position: 'relative'
             }
         }
