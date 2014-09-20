@@ -1,4 +1,4 @@
-(function(global) {
+(function (global) {
     'use strict';
 
     /**
@@ -9,12 +9,12 @@
      * @private
      */
     function copyProperties(source, target, parent) {
-        Object.keys(source).forEach(function(key) {
+        Object.keys(source).forEach(function (key) {
             if (
-                typeof source[key] == "function" &&
-                typeof parent[key] == "function" &&
+                typeof source[key] === "function" &&
+                typeof parent[key] === "function" &&
                 /\b_super\b/.test(source[key])
-            ) {
+                ) {
                 target[key] = wrapMethod(source[key], parent[key]);
             } else {
                 target[key] = source[key];
@@ -31,7 +31,7 @@
      * @private
      */
     function wrapMethod(method, parentMethod) {
-        return function() {
+        return function () {
             var backup = this._super;
             this._super = parentMethod;
 
@@ -47,7 +47,8 @@
      * Empty function (interface)
      * @private
      */
-    function Class() {}
+    function Class() {
+    }
 
     /**
      * Create new Class or extend exists
@@ -62,7 +63,7 @@
      * Rise.Class.create([prototype], [staticProperties])
      * Rise.Class.create([prototype], [staticProperties], [mixins])
      */
-    Class.create = function(prototype, staticProperties, mixins) {
+    Class.create = function (prototype, staticProperties, mixins) {
         prototype = prototype || {};
         staticProperties = staticProperties || {};
         mixins = mixins || [];
@@ -86,4 +87,4 @@
 
     global.Rise.Class = Class;
 
-})(this);
+})(window);

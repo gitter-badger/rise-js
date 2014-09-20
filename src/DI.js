@@ -1,37 +1,45 @@
-(function(global) {
+(function () {
     'use strict';
 
+    /**
+     * All registered services in DI container
+     * @type {Object}
+     */
     var services = {};
 
-    global.Rise.DI = {
+    Rise.DI = {
         /**
          * Get service by name
          * @param  {String} name Service name
-         * @return {Mixed}       Returns service if exists
+         * @return {Object}       Returns service if exists
          */
-        get: function(name) {
+        get: function (name) {
             return services[name];
         },
 
         /**
          * Register service by name
          * @param  {String} key   Service name
-         * @param  {Mixed} value  Value of service
+         * @param  {Object} value  Value of service
          * @return {Rise.DI}      Returns instance of Rise.DI
          */
-        register: function(key, value) {
+        register: function (key, value) {
             services[key] = value;
             return this;
         },
 
         /**
          * Resolve dependencies and call function
-         * @param  {Array} deps         Array with dependencies
+         * @param  {Array} dependencies Array with string items
          * @param  {Function} callback  Function which applies dependencies
          * @param  {Object} scope       Function context
          * @return {Rise.DI}            Returns Rise.DI
+         * @example
+         * Rise.DI.resolve(['Rise.Color'], function(Color) {
+         *      new Color('black').toRgbString();
+         * });
          */
-        resolve: function(dependencies, callback, scope) {
+        resolve: function (dependencies, callback, scope) {
             var args = [],
                 service;
 
@@ -47,4 +55,4 @@
             callback.apply(scope || {}, args.concat(Array.prototype.slice.call(arguments, 0)));
         }
     };
-})(this);
+})(window);

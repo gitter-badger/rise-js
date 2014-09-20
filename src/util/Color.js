@@ -994,7 +994,7 @@
         /**
          * Create new Rise.Color instance from string colour
          * @param  {String} color String representation of colour
-         * @return {Rise.Color}   Returns Rise.Color instance
+         * @return {Window.Rise.Color}   Returns Rise.Color instance
          */
         fromString: function(color) {
             color = color.trim().replace(/#/g, '').toLowerCase();
@@ -1076,4 +1076,4 @@
      * @static
      */
     Rise.Color.hexNamesMap = Rise.Util.flipObject(Rise.Color.colorNamesMap);
-})(this);
+})(window);
