@@ -1,20 +1,35 @@
-(function (global) {
+(function () {
     'use strict';
 
     /**
-     * Copy properties from parent to target object
-     * @param  {Object} source Object from where properties will be copied
-     * @param  {Object} target Object to where properties will copy
-     * @param  {Object} parent Parent object
-     * @private
+     * Wrap method with function which set super to object
+     * @param sourceMethod Source method that need to wrap
+     * @param superMethod super method that will be called
+     * @returns {Function} Returns wrapped function
+     */
+    function wrapMethod(sourceMethod, superMethod) {
+        return function () {
+            var backup = this.super;
+
+            this.super = superMethod;
+
+            try {
+                return sourceMethod.apply(this, arguments);
+            } finally {
+                this.super = backup;
+            }
+        };
+    }
+
+    /**
+     * Copy properties from source object to target object
+     * @param source Source object from where properties will copied
+     * @param target Target object to where properties will copied
+     * @param parent Parent object for wrap source methods with super
      */
     function copyProperties(source, target, parent) {
         Object.keys(source).forEach(function (key) {
-            if (
-                typeof source[key] === "function" &&
-                typeof parent[key] === "function" &&
-                /\b_super\b/.test(source[key])
-                ) {
+            if (typeof source[key] === "function" && typeof parent[key] === "function" && /this\.super\(/.test(source[key])) {
                 target[key] = wrapMethod(source[key], parent[key]);
             } else {
                 target[key] = source[key];
@@ -23,50 +38,25 @@
     }
 
     /**
-     * Wrap method with parent method.
-     * Useful for create this._super() in subclasses.
-     * @param  {Function} method Method that need to be wrapped
-     * @param  {Function} parentMethod Parent method, in other words - this._super();
-     * @return {Function} Returns wrapped function
-     * @private
-     */
-    function wrapMethod(method, parentMethod) {
-        return function () {
-            var backup = this._super;
-            this._super = parentMethod;
-
-            try {
-                return method.apply(this, arguments);
-            } finally {
-                this._super = backup;
-            }
-        };
-    }
-
-    /**
-     * Empty function (interface)
-     * @private
+     * Blank function
+     * @constructor
      */
     function Class() {
     }
 
     /**
-     * Create new Class or extend exists
-     * @static
-     * @param {Object} [prototype] Prototype object for new Class
-     * @param {Object} [staticProperties] Object with static properties for new Class
-     * @param {Array}  [mixins] Array of mixins which need to inject in new Class prototype
-     * @return {Object} Returns new Class
-     *
-     * @example
-     * Rise.Class.create([prototype])
-     * Rise.Class.create([prototype], [staticProperties])
-     * Rise.Class.create([prototype], [staticProperties], [mixins])
+     * Create new class
+     * @param prototype Prototype object for class
+     * @param staticProperties Static properties for new class
+     * @param mixin Array of object which will be mixed into class prototype
+     * @returns {Constructor} Returns new created class
      */
-    Class.create = function (prototype, staticProperties, mixins) {
+    Class.create = function (prototype, staticProperties, mixin) {
         prototype = prototype || {};
         staticProperties = staticProperties || {};
-        mixins = mixins || [];
+        mixin = mixin || [];
+
+        var i;
 
         function Constructor() {
             return this.init && this.init.apply(this, arguments);
@@ -78,13 +68,14 @@
 
         copyProperties(staticProperties, Constructor, this);
         copyProperties(prototype, Constructor.prototype, this.prototype);
-        for (var i = mixins.length - 1; i >= 0; i--) {
-            copyProperties(mixins[i], Constructor.prototype, this.prototype);
+
+        for (i = 0; i < mixin.length; i++) {
+            copyProperties(mixin[i], Constructor.prototype, this.prototype);
         }
 
         return Constructor;
     };
 
-    global.Rise.Class = Class;
+    Rise.Class = Class;
 
-})(window);
+}());

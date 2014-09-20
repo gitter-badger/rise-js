@@ -1,4 +1,3 @@
-// jshint ignore:start
 describe('Rise.Class', function () {
     it('Should create basic class', function () {
         var Test = Rise.Class.create();
@@ -47,7 +46,7 @@ describe('Rise.Class', function () {
         new Foo().getTest().should.be.equal('test');
     });
 
-    it('Should properly call _super', function () {
+    it('Should properly call super', function () {
         var Test = Rise.Class.create({
             init: function () {
                 this.test = 'test';
@@ -60,7 +59,7 @@ describe('Rise.Class', function () {
 
         var Foo = Test.extend({
             init: function () {
-                this._super();
+                this.super();
                 this.foo = 'bar';
             },
 

@@ -11,7 +11,7 @@
         init: function () {
             var textNode = Rise.$.create('span').text('test node');
 
-            this._super();
+            this.super();
             this.setNode(textNode);
             return this;
         }
