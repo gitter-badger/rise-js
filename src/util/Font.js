@@ -1,12 +1,12 @@
-(function(global) {
+(function () {
     'use strict';
 
-    global.Rise.Font = Rise.Class.create({
+    Rise.Font = Rise.Class.create({
         /**
          * Create new Rise.Font instance
          * @constructor
-         * @param  {Element|String|Object} options Font options
-         * @return {Rise.Font}                     Returns Rise.Font instance
+         * @param {Object} font
+         * @return {Rise.Font|Object} Returns Rise.Font instance
          * @example
          * new Rise.Font({
          *     style: 'normal',
@@ -17,7 +17,7 @@
          *     family: 'serif'
          * });
          */
-        init: function(font) {
+        init: function (font) {
             font = font || {};
 
             if (font instanceof Rise.Font) {
@@ -53,7 +53,7 @@
          * @example
          * new Rise.Font().isValid(); // true
          */
-        isValid: function() {
+        isValid: function () {
             return Rise.Font.isFontValid(this);
         },
 
@@ -63,7 +63,7 @@
          * @example
          * new Rise.Font().getStyle();
          */
-        getStyle: function() {
+        getStyle: function () {
             return this.style;
         },
 
@@ -74,7 +74,7 @@
          * @example
          * new Rise.Font().setStyle('normal');
          */
-        setStyle: function(style) {
+        setStyle: function (style) {
             if (Rise.Font.isFontStyleValid(style)) {
                 this.style = style;
             } else {
@@ -90,7 +90,7 @@
          * @example
          * new Rise.Font().getVariant();
          */
-        getVariant: function() {
+        getVariant: function () {
             return this.variant;
         },
 
@@ -101,7 +101,7 @@
          * @example
          * new Rise.Font().setVariant('normal');
          */
-        setVariant: function(variant) {
+        setVariant: function (variant) {
             if (Rise.Font.isFontVariantValid(variant)) {
                 this.variant = variant;
             } else {
@@ -117,7 +117,7 @@
          * @example
          * new Rise.Font().getWeight();
          */
-        getWeight: function() {
+        getWeight: function () {
             return this.weight;
         },
 
@@ -128,7 +128,7 @@
          * @example
          * new Rise.Font().setWeight('normal')
          */
-        setWeight: function(weight) {
+        setWeight: function (weight) {
             if (Rise.Font.isFontWeightValid(weight)) {
                 this.weight = weight;
             } else {
@@ -144,7 +144,7 @@
          * @example
          * new Rise.Font().getSize();
          */
-        getSize: function() {
+        getSize: function () {
             return this.size;
         },
 
@@ -155,7 +155,7 @@
          * @example
          * new Rise.Font().setSize('medium');
          */
-        setSize: function(size) {
+        setSize: function (size) {
             if (Rise.Font.isFontSizeValid(size)) {
                 this.size = size;
             } else {
@@ -171,7 +171,7 @@
          * @example
          * new Rise.Font().getLineHeight();
          */
-        getLineHeight: function() {
+        getLineHeight: function () {
             return this.lineHeight;
         },
 
@@ -182,7 +182,7 @@
          * @example
          * new Rise.Font().setLineHeight('normal');
          */
-        setLineHeight: function(lineHeight) {
+        setLineHeight: function (lineHeight) {
             if (Rise.Font.isFontLineHeightValid(lineHeight)) {
                 this.lineHeight = lineHeight;
             } else {
@@ -198,7 +198,7 @@
          * @example
          * new Rise.Font().getFamily();
          */
-        getFamily: function() {
+        getFamily: function () {
             return this.family;
         },
 
@@ -209,7 +209,7 @@
          * @example
          * new Rise.Font().setFamily('serif');
          */
-        setFamily: function(family) {
+        setFamily: function (family) {
             if (Rise.Font.isFontFamilyValid(family)) {
                 this.family = family;
             } else {
@@ -225,17 +225,17 @@
          * @example
          * new Rise.Font().toString();
          */
-        toString: function() {
+        toString: function () {
             return (
                 [
                     this.getStyle(),
                     this.getVariant(),
                     this.getWeight(),
                     this.getSize(),
-                    '/' + this.getLineHeight(),
+                        '/' + this.getLineHeight(),
                     this.getFamily()
                 ].join(' ')
-            );
+                );
         }
     }, {
         /**
@@ -286,9 +286,9 @@
          * @param  {String}  value Value that need to check
          * @return {Boolean}       Returns true if value is valid CSS value
          */
-        isCssValueValid: function(value) {
-            return Rise.Font.unitsMap.some(function(unit) {
-                return value && value.lastIndexOf(unit) != -1;
+        isCssValueValid: function (value) {
+            return Rise.Font.unitsMap.some(function (unit) {
+                return value && value.lastIndexOf(unit) !== -1;
             });
         },
 
@@ -298,8 +298,8 @@
          * @param  {String}  value Value that need to check
          * @return {Boolean}       Returns true if value is valid
          */
-        isFontStyleValid: function(value) {
-            return Rise.Font.fontStyleMap.indexOf(value) != -1;
+        isFontStyleValid: function (value) {
+            return Rise.Font.fontStyleMap.indexOf(value) !== -1;
         },
 
         /**
@@ -308,8 +308,8 @@
          * @param  {String}  value Value that need to check
          * @return {Boolean}       Returns true if value is valid
          */
-        isFontVariantValid: function(value) {
-            return Rise.Font.fontVariantMap.indexOf(value) != -1;
+        isFontVariantValid: function (value) {
+            return Rise.Font.fontVariantMap.indexOf(value) !== -1;
         },
 
         /**
@@ -318,8 +318,8 @@
          * @param  {String}  value Value that need to check
          * @return {Boolean}       Returns true if value is valid
          */
-        isFontWeightValid: function(value) {
-            return Rise.Font.fontWeightMap.indexOf(value) != -1;
+        isFontWeightValid: function (value) {
+            return Rise.Font.fontWeightMap.indexOf(value) !== -1;
         },
 
         /**
@@ -328,11 +328,11 @@
          * @param  {String}  value Value that need to check
          * @return {Boolean}       Returns true if value is valid
          */
-        isFontSizeValid: function(value) {
+        isFontSizeValid: function (value) {
             return (
-                Rise.Font.fontSizeMap.indexOf(value) != -1 ||
+                Rise.Font.fontSizeMap.indexOf(value) !== -1 ||
                 Rise.Font.isCssValueValid(value)
-            );
+                );
         },
 
         /**
@@ -341,20 +341,19 @@
          * @param  {String}  value Value that need to check
          * @return {Boolean}       Returns true if value is valid
          */
-        isFontLineHeightValid: function(value) {
+        isFontLineHeightValid: function (value) {
             return (
                 Rise.Font.isCssValueValid(value) ||
-                Rise.Font.fontLineHeightMap.indexOf(value) != -1
-            );
+                Rise.Font.fontLineHeightMap.indexOf(value) !== -1
+                );
         },
 
         /**
          * Check if provided value is valid CSS font family
          * @static
-         * @param  {String}  value Value that need to check
-         * @return {Boolean}       Returns true if value is valid
+         * @return {Boolean} Returns true if value is valid
          */
-        isFontFamilyValid: function(value) {
+        isFontFamilyValid: function () {
             // TODO: implement
             return true;
         },
@@ -365,7 +364,7 @@
          * @param  {Rise.Font}  font Rise.Font instance where need to check their font values
          * @return {Boolean}         Returns true if Rise.Font is correct instance
          */
-        isFontValid: function(font) {
+        isFontValid: function (font) {
             return (
                 Rise.Font.isFontStyleValid(font.getStyle()) &&
                 Rise.Font.isFontVariantValid(font.getVariant()) &&
@@ -373,16 +372,15 @@
                 Rise.Font.isFontSizeValid(font.getSize()) &&
                 Rise.Font.isFontLineHeightValid(font.getLineHeight()) &&
                 Rise.Font.isFontFamilyValid(font.getFamily())
-            );
+                );
         },
 
         /**
          * Create Rise.Font instance from string representation
          * @static
-         * @param  {String} font    Font string
-         * @return {Rise.Font}      Returns Rise.Font instance with parsed options from string
+         * @return {Rise.Font} Returns Rise.Font instance with parsed options from string
          */
-        fromString: function(font) {
+        fromString: function () {
             // TODO: implement
             Rise.Logger.warning('Rise.Font -> fromString() not realized yet');
             return new Rise.Font();
@@ -394,7 +392,7 @@
          * @param  {Element} element Existing node element from where font options will parse
          * @return {Rise.Font}       Returns Rise.Font instance
          */
-        fromNode: function(element) {
+        fromNode: function (element) {
             var style = window.getComputedStyle(element, null);
 
             return new Rise.Font({
@@ -407,4 +405,4 @@
             });
         }
     });
-})(this);
+})();

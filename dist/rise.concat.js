@@ -1,4 +1,4 @@
-(function(global) {
+(function (global) {
     'use strict';
 
     /**
@@ -25,32 +25,35 @@
     };
 
     /**
-     * Rise constuctor
+     * Rise constructor
+     * @constructor
      * @param {String|Element} selector String selector or already parsed Element
      * @param {Object} config Configuration object for Rise
-     * @constructor
+     * @return {Boolean|Rise|String}
      * @example
      * var Editor = new Rise('#rise-example', {
      *     draggable: {
      *         enabled: false
      *     }
-     * })
+     * });
      */
     function Rise(selector, config) {
         selector = selector || '#rise';
         config = config || {};
 
+        var node;
+
         if (selector instanceof Rise) {
             return selector;
         } else if (Rise.Util.isString(selector)) {
-            var node = Rise.$(selector);
+            node = Rise.$(selector);
 
             if (node.count() === 0) {
                 Rise.Logger.error('Selector -> %s nodes not founded', selector);
             } else {
                 if (node.count() > 1) {
                     Rise.Logger.warning('Selector -> %s has found more than 1 nodes');
-                    Rise.Logger.warning('Initializing only for node -> %O', noge.get(0));
+                    Rise.Logger.warning('Initializing only for node -> %O', node.get(0));
                 }
 
                 return new Rise(node.get(0), config);
@@ -83,7 +86,7 @@
          * I.e. after setHtml it will fix canvasNode property for appropriate new canvas node.
          * @return {Rise} Returns Rise instance
          */
-        update: function() {
+        update: function () {
             this.setCanvasNode(this.getParentNode().children());
             return this;
         },
@@ -93,7 +96,7 @@
          * @param {Rise.RQuery|Element} node
          * @return {Rise} Returns Rise instance
          */
-        setParentNode: function(node) {
+        setParentNode: function (node) {
             this.parentNode = Rise.$(node);
             return this;
         },
@@ -102,7 +105,7 @@
          * Get parent node
          * @return {Rise.RQuery} Returns Rise.RQuery instance
          */
-        getParentNode: function() {
+        getParentNode: function () {
             return this.parentNode;
         },
 
@@ -111,7 +114,7 @@
          * @param {Rise.RQuery|Element} node
          * @return {Rise} Returns Rise instance
          */
-        setCanvasNode: function(node) {
+        setCanvasNode: function (node) {
             this.canvasNode = Rise.$(node);
             return this;
         },
@@ -120,18 +123,17 @@
          * Get canvas node
          * @return {Rise.RQuery} Returns Rise.RQuery instance
          */
-        getCanvasNode: function() {
+        getCanvasNode: function () {
             return this.canvasNode;
         },
 
         /**
          * Update configuration object
-         * @param {Object} [config] New configuration object
          * @return {Rise} Returns Rise instance
          * @example
          * Rise.setConfig(config1, config2, config3);
          */
-        setConfig: function() {
+        setConfig: function () {
             this.config = this.config || {};
 
             for (var i = 0; i < arguments.length; i++) {
@@ -144,16 +146,16 @@
         /**
          * Get configuration object or config value
          * @param  {String} key Key in dot-notation
-         * @return {Mixed}     Returns config object or value
+         * @return {Object}     Returns config object or value
          * @example
          * Rise.getConfig();
          * Rise.getConfig('draggable.enabled');
          */
-        getConfig: function(key) {
+        getConfig: function (key) {
             if (Rise.Util.isUndefined(key)) {
                 return this.config;
             } else if (Rise.Util.isString(key)) {
-                return key.split('.').reduce(function(config, key) {
+                return key.split('.').reduce(function (config, key) {
                     return config[key];
                 }, this.config);
             } else {
@@ -167,7 +169,7 @@
          * @param {Integer} width Width in px
          * @return {Rise} Returns Rise instance
          */
-        setWidth: function(width) {
+        setWidth: function (width) {
             if (Rise.Util.isNumber(width)) {
                 this.getCanvasNode().css({
                     width: width
@@ -181,7 +183,7 @@
          * Get current width of canvas in px
          * @return {Integer} Returns width of canvas in px
          */
-        getWidth: function() {
+        getWidth: function () {
             return this.getCanvasNode().offsetWidth();
         },
 
@@ -190,7 +192,7 @@
          * @param {Integer} height New height in px
          * @return {Rise} Returns Rise instance
          */
-        setHeight: function(height) {
+        setHeight: function (height) {
             if (Rise.Util.isNumber(height)) {
                 this.getCanvasNode().css({
                     height: height
@@ -204,7 +206,7 @@
          * Get current height of canvas
          * @return {Integer} Returns height in px
          */
-        getHeight: function() {
+        getHeight: function () {
             return this.getCanvasNode().offsetHeight();
         },
 
@@ -214,7 +216,7 @@
          * @param {Integer} height Height in px
          * @return {Rise} Returns Rise instance
          */
-        setDimensions: function(width, height) {
+        setDimensions: function (width, height) {
             this.setWidth(width);
             this.setHeight(height);
             return this;
@@ -224,7 +226,7 @@
          * Get current dimensions of canvas
          * @return {Object} Returns object with width and height properties
          */
-        getDimensions: function() {
+        getDimensions: function () {
             return {
                 width: this.getWidth(),
                 height: this.getHeight()
@@ -236,7 +238,7 @@
          * @param {String} html HTML string that need to set
          * @return {Rise} Returns Rise instance
          */
-        setHtml: function(html) {
+        setHtml: function (html) {
             this.getParentNode().html(html);
             this.update();
             return this;
@@ -246,7 +248,7 @@
          * Get HTML
          * @return {String} Returns HTML string
          */
-        getHtml: function() {
+        getHtml: function () {
             return this.getParentNode().html();
         },
 
@@ -259,12 +261,12 @@
          * var element = new Rise.TextElement();
          * canvas.addElement(element);
          */
-        addElement: function(element) {
+        addElement: function (element) {
             if (
                 element instanceof Rise.Element &&
                 element.getType() &&
                 element.getNode
-            ) {
+                ) {
                 this.getCanvasNode().append(element.getNode());
             } else {
                 Rise.Logger.error("Can't add element -> %O. It's not an Rise Element.", element);
@@ -279,47 +281,55 @@
      * @static
      * @return {String} Returns current version
      */
-    Rise.getVersion = function() {
+    Rise.getVersion = function () {
         return VERSION;
     };
 
     global.Rise = Rise;
 
-})(this);
-(function(global) {
+})(window);
+(function () {
     'use strict';
 
+    /**
+     * All registered services in DI container
+     * @type {Object}
+     */
     var services = {};
 
-    global.Rise.DI = {
+    Rise.DI = {
         /**
          * Get service by name
          * @param  {String} name Service name
-         * @return {Mixed}       Returns service if exists
+         * @return {Object}       Returns service if exists
          */
-        get: function(name) {
+        get: function (name) {
             return services[name];
         },
 
         /**
          * Register service by name
          * @param  {String} key   Service name
-         * @param  {Mixed} value  Value of service
+         * @param  {Object} value  Value of service
          * @return {Rise.DI}      Returns instance of Rise.DI
          */
-        register: function(key, value) {
+        register: function (key, value) {
             services[key] = value;
             return this;
         },
 
         /**
          * Resolve dependencies and call function
-         * @param  {Array} deps         Array with dependencies
+         * @param  {Array} dependencies Array with string items
          * @param  {Function} callback  Function which applies dependencies
          * @param  {Object} scope       Function context
          * @return {Rise.DI}            Returns Rise.DI
+         * @example
+         * Rise.DI.resolve(['Rise.Color'], function(Color) {
+         *      new Color('black').toRgbString();
+         * });
          */
-        resolve: function(dependencies, callback, scope) {
+        resolve: function (dependencies, callback, scope) {
             var args = [],
                 service;
 
@@ -335,8 +345,8 @@
             callback.apply(scope || {}, args.concat(Array.prototype.slice.call(arguments, 0)));
         }
     };
-})(this);
-(function(global) {
+})();
+(function () {
     'use strict';
 
     /**
@@ -344,24 +354,22 @@
      * @static
      * @type {Object}
      */
-    global.Rise.Util = {
+    Rise.Util = {
         /**
          * Assign (extend) objects
-         * @param  {Object} destination Destination object will be also modified
-         * @param  {Object} source Source objects
          * @return {Object} Returns extended object
          * @static
          * @example
          * Rise.Util.assign({}, obj1, obj2, obj3);
          */
-        assign: function() {
+        assign: function () {
             /**
              * Copy source object to destination object
              * @this {Rise.Util}
              * @param  {String} key Current key of current source object
              * @private
              */
-            var copyObject = function(key) {
+            var copyObject = function (key) {
                 if (source[key] && source[key].constructor && source[key].constructor === Object) {
                     destination[key] = destination[key] || {};
                     this.assign(destination[key], source[key]);
@@ -389,8 +397,8 @@
          * @example
          * Rise.Util.toCamelizedString('font-style'); // fontStyle
          */
-        toCamelizedString: function(string) {
-            return string.replace(/\-(\w)/g, function(string, letter) {
+        toCamelizedString: function (string) {
+            return string.replace(/\-(\w)/g, function (string, letter) {
                 return letter.toUpperCase();
             });
         },
@@ -403,8 +411,8 @@
          * @example
          * Rise.Util.toDashedString('borderRadius'); // border-radius
          */
-        toDashedString: function(string) {
-            return string.replace(/([A-Z])/g, function(string) {
+        toDashedString: function (string) {
+            return string.replace(/([A-Z])/g, function (string) {
                 return '-' + string.toLowerCase();
             });
         },
@@ -413,13 +421,13 @@
          * Get random string
          * @param  {String} prepend   String which prepends to random string
          * @param  {String} append    String which appends to random string
-         * @param  {String} separator String which separate prepender and appender
+         * @param  {String} separator String which separate prepend and appender
          * @return {String}           Returns random generated string
          * @static
          * @example
-         * Rise.Util.getRandomString('preffix', 'suffix', 'separator');
+         * Rise.Util.getRandomString('prefix', 'suffix', 'separator');
          */
-        getRandomString: function(prepend, append, separator) {
+        getRandomString: function (prepend, append, separator) {
             prepend = this.isUndefined(prepend) ? '' : prepend;
             append = this.isUndefined(append) ? '' : append;
             separator = this.isUndefined(separator) ? '' : separator;
@@ -442,10 +450,10 @@
          *     bar: 'test'
          * });
          */
-        flipObject: function(object) {
+        flipObject: function (object) {
             var flipped = {};
 
-            Object.keys(object).forEach(function(key) {
+            Object.keys(object).forEach(function (key) {
                 flipped[object[key]] = key;
             });
 
@@ -455,92 +463,91 @@
         /**
          * Get type of variable
          * @static
-         * @param  {Mixed} value Variable that might be checked
+         * @param  {Object} value Variable that might be checked
          * @return {String}      Returns string representation of type
          */
-        getType: function(value) {
+        getType: function (value) {
             return Object.prototype.toString.call(value).replace(/^\[object (.+)\]$/, '$1').toLowerCase();
         },
 
         /**
          * Check if this object
          * @static
-         * @param  {Mixed}  object Value that might be checked
+         * @param  {Object}  object Value that might be checked
          * @return {Boolean}       Returns true if object
          */
-        isObject: function(object) {
-            return this.getType(object) == 'object';
+        isObject: function (object) {
+            return this.getType(object) === 'object';
         },
 
         /**
          * Check if this is number
          * @static
-         * @param  {Mixed}  number Value that might be checked
+         * @param  {Object}  number Value that might be checked
          * @return {Boolean}       Returns true if number
          */
-        isNumber: function(number) {
+        isNumber: function (number) {
             return (
-                this.getType(number) == 'number' &&
-                !isNaN(number) &&
+                this.getType(number) === 'number' && !isNaN(number) &&
                 isFinite(number)
-            );
+                );
         },
 
         /**
          * Check if this array
          * @static
-         * @param  {Mixed}  array Value that might be checked
+         * @param  {Object}  array Value that might be checked
          * @return {Boolean}      Returns true if array
          */
-        isArray: function(array) {
-            return this.getType(array) == 'array';
+        isArray: function (array) {
+            return this.getType(array) === 'array';
         },
 
         /**
          * Check if this is boolean
          * @static
-         * @param  {Mixed}  bool Value that might be checked
+         * @param  {Object}  bool Value that might be checked
          * @return {Boolean}      Returns true if boolean
          */
-        isBoolean: function(bool) {
-            return this.getType(bool) == 'boolean';
+        isBoolean: function (bool) {
+            return this.getType(bool) === 'boolean';
         },
 
         /**
          * Check if this function
          * @static
-         * @param  {Mixed}  method Value that might be checked
+         * @param  {Object}  method Value that might be checked
          * @return {Boolean}       Returns true if function
          */
-        isFunction: function(method) {
-            return this.getType(method) == 'function';
+        isFunction: function (method) {
+            return this.getType(method) === 'function';
         },
 
         /**
          * Check if this is string
          * @static
-         * @param  {Mixed}  string Value that might be checked
+         * @param  {Object}  string Value that might be checked
          * @return {Boolean}       Returns true if string
          */
-        isString: function(string) {
-            return this.getType(string) == 'string';
+        isString: function (string) {
+            return this.getType(string) === 'string';
         },
 
         /**
          * Check if this is undefined
          * @static
-         * @param  {Mixed}  value Value that might be checked
+         * @param  {Object}  value Value that might be checked
          * @return {Boolean}       Returns true if undefined
          */
-        isUndefined: function(value) {
+        isUndefined: function (value) {
             return (
-                this.getType(value) == 'undefined' ||
-                this.getType(value) == 'domwindow'
-            );
+                this.getType(value) === 'undefined' ||
+                this.getType(value) === 'domwindow'
+                );
         }
     };
-})(this);
-(function(global) {
+})();
+(function (global) {
     'use strict';
 
     /**
@@ -551,12 +558,12 @@
      * @private
      */
     function copyProperties(source, target, parent) {
-        Object.keys(source).forEach(function(key) {
+        Object.keys(source).forEach(function (key) {
             if (
-                typeof source[key] == "function" &&
-                typeof parent[key] == "function" &&
+                typeof source[key] === "function" &&
+                typeof parent[key] === "function" &&
                 /\b_super\b/.test(source[key])
-            ) {
+                ) {
                 target[key] = wrapMethod(source[key], parent[key]);
             } else {
                 target[key] = source[key];
@@ -567,13 +574,13 @@
     /**
      * Wrap method with parent method.
      * Useful for create this._super() in subclasses.
-     * @param  {Function} method       Method that need to be wrapped
+     * @param  {Function} method Method that need to be wrapped
      * @param  {Function} parentMethod Parent method, in other words - this._super();
-     * @return {Function}              Returns wrapped function
+     * @return {Function} Returns wrapped function
      * @private
      */
     function wrapMethod(method, parentMethod) {
-        return function() {
+        return function () {
             var backup = this._super;
             this._super = parentMethod;
 
@@ -589,7 +596,8 @@
      * Empty function (interface)
      * @private
      */
-    function Class() {}
+    function Class() {
+    }
 
     /**
      * Create new Class or extend exists
@@ -604,7 +612,7 @@
      * Rise.Class.create([prototype], [staticProperties])
      * Rise.Class.create([prototype], [staticProperties], [mixins])
      */
-    Class.create = function(prototype, staticProperties, mixins) {
+    Class.create = function (prototype, staticProperties, mixins) {
         prototype = prototype || {};
         staticProperties = staticProperties || {};
         mixins = mixins || [];
@@ -628,16 +636,16 @@
 
     global.Rise.Class = Class;
 
-})(this);
-(function(global) {
+})(window);
+(function () {
     'use strict';
 
-    global.Rise.Color = Rise.Class.create({
+    Rise.Color = Rise.Class.create({
         /**
          * Create new Rise.Color instance
          * @constructor
          * @param {Rise.Color|String|Object} color String or object with appropriate properties
-         * @return {Rise.Color} Returns Rise.Color instance
+         * @return {Rise.Color|Boolean} Returns Rise.Color instance
          * @example
          * Rise.Color('red');
          * Rise.Color({
@@ -647,7 +655,7 @@
          *     a: 1
          * });
          */
-        init: function(color) {
+        init: function (color) {
             color = color || 'black';
 
             var rgb = {};
@@ -697,7 +705,7 @@
          * Get brightness level of color
          * @return {Integer} Returns float value of brightness level
          */
-        getBrightness: function() {
+        getBrightness: function () {
             var rgb = this.toRgb();
             return (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
         },
@@ -706,7 +714,7 @@
          * Check if this color is dark
          * @return {Boolean} Returns true if color is dark
          */
-        isDark: function() {
+        isDark: function () {
             return this.getBrightness() < 128;
         },
 
@@ -714,7 +722,7 @@
          * Check if this color is light
          * @return {Boolean} Returns true if color is light
          */
-        isLight: function() {
+        isLight: function () {
             return !this.isDark();
         },
 
@@ -722,7 +730,7 @@
          * Get red channel
          * @return {Integer} Returns red channel value
          */
-        getRed: function() {
+        getRed: function () {
             return this.red;
         },
 
@@ -731,7 +739,7 @@
          * @param {Integer} value Red channel in [0, 255] range
          * @return {Rise.Color} Returns Rise.Color instance
          */
-        setRed: function(value) {
+        setRed: function (value) {
             this.red = Rise.Math.clamp(0, 255, value);
             return this;
         },
@@ -740,7 +748,7 @@
          * Get green channel
          * @return {Integer} Returns green channel value
          */
-        getGreen: function() {
+        getGreen: function () {
             return this.green;
         },
 
@@ -749,7 +757,7 @@
          * @param {Integer} value Green channel in [0, 255] range
          * @return {Rise.Color} Returns Rise.Color instance
          */
-        setGreen: function(value) {
+        setGreen: function (value) {
             this.green = Rise.Math.clamp(0, 255, value);
             return this;
         },
@@ -758,7 +766,7 @@
          * Get blue channel
          * @return {Integer} Returns blue channel value
          */
-        getBlue: function() {
+        getBlue: function () {
             return this.blue;
         },
 
@@ -767,25 +775,25 @@
          * @param {Integer} value Blue channel in [0, 255] range
          * @return {Rise.Color} Returns Rise.Color instance
          */
-        setBlue: function(value) {
+        setBlue: function (value) {
             this.blue = Rise.Math.clamp(0, 255, value);
             return this;
         },
 
         /**
          * Get alpha channel of this color
-         * @return {Float} Returns float value of alpha channel
+         * @return {Number} Returns float value of alpha channel
          */
-        getAlpha: function() {
+        getAlpha: function () {
             return this.alpha;
         },
 
         /**
          * Set alpha channel for this color
-         * @param {Float} value Float value of alpha channel in 0-1 range
+         * @param {Number} value Float value of alpha channel in 0-1 range
          * @return {Rise.Color} Returns Rise.Color instance
          */
-        setAlpha: function(value) {
+        setAlpha: function (value) {
             value = parseFloat(value);
 
             this.alpha = (isNaN(value) || value < 0 || value > 1) ? 1 : value;
@@ -797,7 +805,7 @@
          * Convert color to RGB
          * @return {Object} Returns object with r, g, b, a properties
          */
-        toRgb: function() {
+        toRgb: function () {
             return {
                 r: Math.round(this.red),
                 g: Math.round(this.green),
@@ -810,10 +818,10 @@
          * Convert color to RGB string
          * @return {String} Returns RGB string
          */
-        toRgbString: function() {
+        toRgbString: function () {
             var rgb = this.toRgb();
 
-            return this.alpha == 1 ?
+            return this.alpha === 1 ?
                 "rgb(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ")" :
                 "rgba(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ", " + this.roundAlpha + ")";
         },
@@ -824,7 +832,7 @@
          * @example
          * new Rise.Color('black').toHex(); // '000000'
          */
-        toHex: function() {
+        toHex: function () {
             return this.alpha === 1 ?
                 Rise.Color.rgbToHex(this.red, this.green, this.blue) :
                 Rise.Color.rgbToHex(this.red, this.green, this.blue, this.alpha);
@@ -836,7 +844,7 @@
          * @example
          * new Rise.Color('black').toHexString(); // '#000000'
          */
-        toHexString: function() {
+        toHexString: function () {
             return '#' + this.toHex();
         },
 
@@ -844,7 +852,7 @@
          * Convert color to HSV
          * @return {Object} Object with h, s, v, a properties
          */
-        toHsv: function() {
+        toHsv: function () {
             var hsv = Rise.Color.rgbToHsv(this.red, this.green, this.blue);
 
             return {
@@ -859,13 +867,13 @@
          * Convert to HSV in string
          * @return {String} Returns string with HSV color
          */
-        toHsvString: function() {
+        toHsvString: function () {
             var hsv = Rise.Color.rgbToHsv(this.red, this.green, this.blue),
                 h = Math.round(hsv.h * 360),
                 s = Math.round(hsv.s * 100),
                 v = Math.round(hsv.v * 100);
 
-            return this.alpha == 1 ?
+            return this.alpha === 1 ?
                 "hsv(" + h + ", " + s + "%, " + v + "%)" :
                 "hsva(" + h + ", " + s + "%, " + v + "%, " + this.roundAlpha + ")";
         },
@@ -874,7 +882,7 @@
          * Convert color to HSL
          * @return {Object} Object with h, s, l, a properties
          */
-        toHsl: function() {
+        toHsl: function () {
             var hsl = Rise.Color.rgbToHsl(this.red, this.green, this.blue);
 
             return {
@@ -889,13 +897,13 @@
          * Convert color to HSL in string
          * @return {String} Returns HSL in string
          */
-        toHslString: function() {
+        toHslString: function () {
             var hsl = Rise.Color.rgbToHsl(this.red, this.green, this.blue),
                 h = Math.round(hsl.h * 360),
                 s = Math.round(hsl.s * 100),
                 l = Math.round(hsl.l * 100);
 
-            return this.alpha == 1 ?
+            return this.alpha === 1 ?
                 "hsl(" + h + ", " + s + "%, " + l + "%)" :
                 "hsla(" + h + ", " + s + "%, " + l + "%, " + this.roundAlpha + ")";
         },
@@ -911,7 +919,7 @@
          *     b: 0
          * }).toName(); // 'black'
          */
-        toName: function() {
+        toName: function () {
             if (this.alpha === 0) {
                 return "transparent";
             } else if (this.alpha < 1) {
@@ -926,7 +934,7 @@
          * @param  {String} format Custom format
          * @return {String} Returns string of this color depending on format
          */
-        toString: function(format) {
+        toString: function (format) {
             switch (format) {
                 case 'rgb':
                     return this.toRgbString();
@@ -948,7 +956,7 @@
          * @param {Integer} amount Custom amount for lighten level in [0, 100] range
          * @return {Rise.Color} Returns modified color
          */
-        lighten: function(amount) {
+        lighten: function (amount) {
             amount = (amount === 0) ? 0 : (amount || 10);
 
             var hsl = this.toHsl();
@@ -962,7 +970,7 @@
          * @param {Integer} amount Custom amount for darken level in [0, 100] range
          * @return {Rise.Color} Returns modified color
          */
-        darken: function(amount) {
+        darken: function (amount) {
             amount = (amount === 0) ? 0 : (amount || 10);
 
             var hsl = this.toHsl();
@@ -976,7 +984,7 @@
          * @param {Integer} amount Custom amount for desaturate in [0, 100] range
          * @return {Rise.Color} Returns modified color
          */
-        desaturate: function(amount) {
+        desaturate: function (amount) {
             amount = (amount === 0) ? 0 : (amount || 10);
 
             var hsl = this.toHsl();
@@ -990,7 +998,7 @@
          * @param {Integer} amount Custom amount for saturate level in [0, 100] range
          * @return {Rise.Color} Returns modified color
          */
-        saturate: function(amount) {
+        saturate: function (amount) {
             amount = (amount === 0) ? 0 : (amount || 10);
 
             var hsl = this.toHsl();
@@ -1004,7 +1012,7 @@
          * @param {Integer} amount Custom amount for brighten level in [0, 100] range
          * @return {Rise.Color} Returns modified color
          */
-        brighten: function(amount) {
+        brighten: function (amount) {
             amount = (amount === 0) ? 0 : (amount || 10);
 
             var rgb = this.toRgb();
@@ -1019,7 +1027,7 @@
          * Completely desaturate the color (make it greyscale)
          * @return {Rise.Color} Returns modified color
          */
-        greyscale: function() {
+        greyscale: function () {
             return this.desaturate(100);
         },
 
@@ -1028,7 +1036,7 @@
          * @param {Integer} amount Custom amount for spin in [-360, 360] range
          * @return {Rise.Color} Returns modified color
          */
-        spin: function(amount) {
+        spin: function (amount) {
             var hsl = this.toHsl(),
                 hue = (Math.round(hsl.h) + amount) % 360;
 
@@ -1043,7 +1051,7 @@
          * @param {Integer} [slices] Count of slices
          * @return {Array} Returns array with Rise.Color items
          */
-        getAnalogous: function(results, slices) {
+        getAnalogous: function (results, slices) {
             results = results || 6;
             slices = slices || 30;
 
@@ -1063,7 +1071,7 @@
          * Get complementary combination
          * @return {Rise.Color} Returns Rise.Color instance with complementary color
          */
-        getComplementary: function() {
+        getComplementary: function () {
             var hsl = this.toHsl();
             hsl.h = (hsl.h + 180) % 360;
             return new Rise.Color(hsl);
@@ -1074,7 +1082,7 @@
          * @param {Integer} results Count of results
          * @return {Array} Returns array with Rise.Color items
          */
-        getMonochromatic: function(results) {
+        getMonochromatic: function (results) {
             results = results || 6;
 
             var hsv = this.toHsv(),
@@ -1098,7 +1106,7 @@
          * Get split complementary combinations
          * @return {Array} Returns array with Rise.Color items
          */
-        getSplitComplementary: function() {
+        getSplitComplementary: function () {
             var hsl = this.toHsl();
 
             return [
@@ -1120,7 +1128,7 @@
          * Get triad combinations
          * @return {Array} Returns array with Rise.Color items
          */
-        getTriad: function() {
+        getTriad: function () {
             var hsl = this.toHsl();
 
             return [
@@ -1142,7 +1150,7 @@
          * Get tetrad combinations
          * @return {Array} Returns array with Rise.Color items
          */
-        getTetrad: function() {
+        getTetrad: function () {
             var hsl = this.toHsl();
 
             return [
@@ -1326,7 +1334,7 @@
          * @return {Object}
          * @static
          */
-        colorRegexMap: (function() {
+        colorRegexMap: (function () {
             var cssInteger = "[-\\+]?\\d+%?",
                 cssNumber = "[-\\+]?\\d*\\.\\d+%?",
                 cssUnit = "(?:" + cssNumber + ")|(?:" + cssInteger + ")",
@@ -1356,7 +1364,7 @@
          * @example
          * Rise.Color.rgbToRgb(0, 0, 0);
          */
-        rgbToRgb: function(r, g, b) {
+        rgbToRgb: function (r, g, b) {
             return {
                 r: Rise.Math.bound(0, 255, r) * 255,
                 g: Rise.Math.bound(0, 255, g) * 255,
@@ -1372,7 +1380,7 @@
          * @return {Object}    Object with h, s, v properties
          * @static
          */
-        rgbToHsv: function(r, g, b) {
+        rgbToHsv: function (r, g, b) {
             r = Rise.Math.bound(0, 255, r);
             g = Rise.Math.bound(0, 255, g);
             b = Rise.Math.bound(0, 255, b);
@@ -1384,7 +1392,7 @@
 
             s = max === 0 ? 0 : d / max;
 
-            if (max == min) {
+            if (max === min) {
                 h = 0;
             } else {
                 switch (max) {
@@ -1417,7 +1425,7 @@
          * @return {Object}    Object with h, s, l properties
          * @static
          */
-        rgbToHsl: function(r, g, b) {
+        rgbToHsl: function (r, g, b) {
             r = Rise.Math.bound(0, 255, r);
             g = Rise.Math.bound(0, 255, g);
             b = Rise.Math.bound(0, 255, b);
@@ -1426,7 +1434,7 @@
                 min = Math.min(r, g, b),
                 h, s, l = (max + min) / 2;
 
-            if (max == min) {
+            if (max === min) {
                 h = s = 0;
             } else {
                 var d = max - min;
@@ -1461,17 +1469,31 @@
          * @return {Object}    Object with r, g, b properties
          * @static
          */
-        hslToRgb: function(h, s, l) {
+        hslToRgb: function (h, s, l) {
             h = Rise.Math.bound(0, 360, h);
             s = Rise.Math.bound(0, 100, s);
             l = Rise.Math.bound(0, 100, l);
 
             function hue2rgb(p, q, t) {
-                if (t < 0) t += 1;
-                if (t > 1) t -= 1;
-                if (t < 1 / 6) return p + (q - p) * 6 * t;
-                if (t < 1 / 2) return q;
-                if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                if (t < 0) {
+                    t += 1;
+                }
+
+                if (t > 1) {
+                    t -= 1;
+                }
+
+                if (t < 1 / 6) {
+                    return p + (q - p) * 6 * t;
+                }
+
+                if (t < 1 / 2) {
+                    return q;
+                }
+
+                if (t < 2 / 3) {
+                    return p + (q - p) * (2 / 3 - t) * 6;
+                }
                 return p;
             }
 
@@ -1503,7 +1525,7 @@
          * @return {Object}    Object with r, g, b properties
          * @static
          */
-        hsvToRgb: function(h, s, v) {
+        hsvToRgb: function (h, s, v) {
             h = Rise.Math.bound(0, 360, h) * 6;
             s = Rise.Math.bound(0, 100, s);
             v = Rise.Math.bound(0, 100, v);
@@ -1530,14 +1552,15 @@
          * @param  {Integer} r Red channel
          * @param  {Integer} g Green channel
          * @param  {Integer} b Blue channel
+         * @param  {Integer} a Alpha channel
          * @return {String} HEX in string without #
          * @static
          */
-        rgbToHex: function(r, g, b, a) {
+        rgbToHex: function (r, g, b, a) {
             var hex = [];
 
             function pad2(value) {
-                return value.length == 1 ? '0' + value : value;
+                return value.length === 1 ? '0' + value : value;
             }
 
             if (Rise.Util.isUndefined(a)) {
@@ -1565,12 +1588,12 @@
          * @return {Boolean} True if colors equals and false otherwise
          * @static
          */
-        equals: function(firstColor, secondColor) {
+        equals: function (firstColor, secondColor) {
             if (!firstColor || !secondColor) {
                 return false;
             }
 
-            return new Rise.Color(firstColor).toRgbString() == new Rise.Color(secondColor).toRgbString();
+            return new Rise.Color(firstColor).toRgbString() === new Rise.Color(secondColor).toRgbString();
         },
 
         /**
@@ -1578,7 +1601,7 @@
          * @return {Rise.Color} Random color
          * @static
          */
-        random: function() {
+        random: function () {
             return new Rise.Color({
                 r: Rise.Math.getRandomValue(0, 255),
                 g: Rise.Math.getRandomValue(0, 255),
@@ -1594,7 +1617,7 @@
          * @return {Rise.Color}     Returns mixed color
          * @static
          */
-        mix: function(firstColor, secondColor, amount) {
+        mix: function (firstColor, secondColor, amount) {
             amount = amount === 0 ? 0 : (amount || 50);
 
             var rgbA = new Rise.Color(firstColor).toRgb(),
@@ -1605,7 +1628,7 @@
                 w1,
                 w2;
 
-            if (w * a == -1) {
+            if (w * a === -1) {
                 w1 = w;
             } else {
                 w1 = (w + a) / (1 + w * a);
@@ -1625,15 +1648,15 @@
         /**
          * Create new Rise.Color instance from string colour
          * @param  {String} color String representation of colour
-         * @return {Rise.Color}   Returns Rise.Color instance
+         * @return {Boolean|Rise.Color}   Returns Rise.Color instance
          */
-        fromString: function(color) {
+        fromString: function (color) {
             color = color.trim().replace(/#/g, '').toLowerCase();
             color = Rise.Color.colorNamesMap[color] || color;
 
             var match;
 
-            if (color == 'transparent') {
+            if (color === 'transparent') {
                 return new Rise.Color({
                     r: 0,
                     g: 0,
@@ -1677,26 +1700,24 @@
                     a: parseInt(match[1], 16) / 255,
                     r: parseInt(match[2], 16),
                     g: parseInt(match[3], 16),
-                    b: parseInt(match[4], 16),
+                    b: parseInt(match[4], 16)
                 });
             } else if ((match = Rise.Color.colorRegexMap.hex6.exec(color))) {
                 return new Rise.Color({
                     r: parseInt(match[1], 16),
                     g: parseInt(match[2], 16),
-                    b: parseInt(match[3], 16),
+                    b: parseInt(match[3], 16)
                 });
             } else if ((match = Rise.Color.colorRegexMap.hex3.exec(color))) {
                 return new Rise.Color({
                     r: parseInt(match[1] + '' + match[1], 16),
                     g: parseInt(match[2] + '' + match[2], 16),
-                    b: parseInt(match[3] + '' + match[3], 16),
+                    b: parseInt(match[3] + '' + match[3], 16)
                 });
             } else {
                 Rise.Logger.warning('Color -> %O not parsed', color);
                 return false;
             }
-
-            return false;
         }
     });
 
@@ -1707,16 +1728,16 @@
      * @static
      */
     Rise.Color.hexNamesMap = Rise.Util.flipObject(Rise.Color.colorNamesMap);
-})(this);
-(function(global) {
+})();
+(function () {
     'use strict';
 
-    global.Rise.Font = Rise.Class.create({
+    Rise.Font = Rise.Class.create({
         /**
          * Create new Rise.Font instance
          * @constructor
-         * @param  {Element|String|Object} options Font options
-         * @return {Rise.Font}                     Returns Rise.Font instance
+         * @param {Object} font
+         * @return {Rise.Font|Object} Returns Rise.Font instance
          * @example
          * new Rise.Font({
          *     style: 'normal',
@@ -1727,7 +1748,7 @@
          *     family: 'serif'
          * });
          */
-        init: function(font) {
+        init: function (font) {
             font = font || {};
 
             if (font instanceof Rise.Font) {
@@ -1763,7 +1784,7 @@
          * @example
          * new Rise.Font().isValid(); // true
          */
-        isValid: function() {
+        isValid: function () {
             return Rise.Font.isFontValid(this);
         },
 
@@ -1773,7 +1794,7 @@
          * @example
          * new Rise.Font().getStyle();
          */
-        getStyle: function() {
+        getStyle: function () {
             return this.style;
         },
 
@@ -1784,7 +1805,7 @@
          * @example
          * new Rise.Font().setStyle('normal');
          */
-        setStyle: function(style) {
+        setStyle: function (style) {
             if (Rise.Font.isFontStyleValid(style)) {
                 this.style = style;
             } else {
@@ -1800,7 +1821,7 @@
          * @example
          * new Rise.Font().getVariant();
          */
-        getVariant: function() {
+        getVariant: function () {
             return this.variant;
         },
 
@@ -1811,7 +1832,7 @@
          * @example
          * new Rise.Font().setVariant('normal');
          */
-        setVariant: function(variant) {
+        setVariant: function (variant) {
             if (Rise.Font.isFontVariantValid(variant)) {
                 this.variant = variant;
             } else {
@@ -1827,7 +1848,7 @@
          * @example
          * new Rise.Font().getWeight();
          */
-        getWeight: function() {
+        getWeight: function () {
             return this.weight;
         },
 
@@ -1838,7 +1859,7 @@
          * @example
          * new Rise.Font().setWeight('normal')
          */
-        setWeight: function(weight) {
+        setWeight: function (weight) {
             if (Rise.Font.isFontWeightValid(weight)) {
                 this.weight = weight;
             } else {
@@ -1854,7 +1875,7 @@
          * @example
          * new Rise.Font().getSize();
          */
-        getSize: function() {
+        getSize: function () {
             return this.size;
         },
 
@@ -1865,7 +1886,7 @@
          * @example
          * new Rise.Font().setSize('medium');
          */
-        setSize: function(size) {
+        setSize: function (size) {
             if (Rise.Font.isFontSizeValid(size)) {
                 this.size = size;
             } else {
@@ -1881,7 +1902,7 @@
          * @example
          * new Rise.Font().getLineHeight();
          */
-        getLineHeight: function() {
+        getLineHeight: function () {
             return this.lineHeight;
         },
 
@@ -1892,7 +1913,7 @@
          * @example
          * new Rise.Font().setLineHeight('normal');
          */
-        setLineHeight: function(lineHeight) {
+        setLineHeight: function (lineHeight) {
             if (Rise.Font.isFontLineHeightValid(lineHeight)) {
                 this.lineHeight = lineHeight;
             } else {
@@ -1908,7 +1929,7 @@
          * @example
          * new Rise.Font().getFamily();
          */
-        getFamily: function() {
+        getFamily: function () {
             return this.family;
         },
 
@@ -1919,7 +1940,7 @@
          * @example
          * new Rise.Font().setFamily('serif');
          */
-        setFamily: function(family) {
+        setFamily: function (family) {
             if (Rise.Font.isFontFamilyValid(family)) {
                 this.family = family;
             } else {
@@ -1935,17 +1956,17 @@
          * @example
          * new Rise.Font().toString();
          */
-        toString: function() {
+        toString: function () {
             return (
                 [
                     this.getStyle(),
                     this.getVariant(),
                     this.getWeight(),
                     this.getSize(),
-                    '/' + this.getLineHeight(),
+                        '/' + this.getLineHeight(),
                     this.getFamily()
                 ].join(' ')
-            );
+                );
         }
     }, {
         /**
@@ -1996,9 +2017,9 @@
          * @param  {String}  value Value that need to check
          * @return {Boolean}       Returns true if value is valid CSS value
          */
-        isCssValueValid: function(value) {
-            return Rise.Font.unitsMap.some(function(unit) {
-                return value && value.lastIndexOf(unit) != -1;
+        isCssValueValid: function (value) {
+            return Rise.Font.unitsMap.some(function (unit) {
+                return value && value.lastIndexOf(unit) !== -1;
             });
         },
 
@@ -2008,8 +2029,8 @@
          * @param  {String}  value Value that need to check
          * @return {Boolean}       Returns true if value is valid
          */
-        isFontStyleValid: function(value) {
-            return Rise.Font.fontStyleMap.indexOf(value) != -1;
+        isFontStyleValid: function (value) {
+            return Rise.Font.fontStyleMap.indexOf(value) !== -1;
         },
 
         /**
@@ -2018,8 +2039,8 @@
          * @param  {String}  value Value that need to check
          * @return {Boolean}       Returns true if value is valid
          */
-        isFontVariantValid: function(value) {
-            return Rise.Font.fontVariantMap.indexOf(value) != -1;
+        isFontVariantValid: function (value) {
+            return Rise.Font.fontVariantMap.indexOf(value) !== -1;
         },
 
         /**
@@ -2028,8 +2049,8 @@
          * @param  {String}  value Value that need to check
          * @return {Boolean}       Returns true if value is valid
          */
-        isFontWeightValid: function(value) {
-            return Rise.Font.fontWeightMap.indexOf(value) != -1;
+        isFontWeightValid: function (value) {
+            return Rise.Font.fontWeightMap.indexOf(value) !== -1;
         },
 
         /**
@@ -2038,11 +2059,11 @@
          * @param  {String}  value Value that need to check
          * @return {Boolean}       Returns true if value is valid
          */
-        isFontSizeValid: function(value) {
+        isFontSizeValid: function (value) {
             return (
-                Rise.Font.fontSizeMap.indexOf(value) != -1 ||
+                Rise.Font.fontSizeMap.indexOf(value) !== -1 ||
                 Rise.Font.isCssValueValid(value)
-            );
+                );
         },
 
         /**
@@ -2051,20 +2072,19 @@
          * @param  {String}  value Value that need to check
          * @return {Boolean}       Returns true if value is valid
          */
-        isFontLineHeightValid: function(value) {
+        isFontLineHeightValid: function (value) {
             return (
                 Rise.Font.isCssValueValid(value) ||
-                Rise.Font.fontLineHeightMap.indexOf(value) != -1
-            );
+                Rise.Font.fontLineHeightMap.indexOf(value) !== -1
+                );
         },
 
         /**
          * Check if provided value is valid CSS font family
          * @static
-         * @param  {String}  value Value that need to check
-         * @return {Boolean}       Returns true if value is valid
+         * @return {Boolean} Returns true if value is valid
          */
-        isFontFamilyValid: function(value) {
+        isFontFamilyValid: function () {
             // TODO: implement
             return true;
         },
@@ -2075,7 +2095,7 @@
          * @param  {Rise.Font}  font Rise.Font instance where need to check their font values
          * @return {Boolean}         Returns true if Rise.Font is correct instance
          */
-        isFontValid: function(font) {
+        isFontValid: function (font) {
             return (
                 Rise.Font.isFontStyleValid(font.getStyle()) &&
                 Rise.Font.isFontVariantValid(font.getVariant()) &&
@@ -2083,16 +2103,15 @@
                 Rise.Font.isFontSizeValid(font.getSize()) &&
                 Rise.Font.isFontLineHeightValid(font.getLineHeight()) &&
                 Rise.Font.isFontFamilyValid(font.getFamily())
-            );
+                );
         },
 
         /**
          * Create Rise.Font instance from string representation
          * @static
-         * @param  {String} font    Font string
-         * @return {Rise.Font}      Returns Rise.Font instance with parsed options from string
+         * @return {Rise.Font} Returns Rise.Font instance with parsed options from string
          */
-        fromString: function(font) {
+        fromString: function () {
             // TODO: implement
             Rise.Logger.warning('Rise.Font -> fromString() not realized yet');
             return new Rise.Font();
@@ -2104,7 +2123,7 @@
          * @param  {Element} element Existing node element from where font options will parse
          * @return {Rise.Font}       Returns Rise.Font instance
          */
-        fromNode: function(element) {
+        fromNode: function (element) {
             var style = window.getComputedStyle(element, null);
 
             return new Rise.Font({
@@ -2117,8 +2136,8 @@
             });
         }
     });
-})(this);
-(function(global) {
+})();
+(function () {
     'use strict';
 
     /**
@@ -2141,7 +2160,7 @@
     /**
      * Prepend message to every log message
      * @param  {String} string Message to what will be prepended header message
-     * @return {String}        Returns resulting strint
+     * @return {String}        Returns resulting string
      * @private
      */
     function prependLoggerInfo(string) {
@@ -2159,9 +2178,9 @@
     function invokeConsole(type, args) {
         args = Array.prototype.slice.call(args, 0);
 
-        if (console[type] && Rise.Util.isFunction(console[type])) {
+        if (window.console[type] && Rise.Util.isFunction(window.console[type])) {
             args[0] = prependLoggerInfo(args[0] ? args[0] : '');
-            console[type].apply(console, args);
+            window.console[type].apply(window.console, args);
         }
     }
 
@@ -2171,8 +2190,8 @@
      */
     (function printWelcomeMessage() {
         if (window.chrome) {
-            console.log.apply(console, [
-                '%c %c %c Rise v' + Rise.getVersion() + ' %c %c %c',
+            window.console.log.apply(window.console, [
+                    '%c %c %c Rise v' + Rise.getVersion() + ' %c %c %c',
                 'background: #0E173E; font-size: 8pt;',
                 'background: #020C25; font-size: 9pt;',
                 'color: #FFFFFF; background: #0D0B0E; font-size: 10pt',
@@ -2181,7 +2200,7 @@
                 'background: #0E173E; font-size: 8pt;'
             ]);
         } else {
-            console.log('Rise v' + Rise.getVersion());
+            window.console.log('Rise v' + Rise.getVersion());
         }
     })();
 
@@ -2190,7 +2209,7 @@
      * @static
      * @type {Object}
      */
-    var Logger = {
+    Rise.Logger = {
         /**
          * Allow print out all messages
          * @static
@@ -2241,7 +2260,7 @@
          * @example
          * Rise.Logger.setLevel(Rise.Logger.VERBOSE);
          */
-        setLevel: function(level) {
+        setLevel: function (level) {
             currentLogLevel = level;
             return this;
         },
@@ -2251,7 +2270,7 @@
          * @static
          * @return {Integer} Returns integer value of current log level
          */
-        getLevel: function() {
+        getLevel: function () {
             return currentLogLevel;
         },
 
@@ -2260,7 +2279,7 @@
          * @static
          * @return {Rise.Logger}
          */
-        log: function() {
+        log: function () {
             if (isAllowedLevel(this.VERBOSE)) {
                 invokeConsole('log', arguments);
             }
@@ -2273,7 +2292,7 @@
          * @static
          * @return {Rise.Logger}
          */
-        debug: function() {
+        debug: function () {
             if (isAllowedLevel(this.DEBUG)) {
                 invokeConsole('debug', arguments);
             }
@@ -2286,7 +2305,7 @@
          * @static
          * @return {Rise.Logger}
          */
-        error: function() {
+        error: function () {
             if (isAllowedLevel(this.ERROR)) {
                 invokeConsole('error', arguments);
             }
@@ -2299,7 +2318,7 @@
          * @static
          * @return {Rise.Logger}
          */
-        warning: function() {
+        warning: function () {
             if (isAllowedLevel(this.WARNING)) {
                 invokeConsole('warn', arguments);
             }
@@ -2312,7 +2331,7 @@
          * @static
          * @return {Rise.Logger}
          */
-        info: function() {
+        info: function () {
             if (isAllowedLevel(this.INFO)) {
                 invokeConsole('info', arguments);
             }
@@ -2323,10 +2342,9 @@
         /**
          * Start new group in console
          * @static
-         * @param {Boolean} [startCollapsed] If first argument true, group will be collapsed
          * @return {Rise.Logger}
          */
-        startGroup: function() {
+        startGroup: function () {
             if (isAllowedLevel(this.VERBOSE)) {
                 if (Rise.Util.isBoolean(arguments[0]) && arguments[0] === true) {
                     invokeConsole('groupCollapsed', Array.prototype.slice.call(arguments, 1));
@@ -2343,7 +2361,7 @@
          * @static
          * @return {Rise.Logger}
          */
-        endGroup: function() {
+        endGroup: function () {
             if (isAllowedLevel(this.VERBOSE)) {
                 invokeConsole('groupEnd', arguments);
             }
@@ -2356,7 +2374,7 @@
          * @static
          * @return {Rise.Logger}
          */
-        startTime: function() {
+        startTime: function () {
             if (isAllowedLevel(this.VERBOSE)) {
                 invokeConsole('time', arguments);
             }
@@ -2369,7 +2387,7 @@
          * @static
          * @return {Rise.Logger}
          */
-        endTime: function() {
+        endTime: function () {
             if (isAllowedLevel(this.VERBOSE)) {
                 invokeConsole('timeEnd', arguments);
             }
@@ -2377,14 +2395,11 @@
             return this;
         }
     };
-
-    global.Rise.Logger = Logger;
-
-})(this);
-(function(global) {
+})();
+(function () {
     'use strict';
 
-    global.Rise.Math = {
+    Rise.Math = {
         /**
          * Force a number in range.
          * If value < min then returns min.
@@ -2399,7 +2414,7 @@
          * Rise.Math.clamp(0, 1, 2); // 1
          * Rise.Math.clamp(0, 2, 0.4); // 0.4
          */
-        clamp: function(min, max, value) {
+        clamp: function (min, max, value) {
             return Math.min(max, Math.max(min, value));
         },
 
@@ -2407,19 +2422,19 @@
          * Get decimal value from [min, max] range
          * @param {Integer} min Minimum value in range
          * @param  {Integer} max Maximum value in range
-         * @param  {Integer} value Value that need to bound
-         * @return {Float} Returns float decimal value
+         * @param  {Number|String} value Value that need to bound
+         * @return {Number} Returns float decimal value
          * @static
          * @example
          * Rise.Math.bound(0, 100, 40); // 0.4
          * Rise.Math.bound(0, 256, 133); // ~0.51...
          */
-        bound: function(min, max, value) {
-            if (Rise.Util.isString(value) && value.indexOf('.') != -1 && parseFloat(value) === 1) {
+        bound: function (min, max, value) {
+            if (Rise.Util.isString(value) && value.indexOf('.') !== -1 && parseFloat(value) === 1) {
                 value = '100%';
             }
 
-            var isPercentageValue = Rise.Util.isString(value) && value.indexOf('%') != -1;
+            var isPercentageValue = Rise.Util.isString(value) && value.indexOf('%') !== -1;
 
             value = this.clamp(min, max, parseFloat(value));
 
@@ -2443,7 +2458,7 @@
          * @example
          * Rise.Math.getRandomValue(0, 100);
          */
-        getRandomValue: function(min, max) {
+        getRandomValue: function (min, max) {
             min = min || 0;
             max = max || 100;
 
@@ -2453,13 +2468,13 @@
         /**
          * Replace decimal value with percentage value
          * @param  {Integer} value Decimal value in [0, 1] range
-         * @return {String}        Returns percentage value or the same value if not decimal
+         * @return {Integer|String} Returns percentage value or the same value if not decimal
          * @static
          * @example
          * Rise.Math.decimalToPercentage(0.4); // '40%'
          * Rise.Math.decimalToPercentage(2); // 2
          */
-        decimalToPercentage: function(value) {
+        decimalToPercentage: function (value) {
             value = parseFloat(value);
 
             if (Rise.Util.isNumber(value) && value >= 0 && value <= 1) {
@@ -2469,21 +2484,21 @@
             }
         }
     };
-})(this);
-(function(global) {
+})();
+(function () {
     'use strict';
 
-    global.Rise.Opacity = Rise.Class.create({
+    Rise.Opacity = Rise.Class.create({
         /**
          * Create new Rise.Opacity object
          * @constructor
-         * @param {Float} opacity Percentage range [0, 100] (100% - transparent, 0% - blank) or [0, 1] range
-         * @return {Rise.Opacity} Returns new Rise.Opacity instance
+         * @param {Number} opacity Percentage range [0, 100] (100% - transparent, 0% - blank) or [0, 1] range
+         * @return {Rise.Opacity|Object} Returns new Rise.Opacity instance
          * @example
          * new Rise.Opacity(40).toString(); // 0.60
          * new Rise.Opacity(0.20).getOpacity(); // 80
          */
-        init: function(opacity) {
+        init: function (opacity) {
             opacity = opacity || 0;
 
             if (opacity instanceof Rise.Opacity) {
@@ -2508,7 +2523,7 @@
          * @example
          * new Rise.Opacity(20).set(60).toString(); // 0.4
          */
-        set: function(opacity) {
+        set: function (opacity) {
             if (Rise.Opacity.isDecimal01Value(opacity)) {
                 Rise.Logger.log('"%s" decimal value, converting to percentage', opacity);
                 this.opacity = Rise.Opacity.convertCssToPercentage(opacity);
@@ -2529,7 +2544,7 @@
          * @example
          * new Rise.Opacity(60).get(); // 60
          */
-        get: function() {
+        get: function () {
             return this.opacity;
         },
 
@@ -2537,13 +2552,13 @@
          * Convert opacity value to CSS string
          * @return {String} Returns string which you can apply to CSS
          */
-        toString: function() {
+        toString: function () {
             return Rise.Opacity.convertPercentageToCss(this.opacity);
         }
     }, {
         /**
          * Check if provided value is percentage value in [0, 100] range and not decimal
-         * @param  {Float} value Value that need to be checked
+         * @param  {Number} value Value that need to be checked
          * @return {Boolean} True if value is percentage value
          * @static
          * @example
@@ -2552,18 +2567,18 @@
          * isPercentageValue(400); // false
          * isPercentageValue(0.40); //false
          */
-        isPercentageValue: function(value) {
+        isPercentageValue: function (value) {
             return (
                 Rise.Util.isNumber(value) &&
                 value >= 0 &&
                 value <= 100 &&
-                value == Math.floor(value)
-            );
+                value === Math.floor(value)
+                );
         },
 
         /**
          * Check if provided value is decimal value in [0, 1] range
-         * @param  {Float} value Value that need to be checked
+         * @param  {Number} value Value that need to be checked
          * @return {Boolean} True if value is decimal
          * @static
          * @example
@@ -2571,43 +2586,43 @@
          * isDecimal01Value(2); // false
          * isDecimal01Value(1.00); // false
          */
-        isDecimal01Value: function(value) {
+        isDecimal01Value: function (value) {
             return (
                 Rise.Util.isNumber(value) &&
                 value >= 0 &&
                 value <= 1 &&
-                value != Math.floor(value)
-            );
+                value !== Math.floor(value)
+                );
         },
 
         /**
          * Convert CSS opacity value to percentage value
-         * @param  {Float} value CSS opacity value that need to be converted
-         * @return {Float} Returns float value in percentage
+         * @param  {Number} value CSS opacity value that need to be converted
+         * @return {Number} Returns float value in percentage
          * @static
          * @example
          * Rise.Opacity.convertCssToPercentage(0.40); // 60%
          * Rise.Opacity.convertCssToPercentage(1); // 0%
          */
-        convertCssToPercentage: function(value) {
+        convertCssToPercentage: function (value) {
             return (100 - (value * 100.0).toFixed(0));
         },
 
         /**
          * Convert percentage value to CSS opacity
-         * @param  {Float} value Percentage value
-         * @return {Float} Returns float value for CSS opacity
+         * @param  {Number} value Percentage value
+         * @return {Number} Returns float value for CSS opacity
          * @static
          * @example
          * Rise.Opacity.convertPercentageToCss(60); // 0.40
          * Rise.Opacity.convertPercentageToCss(0); // 1
          */
-        convertPercentageToCss: function(value) {
+        convertPercentageToCss: function (value) {
             return (100 - value) / 100.0;
         }
     });
-})(this);
-(function(global) {
+})();
+(function () {
     'use strict';
 
     /**
@@ -2618,7 +2633,7 @@
      * Rise.$('div');
      * Rise.$('.my-selector');
      */
-    global.Rise.$ = function() {
+    Rise.$ = function () {
         return Rise.RQuery.apply(Object.create(Rise.RQuery.prototype), arguments);
     };
 
@@ -2631,11 +2646,11 @@
      * Rise.$.create('div');
      * Rise.$.create('span').text('My text');
      */
-    global.Rise.$.create = function(tag) {
+    Rise.$.create = function (tag) {
         return new Rise.RQuery(document.createElement(tag));
     };
 
-    global.Rise.RQuery = Rise.Class.create({
+    Rise.RQuery = Rise.Class.create({
         /**
          * Create new Rise.RQuery instance
          * @constructor
@@ -2645,7 +2660,7 @@
          * @example
          * new Rise.RQuery('.selector');
          */
-        init: function(selector, parent) {
+        init: function (selector, parent) {
             selector = selector || window;
             parent = parent || document;
 
@@ -2655,7 +2670,7 @@
              * @param  {Element} element It should be Element instance
              * @private
              */
-            var pushElement = function(element) {
+            var pushElement = function (element) {
                 if (element instanceof Element) {
                     this.elements.push(element);
                 }
@@ -2670,9 +2685,9 @@
                 this.elements = selector.get();
             } else if (
                 Rise.Util.isArray(selector) ||
-                selector instanceof HTMLCollection ||
-                selector instanceof NodeList
-            ) {
+                selector instanceof window.HTMLCollection ||
+                selector instanceof window.NodeList
+                ) {
                 Array.prototype.forEach.call(selector, pushElement);
             } else if (selector instanceof Element) {
                 this.elements[0] = selector;
@@ -2690,13 +2705,13 @@
 
         /**
          * Get Element by index
-         * @param  {Integer} index Index
+         * @param {Integer} [index] Index
          * @return {Array|Element} Returns Element with corresponding index or array of elements
          * @example
          * Rise.$('body').get(0);
          * Rise.$('div').get();
          */
-        get: function(index) {
+        get: function (index) {
             return Rise.Util.isUndefined(index) ? this.elements : this.elements[index];
         },
 
@@ -2706,7 +2721,7 @@
          * @example
          * Rise.$('body').count(); // 1
          */
-        count: function() {
+        count: function () {
             return (this.elements && this.elements.length) || 0;
         },
 
@@ -2719,7 +2734,7 @@
          *     console.log(element, index, array);
          * });
          */
-        each: function(cb) {
+        each: function (cb) {
             Array.prototype.forEach.call(this.get(), cb);
             return this;
         },
@@ -2730,7 +2745,7 @@
          * @example
          * Rise.$('body').parent();
          */
-        parent: function() {
+        parent: function () {
             return new Rise.RQuery(this.get(0).parentNode);
         },
 
@@ -2740,7 +2755,7 @@
          * @example
          * Rise.$('body').children();
          */
-        children: function() {
+        children: function () {
             return new Rise.RQuery(this.get(0).children);
         },
 
@@ -2751,7 +2766,7 @@
          * @example
          * Rise.$('body').contains(Rise.$('div'));
          */
-        contains: function(child) {
+        contains: function (child) {
             child = child.get(0);
 
             var element = this.get(0);
@@ -2765,7 +2780,7 @@
          * @example
          * Rise.$('div').offsetWidth();
          */
-        offsetWidth: function() {
+        offsetWidth: function () {
             return this.get(0).offsetWidth;
         },
 
@@ -2775,7 +2790,7 @@
          * @example
          * Rise.$('div').offsetHeight();
          */
-        offsetHeight: function() {
+        offsetHeight: function () {
             return this.get(0).offsetHeight;
         },
 
@@ -2785,7 +2800,7 @@
          * @example
          * Rise.$('div').offsetLeft();
          */
-        offsetLeft: function() {
+        offsetLeft: function () {
             return this.get(0).offsetLeft;
         },
 
@@ -2795,7 +2810,7 @@
          * @example
          * Rise.$('div').offsetTop();
          */
-        offsetTop: function() {
+        offsetTop: function () {
             return this.get(0).offsetTop;
         },
 
@@ -2805,7 +2820,7 @@
          * @example
          * Rise.$('input').focus();
          */
-        focus: function() {
+        focus: function () {
             this.get(0).focus();
             return this;
         },
@@ -2816,7 +2831,7 @@
          * @example
          * Rise.$('input').blur();
          */
-        blur: function() {
+        blur: function () {
             this.get(0).blur();
             return this;
         },
@@ -2830,7 +2845,7 @@
          *     return Rise.$(node).hasClass('example');
          * });
          */
-        filter: function(cb) {
+        filter: function (cb) {
             if (Rise.Util.isFunction(cb)) {
                 return new Rise.RQuery(Array.prototype.filter.call(this.get(), cb));
             } else {
@@ -2845,27 +2860,27 @@
          * @example
          * Rise.$('body').find('div').find('span');
          */
-        find: function(selector) {
+        find: function (selector) {
             return new Rise.RQuery(selector, this.get(0));
         },
 
         /**
          * Set or get attribute value to nodes
          * @param  {String|Object} attr String for getting attribute value and object for set
-         * @return {Rise.RQuery|Mixed} Returns current Rise.RQuery instance or attribute value
+         * @return {String|Rise.RQuery} Returns current Rise.RQuery instance or attribute value
          * @example
          * Rise.$('div').attr('id');
          * Rise.$('div').attr({
          *     id: 'test'
          * });
          */
-        attr: function(attr) {
+        attr: function (attr) {
             if (Rise.Util.isString(attr)) {
                 return this.get(0).getAttribute(attr);
             } else if (Rise.Util.isObject(attr)) {
                 Rise.Logger.startGroup(true, 'Rise.RQuery.attr() -> Set attributes');
-                this.each(function(element) {
-                    Object.keys(attr).forEach(function(key) {
+                this.each(function (element) {
+                    Object.keys(attr).forEach(function (key) {
                         Rise.Logger.log('Set key-value "%s" -> "%s" to element %O', key, attr[key], element);
                         if (attr[key] === false) {
                             element.removeAttribute(key);
@@ -2882,9 +2897,9 @@
 
         /**
          * Set or get css-rules
-         * @param  {String|Object} name String if you want get CSS-rule or Object for set
+         * @param {Object} css Object with CSS properties
          * @param {String} pseudoElement You can provide pseudoElement selector
-         * @return {Rise.RQuery|Mixed} Returns current Rise.RQuery instance or CSS value
+         * @return {String|Rise.RQuery} Returns current Rise.RQuery instance or CSS value
          * @example
          * Rise.RQuery('div').css({
          *     width: 200
@@ -2892,20 +2907,20 @@
          * Rise.RQuery('div').css('width', ':after');
          * Rise.RQuery('div').css('width');
          */
-        css: function(css, pseudoElement) {
+        css: function (css, pseudoElement) {
             pseudoElement = pseudoElement || null;
 
             if (Rise.Util.isString(css)) {
                 return window.getComputedStyle(this.get(0), pseudoElement).getPropertyValue(Rise.Util.toDashedString(css));
             } else if (Rise.Util.isObject(css)) {
                 Rise.Logger.startGroup(true, 'Rise.RQuery.css() -> Set CSS');
-                this.each(function(element) {
-                    Object.keys(css).forEach(function(key) {
+                this.each(function (element) {
+                    Object.keys(css).forEach(function (key) {
                         Rise.Logger.log('Set key-value "%s" -> "%s" to element %O', key, css[key], element);
 
                         if (css[key] === false) {
                             element.style.removeProperty(Rise.Util.toDashedString(key));
-                        } else if (isNaN(css[key]) || Rise.RQuery.cssNumbersMap.indexOf(key) != -1) {
+                        } else if (isNaN(css[key]) || Rise.RQuery.cssNumbersMap.indexOf(key) !== -1) {
                             element.style[Rise.Util.toCamelizedString(key)] = css[key];
                         } else {
                             element.style[Rise.Util.toCamelizedString(key)] = css[key] + 'px';
@@ -2925,10 +2940,10 @@
          * @example
          * Rise.$('div').wrap(Rise.$.create('a')); // Wrap all div with a tag
          */
-        wrap: function(html) {
+        wrap: function (html) {
             var wrapper;
 
-            return this.each(function(element) {
+            return this.each(function (element) {
                 wrapper = html.clone();
                 element.parentNode.insertBefore(wrapper.get(0), element);
                 wrapper.append(element);
@@ -2941,8 +2956,8 @@
          * @example
          * Rise.$('div').unwrap();
          */
-        unwrap: function() {
-            return this.each(function(element) {
+        unwrap: function () {
+            return this.each(function (element) {
                 element.parentNode.parentNode.replaceChild(element, element.parentNode);
             });
         },
@@ -2954,7 +2969,7 @@
          * @example
          * Rise.$('div').is('div'); // true
          */
-        is: function(selector) {
+        is: function (selector) {
             var element;
 
             if (this.count() > 0) {
@@ -2967,7 +2982,7 @@
                     element.mozMatchesSelector ||
                     element.webkitMatchesSelector ||
                     element.oMatchesSelector
-                ).call(element, selector);
+                    ).call(element, selector);
             }
 
             return false;
@@ -2975,16 +2990,16 @@
 
         /**
          * Add class name to nodes
-         * @param {String} names Class names splitted with spaces
+         * @param {Array|String} names Class names split with spaces
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
          * @example
          * Rise.$('div').addClass('foo bar');
          */
-        addClass: function(names) {
+        addClass: function (names) {
             names = names.split(/[ ]+/);
 
-            return this.each(function(element) {
-                names.forEach(function(name) {
+            return this.each(function (element) {
+                names.forEach(function (name) {
                     element.classList.add(name);
                 });
             });
@@ -2992,16 +3007,16 @@
 
         /**
          * Remove class name from nodes
-         * @param  {String} names Class names that need to be removed from nodes
+         * @param  {Array|String} names Class names that need to be removed from nodes
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
          * @example
          * Rise.$('div').removeClass('foo bar');
          */
-        removeClass: function(names) {
+        removeClass: function (names) {
             names = names.split(/[ ]+/);
 
-            return this.each(function(element) {
-                names.forEach(function(name) {
+            return this.each(function (element) {
+                names.forEach(function (name) {
                     element.classList.remove(name);
                 });
             });
@@ -3009,16 +3024,16 @@
 
         /**
          * Toggle class name for nodes
-         * @param  {String} names Class names that need to be toggled
+         * @param  {Array|String} names Class names that need to be toggled
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
          * @example
          * Rise.$('div').toggleClass('foo bar');
          */
-        toggleClass: function(names) {
+        toggleClass: function (names) {
             names = names.split(/[ ]+/);
 
-            return this.each(function(element) {
-                names.forEach(function(name) {
+            return this.each(function (element) {
+                names.forEach(function (name) {
                     element.classList.toggle(name);
                 });
             });
@@ -3026,14 +3041,14 @@
 
         /**
          * Check if nodes have class name
-         * @param  {String}  className Class name that need check for exists in node
+         * @param {String} name Class names
          * @return {Boolean} Returns true if ALL nodes have className and false otherwise
          * @example
          * Rise.$('div').hasClass('foo');
          */
-        hasClass: function(name) {
+        hasClass: function (name) {
             if (this.count() > 0) {
-                return Array.prototype.every.call(this.get(), function(element) {
+                return Array.prototype.every.call(this.get(), function (element) {
                     return element.classList.contains(name);
                 });
             }
@@ -3056,14 +3071,14 @@
          *     }
          * });
          */
-        on: function(eventType, handler) {
+        on: function (eventType, handler) {
             if (Rise.Util.isObject(eventType)) {
-                Object.keys(eventType).forEach(function(key) {
+                Object.keys(eventType).forEach(function (key) {
                     this.on(key, eventType[key]);
                 });
             } else {
                 Rise.Logger.startGroup(true, 'Rise.RQuery.on() -> Binding events');
-                this.each(function(element) {
+                this.each(function (element) {
                     Rise.Logger.log('Bind event "%s" to %O', eventType, element);
                     element.addEventListener(eventType, handler, false);
                 });
@@ -3084,14 +3099,14 @@
          *     click: yourFunction
          * });
          */
-        off: function(eventType, handler) {
+        off: function (eventType, handler) {
             if (Rise.Util.isObject(eventType)) {
-                Object.keys(eventType).forEach(function(key) {
+                Object.keys(eventType).forEach(function (key) {
                     this.off(key, eventType[key]);
                 });
             } else {
                 Rise.Logger.startGroup(true, 'Rise.RQuery.off() -> Unbinding events');
-                this.each(function(element) {
+                this.each(function (element) {
                     Rise.Logger.log('Unbind event "%s" from element %O', eventType, element);
                     element.removeEventListener(eventType, handler, false);
                 });
@@ -3108,7 +3123,7 @@
          * @example
          * Rise.$('button').triggerMouseEvent('click');
          */
-        triggerMouseEvent: function(eventName) {
+        triggerMouseEvent: function (eventName) {
             var event = document.createEvent('MouseEvents'),
                 element = this.get(0);
 
@@ -3124,8 +3139,8 @@
          * @example
          * Rise.$('div').remove();
          */
-        remove: function() {
-            return this.each(function(element) {
+        remove: function () {
+            return this.each(function (element) {
                 if (element && element.parentNode) {
                     element.parentNode.removeChild(element);
                 }
@@ -3140,11 +3155,11 @@
          * Rise.$('div').html('test');
          * Rise.$('div').html(); // 'test'
          */
-        html: function(html) {
+        html: function (html) {
             if (Rise.Util.isUndefined(html)) {
                 return this.get(0).innerHTML;
             } else {
-                return this.each(function(element) {
+                return this.each(function (element) {
                     new Rise.RQuery(element).empty().append(html);
                 });
             }
@@ -3159,17 +3174,17 @@
          * Rise.$('div').append(Rise.$.create('span'));
          * Rise.$('div').append(document.createElement('a'));
          */
-        append: function(html) {
+        append: function (html) {
             if (Rise.Util.isString(html)) {
-                this.each(function(element) {
+                this.each(function (element) {
                     element.insertAdjacentHTML('beforeend', html);
                 });
             } else if (html instanceof Rise.RQuery) {
-                this.each(function(element) {
+                this.each(function (element) {
                     element.appendChild(html.get(0));
                 });
             } else if (html instanceof Element) {
-                this.each(function(element) {
+                this.each(function (element) {
                     element.appendChild(html);
                 });
             }
@@ -3186,17 +3201,17 @@
          * Rise.$('div').prepend(Rise.$.create('span'));
          * Rise.$('div').prepend(document.createElement('a'));
          */
-        prepend: function(html) {
+        prepend: function (html) {
             if (Rise.Util.isString(html)) {
-                this.each(function(element) {
+                this.each(function (element) {
                     element.insertAdjacentHTML('afterbegin', html);
                 });
             } else if (html instanceof Rise.RQuery) {
-                this.each(function(element) {
+                this.each(function (element) {
                     element.insertBefore(html.get(0), element.firstChild);
                 });
             } else if (html instanceof Element) {
-                this.each(function(element) {
+                this.each(function (element) {
                     element.insertBefore(html, element.firstChild);
                 });
             }
@@ -3212,11 +3227,11 @@
          * Rise.$('div').text('test');
          * Rise.$('div').text(); // 'test'
          */
-        text: function(text) {
+        text: function (text) {
             if (Rise.Util.isUndefined(text)) {
                 return this.get(0).textContent;
             } else {
-                return this.each(function(element) {
+                return this.each(function (element) {
                     element.textContent = text;
                 });
             }
@@ -3228,8 +3243,8 @@
          * @example
          * Rise.$('div').empty();
          */
-        empty: function() {
-            return this.each(function(element) {
+        empty: function () {
+            return this.each(function (element) {
                 element.innerHTML = '';
             });
         },
@@ -3240,10 +3255,10 @@
          * @example
          * Rise.$('div').clone();
          */
-        clone: function() {
+        clone: function () {
             var clones = [];
 
-            this.each(function(element) {
+            this.each(function (element) {
                 clones.push(element.cloneNode(true));
             });
 
@@ -3270,16 +3285,16 @@
             "zoom"
         ]
     });
-})(this);
-(function(global) {
+})();
+(function () {
     'use strict';
 
-    global.Rise.Shadow = Rise.Class.create({
+    Rise.Shadow = Rise.Class.create({
         /**
          * Create new Rise.Shadow instance
          * @constructor
          * @param {Object} shadow Object with color, blur, offsetX, offsetY attributes or string
-         * @return {Rise.Shadow} Returns new Rise.Shadow instance
+         * @return {Rise.Shadow|Object} Returns new Rise.Shadow instance
          * @example
          * new Rise.Shadow({
          *     color: new Rise.Color('aqua'),
@@ -3288,7 +3303,7 @@
          *     offsetY: 10
          * });
          */
-        init: function(shadow) {
+        init: function (shadow) {
             shadow = shadow || {};
 
             if (shadow instanceof Rise.Shadow) {
@@ -3321,7 +3336,7 @@
          * @example
          * new Rise.Shadow().setColor(new Rise.Color('aqua'));
          */
-        setColor: function(color) {
+        setColor: function (color) {
             this.color = new Rise.Color(color);
             return this;
         },
@@ -3332,7 +3347,7 @@
          * @example
          * new Rise.Shadow().getColor();
          */
-        getColor: function() {
+        getColor: function () {
             return this.color;
         },
 
@@ -3343,7 +3358,7 @@
          * @example
          * new Rise.Shadow().setBlur(3);
          */
-        setBlur: function(blur) {
+        setBlur: function (blur) {
             this.blur = blur;
             return this;
         },
@@ -3354,7 +3369,7 @@
          * @example
          * new Rise.Shadow().getBlur();
          */
-        getBlur: function() {
+        getBlur: function () {
             return this.blur;
         },
 
@@ -3365,7 +3380,7 @@
          * @example
          * new Rise.Shadow().setOffsetX(5);
          */
-        setOffsetX: function(x) {
+        setOffsetX: function (x) {
             this.offsetX = x;
             return this;
         },
@@ -3376,7 +3391,7 @@
          * @example
          * new Rise.Shadow().getOffsetX();
          */
-        getOffsetX: function() {
+        getOffsetX: function () {
             return this.offsetX;
         },
 
@@ -3387,7 +3402,7 @@
          * @example
          * new Rise.Shadow().setOffsetY(5);
          */
-        setOffsetY: function(y) {
+        setOffsetY: function (y) {
             this.offsetY = y;
             return this;
         },
@@ -3398,7 +3413,7 @@
          * @example
          * new Rise.Shadow().getOffsetY();
          */
-        getOffsetY: function() {
+        getOffsetY: function () {
             return this.offsetY;
         },
 
@@ -3408,7 +3423,7 @@
          * @example
          * new Rise.Shadow().toString();
          */
-        toString: function() {
+        toString: function () {
             return [
                 this.offsetX,
                 this.offsetY,
@@ -3434,7 +3449,7 @@
          * @example
          * var shadow = Rise.Shadow.fromString('2px 2px 10px rgba(0, 0, 0, 0.2)');
          */
-        fromString: function(shadow) {
+        fromString: function (shadow) {
             shadow = shadow.trim();
 
             var offsetsAndBlur = Rise.Shadow.shadowRegex.exec(shadow) || [],
@@ -3448,11 +3463,11 @@
             });
         }
     });
-})(this);
-(function(global) {
+})();
+(function () {
     'use strict';
 
-    global.Rise.Element = Rise.Class.create({
+    Rise.Element = Rise.Class.create({
         /**
          * Field that declare what exactly type of this element
          * @type {String}
@@ -3463,7 +3478,7 @@
          * Create basic element
          * @return {Rise.Element} Returns Rise.Element instance
          */
-        init: function() {
+        init: function () {
             this.setNode(Rise.$.create('span').text('Basic Element'));
             return this;
         },
@@ -3472,7 +3487,7 @@
          * Get Element's node
          * @return {Rise.RQuery} Returns Rise.RQuery instance
          */
-        getNode: function() {
+        getNode: function () {
             return this.node;
         },
 
@@ -3481,7 +3496,7 @@
          * @param {Rise.RQuery} node Element's node which contains all nodes that needs for Element
          * @return {Rise.Element} Returns Rise.Element instance
          */
-        setNode: function(node) {
+        setNode: function (node) {
             this.node = Rise.$(node);
             return this;
         },
@@ -3490,28 +3505,22 @@
          * Get type of Element
          * @return {String} Returns type of Element
          */
-        getType: function() {
+        getType: function () {
             return this.type;
         }
     });
-})(this);
-(function(global) {
-    'use strict';
+})();
+(function () {
+    "use strict";
 
-    global.Rise.TextElement = Rise.Element.extend({
-        /**
-         * Declare type of Element
-         * @type {String}
-         */
+    Rise.TextElement = Rise.Element.extend({
         type: 'Text',
 
         /**
-         * Create new Rise.TextElement instance
-         * @constructor
-         * @param  {Object} options Additional options for TextElement
-         * @return {Rise.TextElement}         Returns Rise.TextElement instance
+         * Instantiate new Text Element
+         * @returns {Rise.TextElement}
          */
-        init: function(options) {
+        init: function () {
             var textNode = Rise.$.create('span').text('test node');
 
             this._super();
@@ -3519,4 +3528,4 @@
             return this;
         }
     });
-})(this);
+})();

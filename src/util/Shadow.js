@@ -1,12 +1,12 @@
-(function(global) {
+(function () {
     'use strict';
 
-    global.Rise.Shadow = Rise.Class.create({
+    Rise.Shadow = Rise.Class.create({
         /**
          * Create new Rise.Shadow instance
          * @constructor
          * @param {Object} shadow Object with color, blur, offsetX, offsetY attributes or string
-         * @return {Rise.Shadow} Returns new Rise.Shadow instance
+         * @return {Rise.Shadow|Object} Returns new Rise.Shadow instance
          * @example
          * new Rise.Shadow({
          *     color: new Rise.Color('aqua'),
@@ -15,7 +15,7 @@
          *     offsetY: 10
          * });
          */
-        init: function(shadow) {
+        init: function (shadow) {
             shadow = shadow || {};
 
             if (shadow instanceof Rise.Shadow) {
@@ -48,7 +48,7 @@
          * @example
          * new Rise.Shadow().setColor(new Rise.Color('aqua'));
          */
-        setColor: function(color) {
+        setColor: function (color) {
             this.color = new Rise.Color(color);
             return this;
         },
@@ -59,7 +59,7 @@
          * @example
          * new Rise.Shadow().getColor();
          */
-        getColor: function() {
+        getColor: function () {
             return this.color;
         },
 
@@ -70,7 +70,7 @@
          * @example
          * new Rise.Shadow().setBlur(3);
          */
-        setBlur: function(blur) {
+        setBlur: function (blur) {
             this.blur = blur;
             return this;
         },
@@ -81,7 +81,7 @@
          * @example
          * new Rise.Shadow().getBlur();
          */
-        getBlur: function() {
+        getBlur: function () {
             return this.blur;
         },
 
@@ -92,7 +92,7 @@
          * @example
          * new Rise.Shadow().setOffsetX(5);
          */
-        setOffsetX: function(x) {
+        setOffsetX: function (x) {
             this.offsetX = x;
             return this;
         },
@@ -103,7 +103,7 @@
          * @example
          * new Rise.Shadow().getOffsetX();
          */
-        getOffsetX: function() {
+        getOffsetX: function () {
             return this.offsetX;
         },
 
@@ -114,7 +114,7 @@
          * @example
          * new Rise.Shadow().setOffsetY(5);
          */
-        setOffsetY: function(y) {
+        setOffsetY: function (y) {
             this.offsetY = y;
             return this;
         },
@@ -125,7 +125,7 @@
          * @example
          * new Rise.Shadow().getOffsetY();
          */
-        getOffsetY: function() {
+        getOffsetY: function () {
             return this.offsetY;
         },
 
@@ -135,7 +135,7 @@
          * @example
          * new Rise.Shadow().toString();
          */
-        toString: function() {
+        toString: function () {
             return [
                 this.offsetX,
                 this.offsetY,
@@ -161,7 +161,7 @@
          * @example
          * var shadow = Rise.Shadow.fromString('2px 2px 10px rgba(0, 0, 0, 0.2)');
          */
-        fromString: function(shadow) {
+        fromString: function (shadow) {
             shadow = shadow.trim();
 
             var offsetsAndBlur = Rise.Shadow.shadowRegex.exec(shadow) || [],
@@ -175,4 +175,4 @@
             });
         }
     });
-})(this);
+})();

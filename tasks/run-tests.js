@@ -2,8 +2,10 @@ var mocha = require('gulp-mocha-phantomjs'),
     linker = require('gulp-linker'),
     path = require('path');
 
-module.exports = function(gulp, config) {
-    gulp.task('run-tests', ['build-js'], function() {
+module.exports = function (gulp, config) {
+    "use strict";
+    
+    gulp.task('run-tests', ['build-js'], function () {
         return gulp.src(path.resolve(__dirname, '../run-tests.html'))
             .pipe(linker({
                 scripts: path.resolve(__dirname, '../tests/**/*.js'),

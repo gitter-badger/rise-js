@@ -1,4 +1,4 @@
-(function(global) {
+(function () {
     'use strict';
 
     /**
@@ -21,7 +21,7 @@
     /**
      * Prepend message to every log message
      * @param  {String} string Message to what will be prepended header message
-     * @return {String}        Returns resulting strint
+     * @return {String}        Returns resulting string
      * @private
      */
     function prependLoggerInfo(string) {
@@ -39,9 +39,9 @@
     function invokeConsole(type, args) {
         args = Array.prototype.slice.call(args, 0);
 
-        if (console[type] && Rise.Util.isFunction(console[type])) {
+        if (window.console[type] && Rise.Util.isFunction(window.console[type])) {
             args[0] = prependLoggerInfo(args[0] ? args[0] : '');
-            console[type].apply(console, args);
+            window.console[type].apply(window.console, args);
         }
     }
 
@@ -51,8 +51,8 @@
      */
     (function printWelcomeMessage() {
         if (window.chrome) {
-            console.log.apply(console, [
-                '%c %c %c Rise v' + Rise.getVersion() + ' %c %c %c',
+            window.console.log.apply(window.console, [
+                    '%c %c %c Rise v' + Rise.getVersion() + ' %c %c %c',
                 'background: #0E173E; font-size: 8pt;',
                 'background: #020C25; font-size: 9pt;',
                 'color: #FFFFFF; background: #0D0B0E; font-size: 10pt',
@@ -61,7 +61,7 @@
                 'background: #0E173E; font-size: 8pt;'
             ]);
         } else {
-            console.log('Rise v' + Rise.getVersion());
+            window.console.log('Rise v' + Rise.getVersion());
         }
     })();
 
@@ -70,7 +70,7 @@
      * @static
      * @type {Object}
      */
-    var Logger = {
+    Rise.Logger = {
         /**
          * Allow print out all messages
          * @static
@@ -121,7 +121,7 @@
          * @example
          * Rise.Logger.setLevel(Rise.Logger.VERBOSE);
          */
-        setLevel: function(level) {
+        setLevel: function (level) {
             currentLogLevel = level;
             return this;
         },
@@ -131,7 +131,7 @@
          * @static
          * @return {Integer} Returns integer value of current log level
          */
-        getLevel: function() {
+        getLevel: function () {
             return currentLogLevel;
         },
 
@@ -140,7 +140,7 @@
          * @static
          * @return {Rise.Logger}
          */
-        log: function() {
+        log: function () {
             if (isAllowedLevel(this.VERBOSE)) {
                 invokeConsole('log', arguments);
             }
@@ -153,7 +153,7 @@
          * @static
          * @return {Rise.Logger}
          */
-        debug: function() {
+        debug: function () {
             if (isAllowedLevel(this.DEBUG)) {
                 invokeConsole('debug', arguments);
             }
@@ -166,7 +166,7 @@
          * @static
          * @return {Rise.Logger}
          */
-        error: function() {
+        error: function () {
             if (isAllowedLevel(this.ERROR)) {
                 invokeConsole('error', arguments);
             }
@@ -179,7 +179,7 @@
          * @static
          * @return {Rise.Logger}
          */
-        warning: function() {
+        warning: function () {
             if (isAllowedLevel(this.WARNING)) {
                 invokeConsole('warn', arguments);
             }
@@ -192,7 +192,7 @@
          * @static
          * @return {Rise.Logger}
          */
-        info: function() {
+        info: function () {
             if (isAllowedLevel(this.INFO)) {
                 invokeConsole('info', arguments);
             }
@@ -203,10 +203,9 @@
         /**
          * Start new group in console
          * @static
-         * @param {Boolean} [startCollapsed] If first argument true, group will be collapsed
          * @return {Rise.Logger}
          */
-        startGroup: function() {
+        startGroup: function () {
             if (isAllowedLevel(this.VERBOSE)) {
                 if (Rise.Util.isBoolean(arguments[0]) && arguments[0] === true) {
                     invokeConsole('groupCollapsed', Array.prototype.slice.call(arguments, 1));
@@ -223,7 +222,7 @@
          * @static
          * @return {Rise.Logger}
          */
-        endGroup: function() {
+        endGroup: function () {
             if (isAllowedLevel(this.VERBOSE)) {
                 invokeConsole('groupEnd', arguments);
             }
@@ -236,7 +235,7 @@
          * @static
          * @return {Rise.Logger}
          */
-        startTime: function() {
+        startTime: function () {
             if (isAllowedLevel(this.VERBOSE)) {
                 invokeConsole('time', arguments);
             }
@@ -249,7 +248,7 @@
          * @static
          * @return {Rise.Logger}
          */
-        endTime: function() {
+        endTime: function () {
             if (isAllowedLevel(this.VERBOSE)) {
                 invokeConsole('timeEnd', arguments);
             }
@@ -257,7 +256,4 @@
             return this;
         }
     };
-
-    global.Rise.Logger = Logger;
-
-})(this);
+})();

@@ -1,12 +1,12 @@
-(function(global) {
+(function () {
     'use strict';
 
-    global.Rise.Color = Rise.Class.create({
+    Rise.Color = Rise.Class.create({
         /**
          * Create new Rise.Color instance
          * @constructor
          * @param {Rise.Color|String|Object} color String or object with appropriate properties
-         * @return {Rise.Color} Returns Rise.Color instance
+         * @return {Rise.Color|Boolean} Returns Rise.Color instance
          * @example
          * Rise.Color('red');
          * Rise.Color({
@@ -16,7 +16,7 @@
          *     a: 1
          * });
          */
-        init: function(color) {
+        init: function (color) {
             color = color || 'black';
 
             var rgb = {};
@@ -66,7 +66,7 @@
          * Get brightness level of color
          * @return {Integer} Returns float value of brightness level
          */
-        getBrightness: function() {
+        getBrightness: function () {
             var rgb = this.toRgb();
             return (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
         },
@@ -75,7 +75,7 @@
          * Check if this color is dark
          * @return {Boolean} Returns true if color is dark
          */
-        isDark: function() {
+        isDark: function () {
             return this.getBrightness() < 128;
         },
 
@@ -83,7 +83,7 @@
          * Check if this color is light
          * @return {Boolean} Returns true if color is light
          */
-        isLight: function() {
+        isLight: function () {
             return !this.isDark();
         },
 
@@ -91,7 +91,7 @@
          * Get red channel
          * @return {Integer} Returns red channel value
          */
-        getRed: function() {
+        getRed: function () {
             return this.red;
         },
 
@@ -100,7 +100,7 @@
          * @param {Integer} value Red channel in [0, 255] range
          * @return {Rise.Color} Returns Rise.Color instance
          */
-        setRed: function(value) {
+        setRed: function (value) {
             this.red = Rise.Math.clamp(0, 255, value);
             return this;
         },
@@ -109,7 +109,7 @@
          * Get green channel
          * @return {Integer} Returns green channel value
          */
-        getGreen: function() {
+        getGreen: function () {
             return this.green;
         },
 
@@ -118,7 +118,7 @@
          * @param {Integer} value Green channel in [0, 255] range
          * @return {Rise.Color} Returns Rise.Color instance
          */
-        setGreen: function(value) {
+        setGreen: function (value) {
             this.green = Rise.Math.clamp(0, 255, value);
             return this;
         },
@@ -127,7 +127,7 @@
          * Get blue channel
          * @return {Integer} Returns blue channel value
          */
-        getBlue: function() {
+        getBlue: function () {
             return this.blue;
         },
 
@@ -136,25 +136,25 @@
          * @param {Integer} value Blue channel in [0, 255] range
          * @return {Rise.Color} Returns Rise.Color instance
          */
-        setBlue: function(value) {
+        setBlue: function (value) {
             this.blue = Rise.Math.clamp(0, 255, value);
             return this;
         },
 
         /**
          * Get alpha channel of this color
-         * @return {Float} Returns float value of alpha channel
+         * @return {Number} Returns float value of alpha channel
          */
-        getAlpha: function() {
+        getAlpha: function () {
             return this.alpha;
         },
 
         /**
          * Set alpha channel for this color
-         * @param {Float} value Float value of alpha channel in 0-1 range
+         * @param {Number} value Float value of alpha channel in 0-1 range
          * @return {Rise.Color} Returns Rise.Color instance
          */
-        setAlpha: function(value) {
+        setAlpha: function (value) {
             value = parseFloat(value);
 
             this.alpha = (isNaN(value) || value < 0 || value > 1) ? 1 : value;
@@ -166,7 +166,7 @@
          * Convert color to RGB
          * @return {Object} Returns object with r, g, b, a properties
          */
-        toRgb: function() {
+        toRgb: function () {
             return {
                 r: Math.round(this.red),
                 g: Math.round(this.green),
@@ -179,10 +179,10 @@
          * Convert color to RGB string
          * @return {String} Returns RGB string
          */
-        toRgbString: function() {
+        toRgbString: function () {
             var rgb = this.toRgb();
 
-            return this.alpha == 1 ?
+            return this.alpha === 1 ?
                 "rgb(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ")" :
                 "rgba(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ", " + this.roundAlpha + ")";
         },
@@ -193,7 +193,7 @@
          * @example
          * new Rise.Color('black').toHex(); // '000000'
          */
-        toHex: function() {
+        toHex: function () {
             return this.alpha === 1 ?
                 Rise.Color.rgbToHex(this.red, this.green, this.blue) :
                 Rise.Color.rgbToHex(this.red, this.green, this.blue, this.alpha);
@@ -205,7 +205,7 @@
          * @example
          * new Rise.Color('black').toHexString(); // '#000000'
          */
-        toHexString: function() {
+        toHexString: function () {
             return '#' + this.toHex();
         },
 
@@ -213,7 +213,7 @@
          * Convert color to HSV
          * @return {Object} Object with h, s, v, a properties
          */
-        toHsv: function() {
+        toHsv: function () {
             var hsv = Rise.Color.rgbToHsv(this.red, this.green, this.blue);
 
             return {
@@ -228,13 +228,13 @@
          * Convert to HSV in string
          * @return {String} Returns string with HSV color
          */
-        toHsvString: function() {
+        toHsvString: function () {
             var hsv = Rise.Color.rgbToHsv(this.red, this.green, this.blue),
                 h = Math.round(hsv.h * 360),
                 s = Math.round(hsv.s * 100),
                 v = Math.round(hsv.v * 100);
 
-            return this.alpha == 1 ?
+            return this.alpha === 1 ?
                 "hsv(" + h + ", " + s + "%, " + v + "%)" :
                 "hsva(" + h + ", " + s + "%, " + v + "%, " + this.roundAlpha + ")";
         },
@@ -243,7 +243,7 @@
          * Convert color to HSL
          * @return {Object} Object with h, s, l, a properties
          */
-        toHsl: function() {
+        toHsl: function () {
             var hsl = Rise.Color.rgbToHsl(this.red, this.green, this.blue);
 
             return {
@@ -258,13 +258,13 @@
          * Convert color to HSL in string
          * @return {String} Returns HSL in string
          */
-        toHslString: function() {
+        toHslString: function () {
             var hsl = Rise.Color.rgbToHsl(this.red, this.green, this.blue),
                 h = Math.round(hsl.h * 360),
                 s = Math.round(hsl.s * 100),
                 l = Math.round(hsl.l * 100);
 
-            return this.alpha == 1 ?
+            return this.alpha === 1 ?
                 "hsl(" + h + ", " + s + "%, " + l + "%)" :
                 "hsla(" + h + ", " + s + "%, " + l + "%, " + this.roundAlpha + ")";
         },
@@ -280,7 +280,7 @@
          *     b: 0
          * }).toName(); // 'black'
          */
-        toName: function() {
+        toName: function () {
             if (this.alpha === 0) {
                 return "transparent";
             } else if (this.alpha < 1) {
@@ -295,7 +295,7 @@
          * @param  {String} format Custom format
          * @return {String} Returns string of this color depending on format
          */
-        toString: function(format) {
+        toString: function (format) {
             switch (format) {
                 case 'rgb':
                     return this.toRgbString();
@@ -317,7 +317,7 @@
          * @param {Integer} amount Custom amount for lighten level in [0, 100] range
          * @return {Rise.Color} Returns modified color
          */
-        lighten: function(amount) {
+        lighten: function (amount) {
             amount = (amount === 0) ? 0 : (amount || 10);
 
             var hsl = this.toHsl();
@@ -331,7 +331,7 @@
          * @param {Integer} amount Custom amount for darken level in [0, 100] range
          * @return {Rise.Color} Returns modified color
          */
-        darken: function(amount) {
+        darken: function (amount) {
             amount = (amount === 0) ? 0 : (amount || 10);
 
             var hsl = this.toHsl();
@@ -345,7 +345,7 @@
          * @param {Integer} amount Custom amount for desaturate in [0, 100] range
          * @return {Rise.Color} Returns modified color
          */
-        desaturate: function(amount) {
+        desaturate: function (amount) {
             amount = (amount === 0) ? 0 : (amount || 10);
 
             var hsl = this.toHsl();
@@ -359,7 +359,7 @@
          * @param {Integer} amount Custom amount for saturate level in [0, 100] range
          * @return {Rise.Color} Returns modified color
          */
-        saturate: function(amount) {
+        saturate: function (amount) {
             amount = (amount === 0) ? 0 : (amount || 10);
 
             var hsl = this.toHsl();
@@ -373,7 +373,7 @@
          * @param {Integer} amount Custom amount for brighten level in [0, 100] range
          * @return {Rise.Color} Returns modified color
          */
-        brighten: function(amount) {
+        brighten: function (amount) {
             amount = (amount === 0) ? 0 : (amount || 10);
 
             var rgb = this.toRgb();
@@ -388,7 +388,7 @@
          * Completely desaturate the color (make it greyscale)
          * @return {Rise.Color} Returns modified color
          */
-        greyscale: function() {
+        greyscale: function () {
             return this.desaturate(100);
         },
 
@@ -397,7 +397,7 @@
          * @param {Integer} amount Custom amount for spin in [-360, 360] range
          * @return {Rise.Color} Returns modified color
          */
-        spin: function(amount) {
+        spin: function (amount) {
             var hsl = this.toHsl(),
                 hue = (Math.round(hsl.h) + amount) % 360;
 
@@ -412,7 +412,7 @@
          * @param {Integer} [slices] Count of slices
          * @return {Array} Returns array with Rise.Color items
          */
-        getAnalogous: function(results, slices) {
+        getAnalogous: function (results, slices) {
             results = results || 6;
             slices = slices || 30;
 
@@ -432,7 +432,7 @@
          * Get complementary combination
          * @return {Rise.Color} Returns Rise.Color instance with complementary color
          */
-        getComplementary: function() {
+        getComplementary: function () {
             var hsl = this.toHsl();
             hsl.h = (hsl.h + 180) % 360;
             return new Rise.Color(hsl);
@@ -443,7 +443,7 @@
          * @param {Integer} results Count of results
          * @return {Array} Returns array with Rise.Color items
          */
-        getMonochromatic: function(results) {
+        getMonochromatic: function (results) {
             results = results || 6;
 
             var hsv = this.toHsv(),
@@ -467,7 +467,7 @@
          * Get split complementary combinations
          * @return {Array} Returns array with Rise.Color items
          */
-        getSplitComplementary: function() {
+        getSplitComplementary: function () {
             var hsl = this.toHsl();
 
             return [
@@ -489,7 +489,7 @@
          * Get triad combinations
          * @return {Array} Returns array with Rise.Color items
          */
-        getTriad: function() {
+        getTriad: function () {
             var hsl = this.toHsl();
 
             return [
@@ -511,7 +511,7 @@
          * Get tetrad combinations
          * @return {Array} Returns array with Rise.Color items
          */
-        getTetrad: function() {
+        getTetrad: function () {
             var hsl = this.toHsl();
 
             return [
@@ -695,7 +695,7 @@
          * @return {Object}
          * @static
          */
-        colorRegexMap: (function() {
+        colorRegexMap: (function () {
             var cssInteger = "[-\\+]?\\d+%?",
                 cssNumber = "[-\\+]?\\d*\\.\\d+%?",
                 cssUnit = "(?:" + cssNumber + ")|(?:" + cssInteger + ")",
@@ -725,7 +725,7 @@
          * @example
          * Rise.Color.rgbToRgb(0, 0, 0);
          */
-        rgbToRgb: function(r, g, b) {
+        rgbToRgb: function (r, g, b) {
             return {
                 r: Rise.Math.bound(0, 255, r) * 255,
                 g: Rise.Math.bound(0, 255, g) * 255,
@@ -741,7 +741,7 @@
          * @return {Object}    Object with h, s, v properties
          * @static
          */
-        rgbToHsv: function(r, g, b) {
+        rgbToHsv: function (r, g, b) {
             r = Rise.Math.bound(0, 255, r);
             g = Rise.Math.bound(0, 255, g);
             b = Rise.Math.bound(0, 255, b);
@@ -753,7 +753,7 @@
 
             s = max === 0 ? 0 : d / max;
 
-            if (max == min) {
+            if (max === min) {
                 h = 0;
             } else {
                 switch (max) {
@@ -786,7 +786,7 @@
          * @return {Object}    Object with h, s, l properties
          * @static
          */
-        rgbToHsl: function(r, g, b) {
+        rgbToHsl: function (r, g, b) {
             r = Rise.Math.bound(0, 255, r);
             g = Rise.Math.bound(0, 255, g);
             b = Rise.Math.bound(0, 255, b);
@@ -795,7 +795,7 @@
                 min = Math.min(r, g, b),
                 h, s, l = (max + min) / 2;
 
-            if (max == min) {
+            if (max === min) {
                 h = s = 0;
             } else {
                 var d = max - min;
@@ -830,17 +830,31 @@
          * @return {Object}    Object with r, g, b properties
          * @static
          */
-        hslToRgb: function(h, s, l) {
+        hslToRgb: function (h, s, l) {
             h = Rise.Math.bound(0, 360, h);
             s = Rise.Math.bound(0, 100, s);
             l = Rise.Math.bound(0, 100, l);
 
             function hue2rgb(p, q, t) {
-                if (t < 0) t += 1;
-                if (t > 1) t -= 1;
-                if (t < 1 / 6) return p + (q - p) * 6 * t;
-                if (t < 1 / 2) return q;
-                if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                if (t < 0) {
+                    t += 1;
+                }
+
+                if (t > 1) {
+                    t -= 1;
+                }
+
+                if (t < 1 / 6) {
+                    return p + (q - p) * 6 * t;
+                }
+
+                if (t < 1 / 2) {
+                    return q;
+                }
+
+                if (t < 2 / 3) {
+                    return p + (q - p) * (2 / 3 - t) * 6;
+                }
                 return p;
             }
 
@@ -872,7 +886,7 @@
          * @return {Object}    Object with r, g, b properties
          * @static
          */
-        hsvToRgb: function(h, s, v) {
+        hsvToRgb: function (h, s, v) {
             h = Rise.Math.bound(0, 360, h) * 6;
             s = Rise.Math.bound(0, 100, s);
             v = Rise.Math.bound(0, 100, v);
@@ -899,14 +913,15 @@
          * @param  {Integer} r Red channel
          * @param  {Integer} g Green channel
          * @param  {Integer} b Blue channel
+         * @param  {Integer} a Alpha channel
          * @return {String} HEX in string without #
          * @static
          */
-        rgbToHex: function(r, g, b, a) {
+        rgbToHex: function (r, g, b, a) {
             var hex = [];
 
             function pad2(value) {
-                return value.length == 1 ? '0' + value : value;
+                return value.length === 1 ? '0' + value : value;
             }
 
             if (Rise.Util.isUndefined(a)) {
@@ -934,12 +949,12 @@
          * @return {Boolean} True if colors equals and false otherwise
          * @static
          */
-        equals: function(firstColor, secondColor) {
+        equals: function (firstColor, secondColor) {
             if (!firstColor || !secondColor) {
                 return false;
             }
 
-            return new Rise.Color(firstColor).toRgbString() == new Rise.Color(secondColor).toRgbString();
+            return new Rise.Color(firstColor).toRgbString() === new Rise.Color(secondColor).toRgbString();
         },
 
         /**
@@ -947,7 +962,7 @@
          * @return {Rise.Color} Random color
          * @static
          */
-        random: function() {
+        random: function () {
             return new Rise.Color({
                 r: Rise.Math.getRandomValue(0, 255),
                 g: Rise.Math.getRandomValue(0, 255),
@@ -963,7 +978,7 @@
          * @return {Rise.Color}     Returns mixed color
          * @static
          */
-        mix: function(firstColor, secondColor, amount) {
+        mix: function (firstColor, secondColor, amount) {
             amount = amount === 0 ? 0 : (amount || 50);
 
             var rgbA = new Rise.Color(firstColor).toRgb(),
@@ -974,7 +989,7 @@
                 w1,
                 w2;
 
-            if (w * a == -1) {
+            if (w * a === -1) {
                 w1 = w;
             } else {
                 w1 = (w + a) / (1 + w * a);
@@ -994,15 +1009,15 @@
         /**
          * Create new Rise.Color instance from string colour
          * @param  {String} color String representation of colour
-         * @return {Window.Rise.Color}   Returns Rise.Color instance
+         * @return {Boolean|Rise.Color}   Returns Rise.Color instance
          */
-        fromString: function(color) {
+        fromString: function (color) {
             color = color.trim().replace(/#/g, '').toLowerCase();
             color = Rise.Color.colorNamesMap[color] || color;
 
             var match;
 
-            if (color == 'transparent') {
+            if (color === 'transparent') {
                 return new Rise.Color({
                     r: 0,
                     g: 0,
@@ -1046,26 +1061,24 @@
                     a: parseInt(match[1], 16) / 255,
                     r: parseInt(match[2], 16),
                     g: parseInt(match[3], 16),
-                    b: parseInt(match[4], 16),
+                    b: parseInt(match[4], 16)
                 });
             } else if ((match = Rise.Color.colorRegexMap.hex6.exec(color))) {
                 return new Rise.Color({
                     r: parseInt(match[1], 16),
                     g: parseInt(match[2], 16),
-                    b: parseInt(match[3], 16),
+                    b: parseInt(match[3], 16)
                 });
             } else if ((match = Rise.Color.colorRegexMap.hex3.exec(color))) {
                 return new Rise.Color({
                     r: parseInt(match[1] + '' + match[1], 16),
                     g: parseInt(match[2] + '' + match[2], 16),
-                    b: parseInt(match[3] + '' + match[3], 16),
+                    b: parseInt(match[3] + '' + match[3], 16)
                 });
             } else {
                 Rise.Logger.warning('Color -> %O not parsed', color);
                 return false;
             }
-
-            return false;
         }
     });
 
@@ -1076,4 +1089,4 @@
      * @static
      */
     Rise.Color.hexNamesMap = Rise.Util.flipObject(Rise.Color.colorNamesMap);
-})(window);
+})();

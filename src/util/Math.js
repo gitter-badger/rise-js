@@ -1,7 +1,7 @@
-(function(global) {
+(function () {
     'use strict';
 
-    global.Rise.Math = {
+    Rise.Math = {
         /**
          * Force a number in range.
          * If value < min then returns min.
@@ -16,7 +16,7 @@
          * Rise.Math.clamp(0, 1, 2); // 1
          * Rise.Math.clamp(0, 2, 0.4); // 0.4
          */
-        clamp: function(min, max, value) {
+        clamp: function (min, max, value) {
             return Math.min(max, Math.max(min, value));
         },
 
@@ -24,19 +24,19 @@
          * Get decimal value from [min, max] range
          * @param {Integer} min Minimum value in range
          * @param  {Integer} max Maximum value in range
-         * @param  {Integer} value Value that need to bound
-         * @return {Float} Returns float decimal value
+         * @param  {Number|String} value Value that need to bound
+         * @return {Number} Returns float decimal value
          * @static
          * @example
          * Rise.Math.bound(0, 100, 40); // 0.4
          * Rise.Math.bound(0, 256, 133); // ~0.51...
          */
-        bound: function(min, max, value) {
-            if (Rise.Util.isString(value) && value.indexOf('.') != -1 && parseFloat(value) === 1) {
+        bound: function (min, max, value) {
+            if (Rise.Util.isString(value) && value.indexOf('.') !== -1 && parseFloat(value) === 1) {
                 value = '100%';
             }
 
-            var isPercentageValue = Rise.Util.isString(value) && value.indexOf('%') != -1;
+            var isPercentageValue = Rise.Util.isString(value) && value.indexOf('%') !== -1;
 
             value = this.clamp(min, max, parseFloat(value));
 
@@ -60,7 +60,7 @@
          * @example
          * Rise.Math.getRandomValue(0, 100);
          */
-        getRandomValue: function(min, max) {
+        getRandomValue: function (min, max) {
             min = min || 0;
             max = max || 100;
 
@@ -70,13 +70,13 @@
         /**
          * Replace decimal value with percentage value
          * @param  {Integer} value Decimal value in [0, 1] range
-         * @return {String}        Returns percentage value or the same value if not decimal
+         * @return {Integer|String} Returns percentage value or the same value if not decimal
          * @static
          * @example
          * Rise.Math.decimalToPercentage(0.4); // '40%'
          * Rise.Math.decimalToPercentage(2); // 2
          */
-        decimalToPercentage: function(value) {
+        decimalToPercentage: function (value) {
             value = parseFloat(value);
 
             if (Rise.Util.isNumber(value) && value >= 0 && value <= 1) {
@@ -86,4 +86,4 @@
             }
         }
     };
-})(this);
+})();

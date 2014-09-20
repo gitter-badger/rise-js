@@ -1,20 +1,14 @@
-(function (global) {
-    'use strict';
+(function () {
+    "use strict";
 
-    global.Rise.TextElement = Rise.Element.extend({
-        /**
-         * Declare type of Element
-         * @type {String}
-         */
+    Rise.TextElement = Rise.Element.extend({
         type: 'Text',
 
         /**
-         * Create new Rise.TextElement instance
-         * @constructor
-         * @param  {Object} options Additional options for TextElement
-         * @return {Rise.TextElement}         Returns Rise.TextElement instance
+         * Instantiate new Text Element
+         * @returns {Rise.TextElement}
          */
-        init: function (options) {
+        init: function () {
             var textNode = Rise.$.create('span').text('test node');
 
             this._super();
@@ -22,4 +16,4 @@
             return this;
         }
     });
-})(window);
+})();

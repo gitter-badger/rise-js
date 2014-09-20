@@ -1,4 +1,4 @@
-(function(global) {
+(function () {
     'use strict';
 
     /**
@@ -9,7 +9,7 @@
      * Rise.$('div');
      * Rise.$('.my-selector');
      */
-    global.Rise.$ = function() {
+    Rise.$ = function () {
         return Rise.RQuery.apply(Object.create(Rise.RQuery.prototype), arguments);
     };
 
@@ -22,11 +22,11 @@
      * Rise.$.create('div');
      * Rise.$.create('span').text('My text');
      */
-    global.Rise.$.create = function(tag) {
+    Rise.$.create = function (tag) {
         return new Rise.RQuery(document.createElement(tag));
     };
 
-    global.Rise.RQuery = Rise.Class.create({
+    Rise.RQuery = Rise.Class.create({
         /**
          * Create new Rise.RQuery instance
          * @constructor
@@ -36,7 +36,7 @@
          * @example
          * new Rise.RQuery('.selector');
          */
-        init: function(selector, parent) {
+        init: function (selector, parent) {
             selector = selector || window;
             parent = parent || document;
 
@@ -46,7 +46,7 @@
              * @param  {Element} element It should be Element instance
              * @private
              */
-            var pushElement = function(element) {
+            var pushElement = function (element) {
                 if (element instanceof Element) {
                     this.elements.push(element);
                 }
@@ -61,9 +61,9 @@
                 this.elements = selector.get();
             } else if (
                 Rise.Util.isArray(selector) ||
-                selector instanceof HTMLCollection ||
-                selector instanceof NodeList
-            ) {
+                selector instanceof window.HTMLCollection ||
+                selector instanceof window.NodeList
+                ) {
                 Array.prototype.forEach.call(selector, pushElement);
             } else if (selector instanceof Element) {
                 this.elements[0] = selector;
@@ -81,13 +81,13 @@
 
         /**
          * Get Element by index
-         * @param  {Integer} index Index
+         * @param {Integer} [index] Index
          * @return {Array|Element} Returns Element with corresponding index or array of elements
          * @example
          * Rise.$('body').get(0);
          * Rise.$('div').get();
          */
-        get: function(index) {
+        get: function (index) {
             return Rise.Util.isUndefined(index) ? this.elements : this.elements[index];
         },
 
@@ -97,7 +97,7 @@
          * @example
          * Rise.$('body').count(); // 1
          */
-        count: function() {
+        count: function () {
             return (this.elements && this.elements.length) || 0;
         },
 
@@ -110,7 +110,7 @@
          *     console.log(element, index, array);
          * });
          */
-        each: function(cb) {
+        each: function (cb) {
             Array.prototype.forEach.call(this.get(), cb);
             return this;
         },
@@ -121,7 +121,7 @@
          * @example
          * Rise.$('body').parent();
          */
-        parent: function() {
+        parent: function () {
             return new Rise.RQuery(this.get(0).parentNode);
         },
 
@@ -131,7 +131,7 @@
          * @example
          * Rise.$('body').children();
          */
-        children: function() {
+        children: function () {
             return new Rise.RQuery(this.get(0).children);
         },
 
@@ -142,7 +142,7 @@
          * @example
          * Rise.$('body').contains(Rise.$('div'));
          */
-        contains: function(child) {
+        contains: function (child) {
             child = child.get(0);
 
             var element = this.get(0);
@@ -156,7 +156,7 @@
          * @example
          * Rise.$('div').offsetWidth();
          */
-        offsetWidth: function() {
+        offsetWidth: function () {
             return this.get(0).offsetWidth;
         },
 
@@ -166,7 +166,7 @@
          * @example
          * Rise.$('div').offsetHeight();
          */
-        offsetHeight: function() {
+        offsetHeight: function () {
             return this.get(0).offsetHeight;
         },
 
@@ -176,7 +176,7 @@
          * @example
          * Rise.$('div').offsetLeft();
          */
-        offsetLeft: function() {
+        offsetLeft: function () {
             return this.get(0).offsetLeft;
         },
 
@@ -186,7 +186,7 @@
          * @example
          * Rise.$('div').offsetTop();
          */
-        offsetTop: function() {
+        offsetTop: function () {
             return this.get(0).offsetTop;
         },
 
@@ -196,7 +196,7 @@
          * @example
          * Rise.$('input').focus();
          */
-        focus: function() {
+        focus: function () {
             this.get(0).focus();
             return this;
         },
@@ -207,7 +207,7 @@
          * @example
          * Rise.$('input').blur();
          */
-        blur: function() {
+        blur: function () {
             this.get(0).blur();
             return this;
         },
@@ -221,7 +221,7 @@
          *     return Rise.$(node).hasClass('example');
          * });
          */
-        filter: function(cb) {
+        filter: function (cb) {
             if (Rise.Util.isFunction(cb)) {
                 return new Rise.RQuery(Array.prototype.filter.call(this.get(), cb));
             } else {
@@ -236,27 +236,27 @@
          * @example
          * Rise.$('body').find('div').find('span');
          */
-        find: function(selector) {
+        find: function (selector) {
             return new Rise.RQuery(selector, this.get(0));
         },
 
         /**
          * Set or get attribute value to nodes
          * @param  {String|Object} attr String for getting attribute value and object for set
-         * @return {Rise.RQuery|Mixed} Returns current Rise.RQuery instance or attribute value
+         * @return {String|Rise.RQuery} Returns current Rise.RQuery instance or attribute value
          * @example
          * Rise.$('div').attr('id');
          * Rise.$('div').attr({
          *     id: 'test'
          * });
          */
-        attr: function(attr) {
+        attr: function (attr) {
             if (Rise.Util.isString(attr)) {
                 return this.get(0).getAttribute(attr);
             } else if (Rise.Util.isObject(attr)) {
                 Rise.Logger.startGroup(true, 'Rise.RQuery.attr() -> Set attributes');
-                this.each(function(element) {
-                    Object.keys(attr).forEach(function(key) {
+                this.each(function (element) {
+                    Object.keys(attr).forEach(function (key) {
                         Rise.Logger.log('Set key-value "%s" -> "%s" to element %O', key, attr[key], element);
                         if (attr[key] === false) {
                             element.removeAttribute(key);
@@ -273,9 +273,9 @@
 
         /**
          * Set or get css-rules
-         * @param  {String|Object} name String if you want get CSS-rule or Object for set
+         * @param {Object} css Object with CSS properties
          * @param {String} pseudoElement You can provide pseudoElement selector
-         * @return {Rise.RQuery|Mixed} Returns current Rise.RQuery instance or CSS value
+         * @return {String|Rise.RQuery} Returns current Rise.RQuery instance or CSS value
          * @example
          * Rise.RQuery('div').css({
          *     width: 200
@@ -283,20 +283,20 @@
          * Rise.RQuery('div').css('width', ':after');
          * Rise.RQuery('div').css('width');
          */
-        css: function(css, pseudoElement) {
+        css: function (css, pseudoElement) {
             pseudoElement = pseudoElement || null;
 
             if (Rise.Util.isString(css)) {
                 return window.getComputedStyle(this.get(0), pseudoElement).getPropertyValue(Rise.Util.toDashedString(css));
             } else if (Rise.Util.isObject(css)) {
                 Rise.Logger.startGroup(true, 'Rise.RQuery.css() -> Set CSS');
-                this.each(function(element) {
-                    Object.keys(css).forEach(function(key) {
+                this.each(function (element) {
+                    Object.keys(css).forEach(function (key) {
                         Rise.Logger.log('Set key-value "%s" -> "%s" to element %O', key, css[key], element);
 
                         if (css[key] === false) {
                             element.style.removeProperty(Rise.Util.toDashedString(key));
-                        } else if (isNaN(css[key]) || Rise.RQuery.cssNumbersMap.indexOf(key) != -1) {
+                        } else if (isNaN(css[key]) || Rise.RQuery.cssNumbersMap.indexOf(key) !== -1) {
                             element.style[Rise.Util.toCamelizedString(key)] = css[key];
                         } else {
                             element.style[Rise.Util.toCamelizedString(key)] = css[key] + 'px';
@@ -316,10 +316,10 @@
          * @example
          * Rise.$('div').wrap(Rise.$.create('a')); // Wrap all div with a tag
          */
-        wrap: function(html) {
+        wrap: function (html) {
             var wrapper;
 
-            return this.each(function(element) {
+            return this.each(function (element) {
                 wrapper = html.clone();
                 element.parentNode.insertBefore(wrapper.get(0), element);
                 wrapper.append(element);
@@ -332,8 +332,8 @@
          * @example
          * Rise.$('div').unwrap();
          */
-        unwrap: function() {
-            return this.each(function(element) {
+        unwrap: function () {
+            return this.each(function (element) {
                 element.parentNode.parentNode.replaceChild(element, element.parentNode);
             });
         },
@@ -345,7 +345,7 @@
          * @example
          * Rise.$('div').is('div'); // true
          */
-        is: function(selector) {
+        is: function (selector) {
             var element;
 
             if (this.count() > 0) {
@@ -358,7 +358,7 @@
                     element.mozMatchesSelector ||
                     element.webkitMatchesSelector ||
                     element.oMatchesSelector
-                ).call(element, selector);
+                    ).call(element, selector);
             }
 
             return false;
@@ -366,16 +366,16 @@
 
         /**
          * Add class name to nodes
-         * @param {String} names Class names splitted with spaces
+         * @param {Array|String} names Class names split with spaces
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
          * @example
          * Rise.$('div').addClass('foo bar');
          */
-        addClass: function(names) {
+        addClass: function (names) {
             names = names.split(/[ ]+/);
 
-            return this.each(function(element) {
-                names.forEach(function(name) {
+            return this.each(function (element) {
+                names.forEach(function (name) {
                     element.classList.add(name);
                 });
             });
@@ -383,16 +383,16 @@
 
         /**
          * Remove class name from nodes
-         * @param  {String} names Class names that need to be removed from nodes
+         * @param  {Array|String} names Class names that need to be removed from nodes
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
          * @example
          * Rise.$('div').removeClass('foo bar');
          */
-        removeClass: function(names) {
+        removeClass: function (names) {
             names = names.split(/[ ]+/);
 
-            return this.each(function(element) {
-                names.forEach(function(name) {
+            return this.each(function (element) {
+                names.forEach(function (name) {
                     element.classList.remove(name);
                 });
             });
@@ -400,16 +400,16 @@
 
         /**
          * Toggle class name for nodes
-         * @param  {String} names Class names that need to be toggled
+         * @param  {Array|String} names Class names that need to be toggled
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
          * @example
          * Rise.$('div').toggleClass('foo bar');
          */
-        toggleClass: function(names) {
+        toggleClass: function (names) {
             names = names.split(/[ ]+/);
 
-            return this.each(function(element) {
-                names.forEach(function(name) {
+            return this.each(function (element) {
+                names.forEach(function (name) {
                     element.classList.toggle(name);
                 });
             });
@@ -417,14 +417,14 @@
 
         /**
          * Check if nodes have class name
-         * @param  {String}  className Class name that need check for exists in node
+         * @param {String} name Class names
          * @return {Boolean} Returns true if ALL nodes have className and false otherwise
          * @example
          * Rise.$('div').hasClass('foo');
          */
-        hasClass: function(name) {
+        hasClass: function (name) {
             if (this.count() > 0) {
-                return Array.prototype.every.call(this.get(), function(element) {
+                return Array.prototype.every.call(this.get(), function (element) {
                     return element.classList.contains(name);
                 });
             }
@@ -447,14 +447,14 @@
          *     }
          * });
          */
-        on: function(eventType, handler) {
+        on: function (eventType, handler) {
             if (Rise.Util.isObject(eventType)) {
-                Object.keys(eventType).forEach(function(key) {
+                Object.keys(eventType).forEach(function (key) {
                     this.on(key, eventType[key]);
                 });
             } else {
                 Rise.Logger.startGroup(true, 'Rise.RQuery.on() -> Binding events');
-                this.each(function(element) {
+                this.each(function (element) {
                     Rise.Logger.log('Bind event "%s" to %O', eventType, element);
                     element.addEventListener(eventType, handler, false);
                 });
@@ -475,14 +475,14 @@
          *     click: yourFunction
          * });
          */
-        off: function(eventType, handler) {
+        off: function (eventType, handler) {
             if (Rise.Util.isObject(eventType)) {
-                Object.keys(eventType).forEach(function(key) {
+                Object.keys(eventType).forEach(function (key) {
                     this.off(key, eventType[key]);
                 });
             } else {
                 Rise.Logger.startGroup(true, 'Rise.RQuery.off() -> Unbinding events');
-                this.each(function(element) {
+                this.each(function (element) {
                     Rise.Logger.log('Unbind event "%s" from element %O', eventType, element);
                     element.removeEventListener(eventType, handler, false);
                 });
@@ -499,7 +499,7 @@
          * @example
          * Rise.$('button').triggerMouseEvent('click');
          */
-        triggerMouseEvent: function(eventName) {
+        triggerMouseEvent: function (eventName) {
             var event = document.createEvent('MouseEvents'),
                 element = this.get(0);
 
@@ -515,8 +515,8 @@
          * @example
          * Rise.$('div').remove();
          */
-        remove: function() {
-            return this.each(function(element) {
+        remove: function () {
+            return this.each(function (element) {
                 if (element && element.parentNode) {
                     element.parentNode.removeChild(element);
                 }
@@ -531,11 +531,11 @@
          * Rise.$('div').html('test');
          * Rise.$('div').html(); // 'test'
          */
-        html: function(html) {
+        html: function (html) {
             if (Rise.Util.isUndefined(html)) {
                 return this.get(0).innerHTML;
             } else {
-                return this.each(function(element) {
+                return this.each(function (element) {
                     new Rise.RQuery(element).empty().append(html);
                 });
             }
@@ -550,17 +550,17 @@
          * Rise.$('div').append(Rise.$.create('span'));
          * Rise.$('div').append(document.createElement('a'));
          */
-        append: function(html) {
+        append: function (html) {
             if (Rise.Util.isString(html)) {
-                this.each(function(element) {
+                this.each(function (element) {
                     element.insertAdjacentHTML('beforeend', html);
                 });
             } else if (html instanceof Rise.RQuery) {
-                this.each(function(element) {
+                this.each(function (element) {
                     element.appendChild(html.get(0));
                 });
             } else if (html instanceof Element) {
-                this.each(function(element) {
+                this.each(function (element) {
                     element.appendChild(html);
                 });
             }
@@ -577,17 +577,17 @@
          * Rise.$('div').prepend(Rise.$.create('span'));
          * Rise.$('div').prepend(document.createElement('a'));
          */
-        prepend: function(html) {
+        prepend: function (html) {
             if (Rise.Util.isString(html)) {
-                this.each(function(element) {
+                this.each(function (element) {
                     element.insertAdjacentHTML('afterbegin', html);
                 });
             } else if (html instanceof Rise.RQuery) {
-                this.each(function(element) {
+                this.each(function (element) {
                     element.insertBefore(html.get(0), element.firstChild);
                 });
             } else if (html instanceof Element) {
-                this.each(function(element) {
+                this.each(function (element) {
                     element.insertBefore(html, element.firstChild);
                 });
             }
@@ -603,11 +603,11 @@
          * Rise.$('div').text('test');
          * Rise.$('div').text(); // 'test'
          */
-        text: function(text) {
+        text: function (text) {
             if (Rise.Util.isUndefined(text)) {
                 return this.get(0).textContent;
             } else {
-                return this.each(function(element) {
+                return this.each(function (element) {
                     element.textContent = text;
                 });
             }
@@ -619,8 +619,8 @@
          * @example
          * Rise.$('div').empty();
          */
-        empty: function() {
-            return this.each(function(element) {
+        empty: function () {
+            return this.each(function (element) {
                 element.innerHTML = '';
             });
         },
@@ -631,10 +631,10 @@
          * @example
          * Rise.$('div').clone();
          */
-        clone: function() {
+        clone: function () {
             var clones = [];
 
-            this.each(function(element) {
+            this.each(function (element) {
                 clones.push(element.cloneNode(true));
             });
 
@@ -661,4 +661,4 @@
             "zoom"
         ]
     });
-})(this);
+})();

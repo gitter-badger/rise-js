@@ -25,9 +25,9 @@
     /**
      * Wrap method with parent method.
      * Useful for create this._super() in subclasses.
-     * @param  {Function} method       Method that need to be wrapped
+     * @param  {Function} method Method that need to be wrapped
      * @param  {Function} parentMethod Parent method, in other words - this._super();
-     * @return {Function}              Returns wrapped function
+     * @return {Function} Returns wrapped function
      * @private
      */
     function wrapMethod(method, parentMethod) {

@@ -55,4 +55,4 @@
             callback.apply(scope || {}, args.concat(Array.prototype.slice.call(arguments, 0)));
         }
     };
-})(window);
+})();
