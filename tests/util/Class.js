@@ -1,42 +1,44 @@
 // jshint ignore:start
-describe('Rise.Class', function() {
-    it('Should create basic class', function() {
+describe('Rise.Class', function () {
+    it('Should create basic class', function () {
         var Test = Rise.Class.create();
         Test.extend.should.be.a.function;
         new Test().should.be.an.instanceof(Test);
     });
 
-    it('Should create class with prototype, static and mixins', function() {
+    it('Should create class with prototype, static and mixins', function () {
         var Test = Rise.Class.create({
-            init: function() {
+            init: function () {
                 this.test = 'test';
             },
 
-            checkPrototype: function() {
+            checkPrototype: function () {
                 return this.test;
             }
         }, {
-            checkStatic: function() {
+            checkStatic: function () {
                 return true;
             }
-        }, [{
-            checkMixin: function() {
-                return this.test;
+        }, [
+            {
+                checkMixin: function () {
+                    return this.test;
+                }
             }
-        }]);
+        ]);
 
         new Test().checkPrototype().should.be.equal('test');
         new Test().checkMixin().should.be.equal('test');
         Test.checkStatic().should.be.ok;
     });
 
-    it('Should properly extend from exists class', function() {
+    it('Should properly extend from exists class', function () {
         var Test = Rise.Class.create({
-            init: function() {
+            init: function () {
                 this.test = 'test';
             },
 
-            getTest: function() {
+            getTest: function () {
                 return this.test;
             }
         });
@@ -45,24 +47,24 @@ describe('Rise.Class', function() {
         new Foo().getTest().should.be.equal('test');
     });
 
-    it('Should properly call _super', function() {
+    it('Should properly call _super', function () {
         var Test = Rise.Class.create({
-            init: function() {
+            init: function () {
                 this.test = 'test';
             },
 
-            getTest: function() {
+            getTest: function () {
                 return this.test;
             }
         });
 
         var Foo = Test.extend({
-            init: function() {
+            init: function () {
                 this._super();
                 this.foo = 'bar';
             },
 
-            getFoo: function() {
+            getFoo: function () {
                 return this.foo;
             }
         });

@@ -1,16 +1,16 @@
 // jshint ignore:start
-describe('Rise.RQuery', function() {
-    it('Should shorthand Rise.$ exists globally', function() {
+describe('Rise.RQuery', function () {
+    it('Should shorthand Rise.$ exists globally', function () {
         Rise.$.should.be.a.function;
         Rise.$.create.should.be.a.function;
     });
 
-    it('Should correctly create new node', function() {
+    it('Should correctly create new node', function () {
         Rise.$.create('a').count().should.be.equal(1);
         Rise.$.create('a').should.be.an.instanceof(Rise.RQuery);
     });
 
-    it('Should correctly instantiate new object with all supported types', function() {
+    it('Should correctly instantiate new object with all supported types', function () {
         var rquery = Rise.$('#rquery');
 
         Rise.$(rquery).count().should.be.equal(1);
@@ -19,19 +19,19 @@ describe('Rise.RQuery', function() {
         Rise.$('#rquery').count().should.be.equal(1);
     });
 
-    it('Should correctly return nodes', function() {
+    it('Should correctly return nodes', function () {
         Rise.$('#rquery').get().should.have.length(1).and.be.an.array;
     });
 
-    it('Should correctly return nodes count', function() {
+    it('Should correctly return nodes count', function () {
         Rise.$('#rquery').count().should.be.equal(1);
     });
 
-    it('Should properly iterate through all nodes', function(done) {
+    it('Should properly iterate through all nodes', function (done) {
         var rquery = Rise.$('#rquery');
 
         rquery.count().should.be.equal(1);
-        rquery.each(function(node, index, array) {
+        rquery.each(function (node, index, array) {
             if (!Rise.$(node).is('div')) {
                 throw new Error();
             }
@@ -44,56 +44,56 @@ describe('Rise.RQuery', function() {
         }).should.be.an.instanceof(Rise.RQuery);
     });
 
-    it('Should properly return parent node', function() {
+    it('Should properly return parent node', function () {
         Rise.$('#rquery').parent().should.be.an.instanceof(Rise.RQuery);
         Rise.$('#rquery').parent().is('body').should.be.ok;
     });
 
-    it('Should properly return children nodes', function() {
+    it('Should properly return children nodes', function () {
         Rise.$('#rquery').children().count().should.be.equal(0);
     });
 
-    it('Should properly check if node contains in other', function() {
+    it('Should properly check if node contains in other', function () {
         Rise.$('body').contains(Rise.$('#rquery')).should.be.ok;
         Rise.$('#rquery').contains(Rise.$('body')).should.be.not.ok;
     });
 
-    it('Should properly return offset width', function() {
+    it('Should properly return offset width', function () {
         Rise.$('#rquery').offsetWidth().should.be.equal(200);
     });
 
-    it('Should properly return offset height', function() {
+    it('Should properly return offset height', function () {
         Rise.$('#rquery').offsetHeight().should.be.equal(200);
     });
 
-    it('Should properly return offset left', function() {
+    it('Should properly return offset left', function () {
         Rise.$('#rquery').offsetLeft().should.be.equal(200);
     });
 
-    it('Should properly return offset top', function() {
+    it('Should properly return offset top', function () {
         Rise.$('#rquery').offsetTop().should.be.equal(200);
     });
 
-    it('Should properly focus at node', function() {
+    it('Should properly focus at node', function () {
         Rise.$('#rquery').focus().should.be.an.instanceof(Rise.RQuery);
     });
 
-    it('Should properly blur from node', function() {
+    it('Should properly blur from node', function () {
         Rise.$('#rquery').blur().should.be.an.instanceof(Rise.RQuery);
     });
 
-    it('Should properly filter out nodes', function() {
-        Rise.$('body').children().filter(function(node, index, array) {
+    it('Should properly filter out nodes', function () {
+        Rise.$('body').children().filter(function (node, index, array) {
             return Rise.$(node).is('#rquery');
         }).count().should.be.equal(1);
     });
 
-    it('Should properly find nodes from current', function() {
+    it('Should properly find nodes from current', function () {
         Rise.$('body').find('#rquery').count().should.be.equal(1);
         Rise.$('body').find('#rquery').is('div').should.be.ok;
     });
 
-    it('Should properly set and get attributes', function() {
+    it('Should properly set and get attributes', function () {
         var rquery = Rise.$('#rquery');
 
         rquery.attr({
@@ -113,7 +113,7 @@ describe('Rise.RQuery', function() {
         Should(rquery.attr('bar')).be.a.null;
     });
 
-    it('Should properly set and get CSS', function() {
+    it('Should properly set and get CSS', function () {
         var rquery = Rise.$('#rquery');
 
         rquery.css('left').should.be.equal('200px');
@@ -133,7 +133,7 @@ describe('Rise.RQuery', function() {
         }).should.be.an.instanceof(Rise.RQuery);
     });
 
-    it('Should properly wrap and unwrap node', function() {
+    it('Should properly wrap and unwrap node', function () {
         var rquery = Rise.$('#rquery');
 
         rquery.wrap(Rise.$.create('a')).should.be.an.instanceof(Rise.RQuery);
@@ -142,7 +142,7 @@ describe('Rise.RQuery', function() {
         rquery.parent().is('body').should.be.ok;
     });
 
-    it('Should properly match node to selector', function() {
+    it('Should properly match node to selector', function () {
         var rquery = Rise.$('#rquery');
 
         rquery.is('div').should.be.ok;
@@ -150,7 +150,7 @@ describe('Rise.RQuery', function() {
         rquery.is('body').should.be.not.ok;
     });
 
-    it('Should properly add, remove, toggle and check has class', function() {
+    it('Should properly add, remove, toggle and check has class', function () {
         var rquery = Rise.$('#rquery');
 
         rquery.hasClass('rquery').should.be.not.ok;
@@ -168,7 +168,7 @@ describe('Rise.RQuery', function() {
         rquery.hasClass('rquery').should.be.not.ok;
     });
 
-    it('Should properly bind/unbind events and trigger mouse event', function() {
+    it('Should properly bind/unbind events and trigger mouse event', function () {
         var clicked = false;
 
         function onMouseDown(event) {
@@ -191,7 +191,7 @@ describe('Rise.RQuery', function() {
         clicked.should.be.ok;
     });
 
-    it('Should properly remove node', function() {
+    it('Should properly remove node', function () {
         var rquery = Rise.$('#rquery'),
             clone = rquery.clone();
 
@@ -204,7 +204,7 @@ describe('Rise.RQuery', function() {
         rquery.children().count().should.be.equal(0);
     });
 
-    it('Should properly set and get HTML', function() {
+    it('Should properly set and get HTML', function () {
         var rquery = Rise.$('#rquery');
 
         rquery.html().should.be.equal('');
@@ -213,7 +213,7 @@ describe('Rise.RQuery', function() {
         rquery.html('');
     });
 
-    it('Should properly append/prepend HTML', function() {
+    it('Should properly append/prepend HTML', function () {
         var rquery = Rise.$('#rquery').empty();
 
         rquery.append('test');
@@ -241,7 +241,7 @@ describe('Rise.RQuery', function() {
         rquery.empty();
     });
 
-    it('Should properly set/get text content', function() {
+    it('Should properly set/get text content', function () {
         var rquery = Rise.$('#rquery');
 
         rquery.text().should.be.equal('');
@@ -250,7 +250,7 @@ describe('Rise.RQuery', function() {
         rquery.empty();
     });
 
-    it('Should properly empty node', function() {
+    it('Should properly empty node', function () {
         var rquery = Rise.$('#rquery');
 
         rquery.text('test');
@@ -259,7 +259,7 @@ describe('Rise.RQuery', function() {
         rquery.text().should.be.equal('');
     });
 
-    it('Should properly clone nodes', function() {
+    it('Should properly clone nodes', function () {
         var rquery = Rise.$('#rquery'),
             clone = rquery.clone();
 

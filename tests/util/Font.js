@@ -1,20 +1,20 @@
 // jshint ignore:start
-describe('Rise.Font', function() {
-    it('Should create instance with default font options', function() {
+describe('Rise.Font', function () {
+    it('Should create instance with default font options', function () {
         var font = new Rise.Font();
         font.toString().should.be.equal('normal normal normal medium /normal serif');
     });
 
-    it('Should correct instantiate from exists Font', function() {
+    it('Should correct instantiate from exists Font', function () {
         var font = new Rise.Font();
         new Rise.Font(font).toString().should.be.equal('normal normal normal medium /normal serif');
     });
 
-    it('Should create instance from exists font string', function() {
+    it('Should create instance from exists font string', function () {
         Rise.Font.fromString('').should.be.an.instanceof(Rise.Font);
     });
 
-    it('Should create instance from exists Node', function() {
+    it('Should create instance from exists Node', function () {
         var body = document.getElementsByTagName('body')[0],
             element = document.createElement('div');
 
@@ -33,7 +33,7 @@ describe('Rise.Font', function() {
         body.removeChild(element);
     });
 
-    it('Should create instance with custom font options', function() {
+    it('Should create instance with custom font options', function () {
         var font = new Rise.Font({
             style: 'oblique',
             variant: 'small-caps',
@@ -45,7 +45,7 @@ describe('Rise.Font', function() {
         font.toString().should.be.equal('oblique small-caps lighter smaller /2em Arial');
     });
 
-    it('Should properly validate font instance', function() {
+    it('Should properly validate font instance', function () {
         new Rise.Font().isValid().should.be.ok;
 
         new Rise.Font({
@@ -82,7 +82,7 @@ describe('Rise.Font', function() {
         }).isValid().should.be.ok;
     });
 
-    it('Should properly get and set values', function() {
+    it('Should properly get and set values', function () {
         var font = new Rise.Font();
 
         font.setStyle('oblique');
@@ -116,12 +116,12 @@ describe('Rise.Font', function() {
         font.toString().should.be.equal('oblique small-caps lighter smaller /2em bad');
     });
 
-    it('Should properly convert to string', function() {
+    it('Should properly convert to string', function () {
         var font = new Rise.Font();
         font.toString().should.be.equal('normal normal normal medium /normal serif');
     });
 
-    it('Should properly validate CSS value', function() {
+    it('Should properly validate CSS value', function () {
         Rise.Font.isCssValueValid('2em').should.be.ok;
         Rise.Font.isCssValueValid('2ex').should.be.ok;
         Rise.Font.isCssValueValid('2pt').should.be.ok;
@@ -130,7 +130,7 @@ describe('Rise.Font', function() {
         Rise.Font.isCssValueValid('2').should.be.not.ok;
     });
 
-    it('Should properly validate font style', function() {
+    it('Should properly validate font style', function () {
         Rise.Font.isFontStyleValid('normal').should.be.ok;
         Rise.Font.isFontStyleValid('italic').should.be.ok;
         Rise.Font.isFontStyleValid('oblique').should.be.ok;
@@ -138,14 +138,14 @@ describe('Rise.Font', function() {
         Rise.Font.isFontStyleValid('bad').should.be.not.ok;
     });
 
-    it('Should properly validate font variant', function() {
+    it('Should properly validate font variant', function () {
         Rise.Font.isFontVariantValid('normal').should.be.ok;
         Rise.Font.isFontVariantValid('small-caps').should.be.ok;
         Rise.Font.isFontVariantValid('inherit').should.be.ok;
         Rise.Font.isFontVariantValid('bad').should.be.not.ok;
     });
 
-    it('Should properly validate font weight', function() {
+    it('Should properly validate font weight', function () {
         Rise.Font.isFontWeightValid('bold').should.be.ok;
         Rise.Font.isFontWeightValid('bolder').should.be.ok;
         Rise.Font.isFontWeightValid('lighter').should.be.ok;
@@ -162,7 +162,7 @@ describe('Rise.Font', function() {
         Rise.Font.isFontWeightValid('bad').should.be.not.ok;
     });
 
-    it('Should properly validate font size', function() {
+    it('Should properly validate font size', function () {
         Rise.Font.isFontSizeValid('xx-small').should.be.ok;
         Rise.Font.isFontSizeValid('x-small').should.be.ok;
         Rise.Font.isFontSizeValid('smaller').should.be.ok;
@@ -177,7 +177,7 @@ describe('Rise.Font', function() {
         Rise.Font.isFontSizeValid('bad').should.be.not.ok;
     });
 
-    it('Should properly validate font line height', function() {
+    it('Should properly validate font line height', function () {
         Rise.Font.isFontLineHeightValid('normal').should.be.ok;
         Rise.Font.isFontLineHeightValid('inherit').should.be.ok;
         Rise.Font.isFontLineHeightValid('20em').should.be.ok;
@@ -185,11 +185,11 @@ describe('Rise.Font', function() {
         Rise.Font.isFontLineHeightValid('bad').should.be.not.ok;
     });
 
-    it('Should properly validate font family', function() {
+    it('Should properly validate font family', function () {
         Rise.Font.isFontFamilyValid().should.be.ok;
     });
 
-    it('Should properly validate font within static method', function() {
+    it('Should properly validate font within static method', function () {
         Rise.Font.isFontValid(new Rise.Font()).should.be.ok;
     });
 });

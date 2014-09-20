@@ -1,12 +1,12 @@
 // jshint ignore:start
-describe('Rise', function() {
-    it('Should Rise exists globally', function() {
+describe('Rise', function () {
+    it('Should Rise exists globally', function () {
         Rise.should.be.ok;
         Rise.should.have.property('getVersion');
         Rise.getVersion().should.be.a.string;
     });
 
-    it('Should Rise instantiated successfully', function() {
+    it('Should Rise instantiated successfully', function () {
         var rise = new Rise('#rise-test');
 
         new Rise().should.be.an.instanceof(Rise).and.be.ok;
@@ -15,12 +15,12 @@ describe('Rise', function() {
         new Rise(document.createElement('div')).should.be.an.instanceof(Rise).and.be.ok;
     });
 
-    it('Should properly call update method', function() {
+    it('Should properly call update method', function () {
         var rise = new Rise('#rise-test');
         rise.update().should.be.an.instanceof(Rise);
     });
 
-    it('Should properly get/set parent node', function() {
+    it('Should properly get/set parent node', function () {
         var rise = new Rise('#rise-test');
 
         rise.getParentNode().should.be.an.instanceof(Rise.RQuery);
@@ -31,7 +31,7 @@ describe('Rise', function() {
         rise.getParentNode().is('a').should.be.ok;
     });
 
-    it('Should properly get/set canvas node', function() {
+    it('Should properly get/set canvas node', function () {
         var rise = new Rise('#rise-test');
 
         rise.getCanvasNode().should.be.an.instanceof(Rise.RQuery);
@@ -42,7 +42,7 @@ describe('Rise', function() {
         rise.getCanvasNode().is('span').should.be.ok;
     });
 
-    it('Should properly get/set config', function() {
+    it('Should properly get/set config', function () {
         var rise = new Rise('#rise-test', {
             foo: 'test',
             bar: {
@@ -73,7 +73,7 @@ describe('Rise', function() {
         });
     });
 
-    it('Should properly get/set width/dimensions', function() {
+    it('Should properly get/set width/dimensions', function () {
         var rise = new Rise('#rise-test');
 
         rise.setWidth(200).should.be.an.instanceof(Rise);
@@ -101,7 +101,7 @@ describe('Rise', function() {
         });
     });
 
-    it('Should properly get/set HTML', function() {
+    it('Should properly get/set HTML', function () {
         var rise = new Rise('#rise-test');
 
         rise.getHtml().should.be.a.string;
@@ -113,7 +113,7 @@ describe('Rise', function() {
         rise.getParentNode().find('span').count().should.be.equal(1);
     });
 
-    it('Should properly add new Element', function() {
+    it('Should properly add new Element', function () {
         var rise = new Rise('#rise-test'),
             element = new Rise.Element();
 
@@ -124,7 +124,7 @@ describe('Rise', function() {
         rise.getCanvasNode().children().count().should.be.equal(0);
     });
 
-    it('Should properly return current version', function() {
+    it('Should properly return current version', function () {
         Rise.getVersion().should.be.a.string;
     });
 });

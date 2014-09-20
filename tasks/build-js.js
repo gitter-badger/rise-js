@@ -5,7 +5,7 @@ var concat = require('gulp-concat'),
 
 module.exports = function (gulp, config) {
     "use strict";
-    
+
     gulp.task('build-js', ['clean'], function () {
         return gulp.src(config.sourceMap)
             .pipe(concat('rise.concat.js'))

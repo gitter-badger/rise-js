@@ -1,6 +1,6 @@
 // jshint ignore:start
-describe('Rise.Math', function() {
-    it('Should properly clamp value', function() {
+describe('Rise.Math', function () {
+    it('Should properly clamp value', function () {
         Rise.Math.clamp(0, 2, -2).should.be.equal(0);
         Rise.Math.clamp(0, 2, 0).should.be.equal(0);
         Rise.Math.clamp(0, 2, 1).should.be.equal(1);
@@ -8,7 +8,7 @@ describe('Rise.Math', function() {
         Rise.Math.clamp(0, 2, 4).should.be.equal(2);
     });
 
-    it('Should properly bound value', function() {
+    it('Should properly bound value', function () {
         Rise.Math.bound(0, 100, -100).should.be.equal(0);
         Rise.Math.bound(0, 100, 0).should.be.equal(0);
         Rise.Math.bound(0, 100, 50).should.be.equal(0.5);
@@ -22,7 +22,7 @@ describe('Rise.Math', function() {
         Rise.Math.bound(0, 360, 400).should.be.equal(1);
     });
 
-    it('Should properly return random value', function() {
+    it('Should properly return random value', function () {
         for (var i = 0; i < 100; i++) {
             Rise.Math.getRandomValue(50, 200).should.be.within(50, 200);
             Rise.Math.getRandomValue(50).should.be.within(50, 100);
@@ -30,7 +30,7 @@ describe('Rise.Math', function() {
         }
     });
 
-    it('Should properly convert decimal to percentage', function() {
+    it('Should properly convert decimal to percentage', function () {
         Rise.Math.decimalToPercentage(-2).should.be.equal(-2);
         Rise.Math.decimalToPercentage(0).should.be.equal('0%');
         Rise.Math.decimalToPercentage(0.2).should.be.equal('20%');
