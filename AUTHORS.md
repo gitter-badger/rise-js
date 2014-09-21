@@ -12,4 +12,4 @@ Eugene Obrezkov (aka ghaiklor)
 
 ### Contributors
 
-We dont have contributors... yet :(
+We don't have contributors... yet :(

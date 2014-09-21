@@ -3,6 +3,9 @@ Changelog
 
 Edge version
 ---
+- IDE changed to WebStorm;
+- Optimized Rise.Class;
+- All code checked with new configured JSHint and JSLint bundled with WebStorm;
 
 Version 0.0.5
 ---

@@ -1,3 +1,5 @@
+"use strict";
+
 var gulp = require('gulp'),
     fs = require('fs'),
     path = require('path'),
@@ -5,19 +7,19 @@ var gulp = require('gulp'),
 
     configLocation = path.resolve(__dirname, 'tasks/local.json'),
     config = extend({
-        appRoot: '/var/www/rise-js/',
+        appRoot: '/usr/docs/rise-js/',
         bumpVersionType: 'prerelease',
         sourceMap: [
             "src/Rise.js",
             "src/DI.js",
             "src/util/Util.js",
             "src/util/**/*.js",
-            "src/Element.js",
+            "src/element/Element.js",
             "src/element/**/*.js",
             "src/**/*.js"
-        ].map(function(item) {
-            return path.resolve(__dirname, item);
-        })
+        ].map(function (item) {
+                return path.resolve(__dirname, item);
+            })
     }, fs.existsSync(configLocation) ? require(configLocation) : {}),
 
     tasks = require('require-all')({
@@ -26,6 +28,6 @@ var gulp = require('gulp'),
         excludeDirs: /^\.(git|svn)$/
     });
 
-Object.keys(tasks).forEach(function(key) {
+Object.keys(tasks).forEach(function (key) {
     tasks[key](gulp, config);
 });
