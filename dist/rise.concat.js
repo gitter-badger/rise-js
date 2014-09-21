@@ -319,6 +319,16 @@
         },
 
         /**
+         * Destroy module from DI container
+         * @param key Key of module
+         * @returns {Rise.DI}
+         */
+        unregister: function (key) {
+            services[key] = null;
+            return this;
+        },
+
+        /**
          * Resolve dependencies and call function
          * @param  {Array} dependencies Array with string items
          * @param  {Function} callback  Function which applies dependencies

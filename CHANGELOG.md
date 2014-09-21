@@ -6,9 +6,10 @@ Edge version
 - Realized Dependency Injection container;
 - All source files rewrite with using DI container;
 - All code checked with new configured JSHint and JSLint bundled with WebStorm;
+- Optimized all modules;
 - Moved from Should.js to Chai.js;
 - Rewrite all tests;
-- IDE changed to WebStorm;
+- Many small fixes and improvements;
 
 Version 0.0.5
 ---

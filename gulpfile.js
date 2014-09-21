@@ -1,33 +1,35 @@
-"use strict";
+(function () {
+    "use strict";
 
-var gulp = require('gulp'),
-    fs = require('fs'),
-    path = require('path'),
-    extend = require('extend'),
+    var gulp = require('gulp'),
+        fs = require('fs'),
+        path = require('path'),
+        extend = require('extend'),
 
-    configLocation = path.resolve(__dirname, 'tasks/local.json'),
-    config = extend({
-        appRoot: '/usr/docs/rise-js/',
-        bumpVersionType: 'prerelease',
-        sourceMap: [
-            "src/Rise.js",
-            "src/DI.js",
-            "src/util/Util.js",
-            "src/util/**/*.js",
-            "src/element/Element.js",
-            "src/element/**/*.js",
-            "src/**/*.js"
-        ].map(function (item) {
-                return path.resolve(__dirname, item);
-            })
-    }, fs.existsSync(configLocation) ? require(configLocation) : {}),
+        configLocation = path.resolve(__dirname, 'tasks/local.json'),
+        config = extend({
+            appRoot: '/usr/docs/rise-js/',
+            bumpVersionType: 'prerelease',
+            sourceMap: [
+                "src/Rise.js",
+                "src/DI.js",
+                "src/util/Util.js",
+                "src/util/**/*.js",
+                "src/element/Element.js",
+                "src/element/**/*.js",
+                "src/**/*.js"
+            ].map(function (item) {
+                    return path.resolve(__dirname, item);
+                })
+        }, fs.existsSync(configLocation) ? require(configLocation) : {}),
 
-    tasks = require('require-all')({
-        dirname: path.resolve(__dirname, 'tasks'),
-        filter: /(.+)\.js$/,
-        excludeDirs: /^\.(git|svn)$/
+        tasks = require('require-all')({
+            dirname: path.resolve(__dirname, 'tasks'),
+            filter: /(.+)\.js$/,
+            excludeDirs: /^\.(git|svn)$/
+        });
+
+    Object.keys(tasks).forEach(function (key) {
+        tasks[key](gulp, config);
     });
-
-Object.keys(tasks).forEach(function (key) {
-    tasks[key](gulp, config);
-});
+}());
