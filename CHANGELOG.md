@@ -3,10 +3,12 @@ Changelog
 
 Edge version
 ---
-- IDE changed to WebStorm;
-- Optimized Rise.Class;
+- Realized Dependency Injection container;
+- All source files rewrite with using DI container;
 - All code checked with new configured JSHint and JSLint bundled with WebStorm;
 - Moved from Should.js to Chai.js;
+- Rewrite all tests;
+- IDE changed to WebStorm;
 
 Version 0.0.5
 ---

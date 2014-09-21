@@ -6,7 +6,7 @@
     },
     "contributors": [],
     "name": "rise-js",
-    "version": "0.0.6-5",
+    "version": "0.0.6-6",
     "description": "JavaScript library that provides interactive editor on top of html elements",
     "keywords": [
         "html",
@@ -37,12 +37,12 @@
         "gulp-jshint": "latest",
         "gulp-linker": "latest",
         "gulp-livereload": "latest",
-        "gulp-mocha": "latest",
         "gulp-mocha-phantomjs": "latest",
         "gulp-rename": "latest",
         "gulp-sourcemaps": "latest",
         "gulp-uglify": "latest",
         "jshint-stylish": "latest",
+        "mocha": "latest",
         "require-all": "latest"
     }
 }
