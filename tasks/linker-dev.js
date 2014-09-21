@@ -1,9 +1,9 @@
+"use strict";
+
 var linker = require('gulp-linker'),
     path = require('path');
 
 module.exports = function (gulp, config) {
-    "use strict";
-
     gulp.task('linker-dev', function () {
         return gulp.src(path.resolve(__dirname, '../index.html'))
             .pipe(linker({

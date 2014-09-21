@@ -185,9 +185,9 @@ I'm using also Windows sometimes and always had problems with URLs. So I create 
 
 At the moment of writing this article, we had create this tasks:
 
-- `gulp build-js` - Run concatenating and minifying source files into `dist/` and create source maps for build.
-
 - `gulp build` - Wrapper for `clean`, `run-validation`, `run-tests`, `bump-version` and `build-js` tasks.
+
+- `gulp build-js` - Run concatenating and minifying source files into `dist/` and create source maps for build.
 
 - `gulp bump-version` - Bump version in `package.json`.
 

@@ -1,11 +1,11 @@
+"use strict";
+
 var concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
     sourcemaps = require('gulp-sourcemaps'),
     rename = require('gulp-rename');
 
 module.exports = function (gulp, config) {
-    "use strict";
-
     gulp.task('build-js', ['clean'], function () {
         return gulp.src(config.sourceMap)
             .pipe(concat('rise.concat.js'))

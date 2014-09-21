@@ -1,9 +1,9 @@
+"use strict";
+
 var livereload = require('gulp-livereload'),
     path = require('path');
 
 module.exports = function (gulp) {
-    "use strict";
-
     gulp.task('watch', function () {
         livereload.listen();
         gulp.watch([
