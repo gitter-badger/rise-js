@@ -6,6 +6,7 @@ Edge version
 - IDE changed to WebStorm;
 - Optimized Rise.Class;
 - All code checked with new configured JSHint and JSLint bundled with WebStorm;
+- Moved from Should.js to Chai.js;
 
 Version 0.0.5
 ---
