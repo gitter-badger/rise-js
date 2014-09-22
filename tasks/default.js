@@ -1,5 +1,7 @@
-"use strict";
+(function () {
+    "use strict";
 
-module.exports = function (gulp) {
-    gulp.task('default', ['linker-dev', 'watch']);
-};
+    module.exports = function (gulp) {
+        gulp.task('default', ['linker-dev', 'watch']);
+    };
+}());
