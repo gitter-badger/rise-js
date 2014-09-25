@@ -93,7 +93,7 @@
 
         /**
          * Set parent node
-         * @param {Rise.RQuery|Element} node
+         * @param {Rise.RQuery|Object} node
          * @return {Rise} Returns Rise instance
          */
         setParentNode: function (node) {
@@ -111,7 +111,7 @@
 
         /**
          * Set canvas node
-         * @param {Rise.RQuery|Element} node
+         * @param {Rise.RQuery|Element|Object} node
          * @return {Rise} Returns Rise instance
          */
         setCanvasNode: function (node) {
@@ -212,8 +212,8 @@
 
         /**
          * Set new dimensions to canvas
-         * @param {Integer} width  Width in px
-         * @param {Integer} height Height in px
+         * @param {Integer|Null} [width] Width in px
+         * @param {Integer} [height] Height in px
          * @return {Rise} Returns Rise instance
          */
         setDimensions: function (width, height) {
@@ -254,7 +254,7 @@
 
         /**
          * Add element to canvas
-         * @param {Rise.Element} element Rise.Element instance that you want to add
+         * @param {Rise.Element|Object} element Rise.Element instance that you want to add
          * @return {Rise} Returns Rise instance
          * @example
          * var canvas = new Rise();
@@ -288,73 +288,6 @@
     global.Rise = Rise;
 
 })(window);
-(function () {
-    'use strict';
-
-    /**
-     * All registered services in DI container
-     * @type {Object}
-     */
-    var serviceContainer = {};
-
-    Rise.DI = {
-        /**
-         * Get service by name
-         * @param {String} name Service name (key)
-         * @returns {*} Returns service
-         */
-        get: function (name) {
-            return serviceContainer[name];
-        },
-
-        /**
-         * Register new service in container
-         * @param {String} key Service name (key)
-         * @param value Service can be as object or function
-         * @returns {Rise.DI}
-         */
-        register: function (key, value) {
-            serviceContainer[key] = value;
-            return this;
-        },
-
-        /**
-         * Delete service from DI container
-         * @param {String} key Service name (key)
-         * @returns {Rise.DI}
-         */
-        unregister: function (key) {
-            delete serviceContainer[key];
-            return this;
-        },
-
-        /**
-         * Resolve service dependencies and send to function
-         * @param {Function} [callback] Function which apply all dependencies as arguments
-         * @param {Object} [scope] Custom scope for callback function
-         * @returns {Rise.DI}
-         */
-        resolve: function (callback, scope) {
-            var args = [],
-                dependencies = callback.toString().match(/^function\s*[^\(]*\(\s*([^\)]*)\)/m)[1].replace(/ /g, '').split(','),
-                service;
-
-            for (var i = 0; i < dependencies.length; i++) {
-                service = this.get(dependencies[i]);
-
-                if (service) {
-                    args.push(service);
-                } else {
-                    throw new Error('Dependency not resolved -> ' + dependencies[i]);
-                }
-            }
-
-            callback.apply(scope || {}, args.concat(Array.prototype.slice.call(arguments, 0)));
-
-            return this;
-        }
-    };
-})();
 (function () {
     'use strict';
 
@@ -3256,7 +3189,7 @@
 
         /**
          * Set Element's node
-         * @param {Rise.RQuery} node Element's node which contains all nodes that needs for Element
+         * @param {Rise.RQuery|Object} node Element's node which contains all nodes that needs for Element
          * @return {Rise.Element} Returns Rise.Element instance
          */
         setNode: function (node) {

@@ -6,7 +6,7 @@
     },
     "contributors": [],
     "name": "rise-js",
-    "version": "0.0.6-10",
+    "version": "0.0.6-11",
     "description": "JavaScript library that provides interactive editor on top of html elements",
     "keywords": [
         "html",
