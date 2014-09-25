@@ -10,8 +10,8 @@
 
     /**
      * Check if level is allow to print message
-     * @param  {Integer}  level Level that need to check
-     * @return {Boolean}        Returns true if this level can be printed out
+     * @param {Integer} level Level that need to check
+     * @return {Boolean} Returns true if this level can be printed out
      * @private
      */
     function isAllowedLevel(level) {
@@ -20,8 +20,8 @@
 
     /**
      * Prepend message to every log message
-     * @param  {String} string Message to what will be prepended header message
-     * @return {String}        Returns resulting string
+     * @param {String} string Message to what will be prepended header message
+     * @return {String} Returns resulting string
      * @private
      */
     function prependLoggerInfo(string) {
@@ -30,18 +30,16 @@
 
     /**
      * Invoke console methods
-     * @param  {String} type Type of console that need to be invoked
-     * @param  {Array} args Array of arguments to console method
+     * @param {String} type Type of console that need to be invoked
+     * @param {Array} args Array of arguments to console method
      * @private
-     * @example
-     * invokeConsole('log', ['test', 'test2']); // test test2
      */
     function invokeConsole(type, args) {
         args = Array.prototype.slice.call(args, 0);
 
-        if (window.console[type] && Rise.Util.isFunction(window.console[type])) {
+        if (console[type] && Rise.Util.isFunction(console[type])) {
             args[0] = prependLoggerInfo(args[0] ? args[0] : '');
-            window.console[type].apply(window.console, args);
+            console[type].apply(console, args);
         }
     }
 
@@ -50,8 +48,8 @@
      * @private
      */
     (function printWelcomeMessage() {
-        if (window.chrome) {
-            window.console.log.apply(window.console, [
+        if (navigator.userAgent.toLowerCase().indexOf('chrome') !== -1) {
+            console.log.apply(console, [
                     '%c %c %c Rise v' + Rise.getVersion() + ' %c %c %c',
                 'background: #0E173E; font-size: 8pt;',
                 'background: #020C25; font-size: 9pt;',
@@ -61,7 +59,7 @@
                 'background: #0E173E; font-size: 8pt;'
             ]);
         } else {
-            window.console.log('Rise v' + Rise.getVersion());
+            console.log('Rise v' + Rise.getVersion());
         }
     })();
 
@@ -118,8 +116,6 @@
          * @param {Integer} level Predefined constant in Rise.Logger
          * @return {Rise.Logger}
          * @static
-         * @example
-         * Rise.Logger.setLevel(Rise.Logger.VERBOSE);
          */
         setLevel: function (level) {
             currentLogLevel = level;
