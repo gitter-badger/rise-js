@@ -10,7 +10,7 @@
 
         it('Should create basic instance', function () {
             var opacity = new Rise.Opacity();
-            opacity.should.be.an.instanceof(Rise.Opacity);
+            opacity.should.be.an.instanceOf(Rise.Opacity);
             opacity.get().should.be.equal(0);
         });
 
