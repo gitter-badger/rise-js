@@ -1,11 +1,13 @@
 (function () {
     "use strict";
 
+    var expect = chai.expect;
+
     chai.should();
 
     describe('Rise.DI', function () {
         it('Should exists globally', function () {
-            Rise.DI.should.be.a('object');
+            Rise.DI.should.be.an('object');
         });
 
         it('Should properly get module', function () {
@@ -30,16 +32,28 @@
             Rise.DI.register('Test', {});
             Rise.DI.get('Test').should.be.an('object');
             Rise.DI.unregister('Test');
-//            TODO: make test
+            expect(Rise.DI.get('Test')).be.a('undefined');
         });
 
         it('Should properly resolve modules', function () {
-            Rise.DI.register('Test', {});
-            Rise.DI.register('Test2', {});
+            Rise.DI.register('Test', {
+                get: function () {
+                    return true;
+                }
+            });
 
-            Rise.DI.resolve(['Test', 'Test2'], function (Test, Test2) {
+            Rise.DI.register('Test2', function () {
+                this.get = function () {
+                    return true;
+                };
+            });
+
+            Rise.DI.resolve(function (Test, Test2) {
                 Test.should.be.an('object');
-                Test2.should.be.an('object');
+                Test.get().should.be.equal(true);
+
+                Test2.should.be.a('function');
+                new Test2().get().should.be.equal(true);
             });
         });
     });

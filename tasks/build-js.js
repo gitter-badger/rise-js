@@ -14,7 +14,7 @@
                 .pipe(rename('rise.min.js'))
                 .pipe(sourcemaps.init())
                 .pipe(uglify({
-                    mangle: true
+                    mangle: false
                 }))
                 .pipe(sourcemaps.write('./'))
                 .pipe(gulp.dest('./dist'));
