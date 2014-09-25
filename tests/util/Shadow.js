@@ -31,7 +31,7 @@
 
         it('Should properly create instance from shadow string', function () {
             var shadow = Rise.Shadow.fromString('2px 2px 10px rgba(0, 0, 0, 0.2)');
-            shadow.should.be.an.instanceof(Rise.Shadow);
+            shadow.should.be.an.instanceOf(Rise.Shadow);
             shadow.toString().should.be.equal('2px 2px 10px rgba(0, 0, 0, 0.2)');
 
             new Rise.Shadow('2px 2px 10px rgba(0, 0, 0, 0.2)').toString().should.be.equal('2px 2px 10px rgba(0, 0, 0, 0.2)');

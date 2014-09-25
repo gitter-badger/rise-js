@@ -7,13 +7,6 @@
          * @constructor
          * @param {Object} shadow Object with color, blur, offsetX, offsetY attributes or string
          * @return {Rise.Shadow|Object} Returns new Rise.Shadow instance
-         * @example
-         * new Rise.Shadow({
-         *     color: new Rise.Color('aqua'),
-         *     blur: 2,
-         *     offsetX: 5,
-         *     offsetY: 10
-         * });
          */
         init: function (shadow) {
             shadow = shadow || {};
@@ -45,8 +38,6 @@
          * Set color
          * @param {Rise.Color|String|Object} color Color that you want set to shadow
          * @return {Rise.Shadow} Returns current Rise.Shadow instance
-         * @example
-         * new Rise.Shadow().setColor(new Rise.Color('aqua'));
          */
         setColor: function (color) {
             this.color = new Rise.Color(color);
@@ -56,8 +47,6 @@
         /**
          * Get color
          * @return {Rise.Color} Returns Rise.Color instance
-         * @example
-         * new Rise.Shadow().getColor();
          */
         getColor: function () {
             return this.color;
@@ -67,8 +56,6 @@
          * Set blur
          * @param {Integer} blur Blur in integer
          * @return {Rise.Shadow} Returns current Rise.Shadow instance
-         * @example
-         * new Rise.Shadow().setBlur(3);
          */
         setBlur: function (blur) {
             this.blur = blur;
@@ -78,8 +65,6 @@
         /**
          * Get blur
          * @return {Integer} Returns current value of blur
-         * @example
-         * new Rise.Shadow().getBlur();
          */
         getBlur: function () {
             return this.blur;
@@ -89,8 +74,6 @@
          * Set offsetX
          * @param {Integer} x OffsetX
          * @return {Rise.Shadow} Returns current Rise.Shadow instance
-         * @example
-         * new Rise.Shadow().setOffsetX(5);
          */
         setOffsetX: function (x) {
             this.offsetX = x;
@@ -100,8 +83,6 @@
         /**
          * Get offsetX
          * @return {Integer} Returns offsetX
-         * @example
-         * new Rise.Shadow().getOffsetX();
          */
         getOffsetX: function () {
             return this.offsetX;
@@ -111,8 +92,6 @@
          * Set offsetY
          * @param {Integer} y OffsetY
          * @return {Rise.Shadow} Returns Rise.Shadow instance
-         * @example
-         * new Rise.Shadow().setOffsetY(5);
          */
         setOffsetY: function (y) {
             this.offsetY = y;
@@ -122,8 +101,6 @@
         /**
          * Get offsetY
          * @return {Integer} Returns offsetY
-         * @example
-         * new Rise.Shadow().getOffsetY();
          */
         getOffsetY: function () {
             return this.offsetY;
@@ -132,8 +109,6 @@
         /**
          * Returns CSS string
          * @return {String} Returns CSS shadow string representation
-         * @example
-         * new Rise.Shadow().toString();
          */
         toString: function () {
             return [
@@ -147,9 +122,6 @@
         /**
          * Regex that match shadow offsetX, offsetY and blur
          * @static
-         * @example
-         * 2px 2px 10px rgba(0, 0, 0, 0.2)
-         * rgb(0,255,0) 2px 2px
          */
         shadowRegex: /(?:\s|^)(-?\d+(?:px)?(?:\s?|$))?(-?\d+(?:px)?(?:\s?|$))?(\d+(?:px)?)?(?:\s?|$)(?:$|\s)/,
 
@@ -158,8 +130,6 @@
          * @static
          * @param {String} shadow Shadow value that need to parse
          * @return {Rise.Shadow} Rise.Shadow instance
-         * @example
-         * var shadow = Rise.Shadow.fromString('2px 2px 10px rgba(0, 0, 0, 0.2)');
          */
         fromString: function (shadow) {
             shadow = shadow.trim();
