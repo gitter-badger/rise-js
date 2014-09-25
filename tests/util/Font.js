@@ -15,7 +15,7 @@
         });
 
         it('Should create instance from exists font string', function () {
-            Rise.Font.fromString('').should.be.an.instanceof(Rise.Font);
+            Rise.Font.fromString('').should.be.an.instanceOf(Rise.Font);
         });
 
         it('Should create instance from exists Node', function () {
@@ -190,7 +190,7 @@
         });
 
         it('Should properly validate font family', function () {
-            Rise.Font.isFontFamilyValid().should.be.equal(true);
+            Rise.Font.isFontFamilyValid('Arial').should.be.equal(true);
         });
 
         it('Should properly validate font within static method', function () {

@@ -4,18 +4,8 @@
     Rise.Font = Rise.Class.create({
         /**
          * Create new Rise.Font instance
-         * @constructor
-         * @param {Object} font
+         * @param {String|Object|Element} font
          * @return {Rise.Font|Object} Returns Rise.Font instance
-         * @example
-         * new Rise.Font({
-         *     style: 'normal',
-         *     variant: 'normal',
-         *     weight: 'normal',
-         *     size: 'medium',
-         *     lineHeight: 'normal',
-         *     family: 'serif'
-         * });
          */
         init: function (font) {
             font = font || {};
@@ -50,8 +40,6 @@
         /**
          * Check if Rise.Font is valid instance
          * @return {Boolean} Returns true if Rise.Font instance valid
-         * @example
-         * new Rise.Font().isValid(); // true
          */
         isValid: function () {
             return Rise.Font.isFontValid(this);
@@ -60,8 +48,6 @@
         /**
          * Get current style
          * @return {String} Returns CSS font style
-         * @example
-         * new Rise.Font().getStyle();
          */
         getStyle: function () {
             return this.style;
@@ -71,8 +57,6 @@
          * Set style to Rise.Font
          * @param {String} style New CSS font style
          * @return {Rise.Font} Returns Rise.Font instance
-         * @example
-         * new Rise.Font().setStyle('normal');
          */
         setStyle: function (style) {
             if (Rise.Font.isFontStyleValid(style)) {
@@ -87,8 +71,6 @@
         /**
          * Get current font variant
          * @return {String} Returns CSS font variant
-         * @example
-         * new Rise.Font().getVariant();
          */
         getVariant: function () {
             return this.variant;
@@ -98,8 +80,6 @@
          * Set font variant to Rise.Font
          * @param {String} variant New CSS font variant
          * @return {Rise.Font} Returns Rise.Font instance
-         * @example
-         * new Rise.Font().setVariant('normal');
          */
         setVariant: function (variant) {
             if (Rise.Font.isFontVariantValid(variant)) {
@@ -114,8 +94,6 @@
         /**
          * Get current font weight
          * @return {String} Returns CSS font weight
-         * @example
-         * new Rise.Font().getWeight();
          */
         getWeight: function () {
             return this.weight;
@@ -125,8 +103,6 @@
          * Set font weight to Rise.Font
          * @param {String} weight New CSS font weight
          * @return {Rise.Font} Returns Rise.Font instance
-         * @example
-         * new Rise.Font().setWeight('normal')
          */
         setWeight: function (weight) {
             if (Rise.Font.isFontWeightValid(weight)) {
@@ -141,8 +117,6 @@
         /**
          * Get current font size
          * @return {String} Returns CSS font size
-         * @example
-         * new Rise.Font().getSize();
          */
         getSize: function () {
             return this.size;
@@ -152,8 +126,6 @@
          * Set font size to Rise.Font
          * @param {String} size New CSS font size
          * @return {Rise.Font} Returns Rise.Font instance
-         * @example
-         * new Rise.Font().setSize('medium');
          */
         setSize: function (size) {
             if (Rise.Font.isFontSizeValid(size)) {
@@ -168,8 +140,6 @@
         /**
          * Get current font line height
          * @return {String} Returns CSS font line-height
-         * @example
-         * new Rise.Font().getLineHeight();
          */
         getLineHeight: function () {
             return this.lineHeight;
@@ -179,8 +149,6 @@
          * Set font line height to Rise.Font
          * @param {String} lineHeight New CSS font line-height
          * @return {Rise.Font} Returns Rise.Font instance
-         * @example
-         * new Rise.Font().setLineHeight('normal');
          */
         setLineHeight: function (lineHeight) {
             if (Rise.Font.isFontLineHeightValid(lineHeight)) {
@@ -195,8 +163,6 @@
         /**
          * Get current font family
          * @return {String} Returns CSS font family
-         * @example
-         * new Rise.Font().getFamily();
          */
         getFamily: function () {
             return this.family;
@@ -206,8 +172,6 @@
          * Set font family to Rise.Font
          * @param {String} family New CSS font family
          * @return {Rise.Font} Returns Rise.Font instance
-         * @example
-         * new Rise.Font().setFamily('serif');
          */
         setFamily: function (family) {
             if (Rise.Font.isFontFamilyValid(family)) {
@@ -222,8 +186,6 @@
         /**
          * Convert Rise.Font to CSS string representation
          * @return {String} Returns CSS string of Rise.Font representation
-         * @example
-         * new Rise.Font().toString();
          */
         toString: function () {
             return (
@@ -283,8 +245,8 @@
         /**
          * Check if provided value is valid CSS value
          * @static
-         * @param  {String}  value Value that need to check
-         * @return {Boolean}       Returns true if value is valid CSS value
+         * @param {String} value Value that need to check
+         * @return {Boolean} Returns true if value is valid CSS value
          */
         isCssValueValid: function (value) {
             return Rise.Font.unitsMap.some(function (unit) {
@@ -295,8 +257,8 @@
         /**
          * Check if provided value is valid CSS font style
          * @static
-         * @param  {String}  value Value that need to check
-         * @return {Boolean}       Returns true if value is valid
+         * @param {String} value Value that need to check
+         * @return {Boolean} Returns true if value is valid
          */
         isFontStyleValid: function (value) {
             return Rise.Font.fontStyleMap.indexOf(value) !== -1;
@@ -305,8 +267,8 @@
         /**
          * Check if provided value is valid CSS font variant
          * @static
-         * @param  {String}  value Value that need to check
-         * @return {Boolean}       Returns true if value is valid
+         * @param {String} value Value that need to check
+         * @return {Boolean} Returns true if value is valid
          */
         isFontVariantValid: function (value) {
             return Rise.Font.fontVariantMap.indexOf(value) !== -1;
@@ -315,8 +277,8 @@
         /**
          * Check if provided value is valid CSS font weight
          * @static
-         * @param  {String}  value Value that need to check
-         * @return {Boolean}       Returns true if value is valid
+         * @param {String} value Value that need to check
+         * @return {Boolean} Returns true if value is valid
          */
         isFontWeightValid: function (value) {
             return Rise.Font.fontWeightMap.indexOf(value) !== -1;
@@ -325,8 +287,8 @@
         /**
          * Check if provided value is valid CSS font size
          * @static
-         * @param  {String}  value Value that need to check
-         * @return {Boolean}       Returns true if value is valid
+         * @param {String} value Value that need to check
+         * @return {Boolean} Returns true if value is valid
          */
         isFontSizeValid: function (value) {
             return (
@@ -338,8 +300,8 @@
         /**
          * Check if provided value is valid CSS font line height
          * @static
-         * @param  {String}  value Value that need to check
-         * @return {Boolean}       Returns true if value is valid
+         * @param {String} value Value that need to check
+         * @return {Boolean} Returns true if value is valid
          */
         isFontLineHeightValid: function (value) {
             return (
@@ -350,19 +312,19 @@
 
         /**
          * Check if provided value is valid CSS font family
-         * @static
+         * @param {String} value Value that need to check
          * @return {Boolean} Returns true if value is valid
+         * @static
          */
-        isFontFamilyValid: function () {
-            // TODO: implement
-            return true;
+        isFontFamilyValid: function (value) {
+            return typeof value === 'string';
         },
 
         /**
          * Check whole Rise.Font instance for valid values
          * @static
-         * @param  {Rise.Font}  font Rise.Font instance where need to check their font values
-         * @return {Boolean}         Returns true if Rise.Font is correct instance
+         * @param {Rise.Font} font Rise.Font instance where need to check their font values
+         * @return {Boolean} Returns true if Rise.Font is correct instance
          */
         isFontValid: function (font) {
             return (
@@ -377,20 +339,21 @@
 
         /**
          * Create Rise.Font instance from string representation
-         * @static
+         * @param {String} value Font string
          * @return {Rise.Font} Returns Rise.Font instance with parsed options from string
+         * @static
          */
-        fromString: function () {
+        fromString: function (value) {
             // TODO: implement
-            Rise.Logger.warning('Rise.Font -> fromString() not realized yet');
-            return new Rise.Font();
+            Rise.Logger.warning('Rise.Font -> fromString(%s) not realized yet', value);
+            return new Rise.Font({});
         },
 
         /**
          * Create Rise.Font instance from exists node element
          * @static
          * @param  {Element} element Existing node element from where font options will parse
-         * @return {Rise.Font}       Returns Rise.Font instance
+         * @return {Rise.Font} Returns Rise.Font instance
          */
         fromNode: function (element) {
             var style = window.getComputedStyle(element, null);
