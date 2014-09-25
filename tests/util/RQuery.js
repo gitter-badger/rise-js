@@ -13,7 +13,7 @@
 
         it('Should correctly create new node', function () {
             Rise.$.create('a').count().should.be.equal(1);
-            Rise.$.create('a').should.be.an.instanceof(Rise.RQuery);
+            Rise.$.create('a').should.be.an.instanceOf(Rise.RQuery);
         });
 
         it('Should correctly instantiate new object with all supported types', function () {
@@ -26,7 +26,7 @@
         });
 
         it('Should correctly return nodes', function () {
-            Rise.$('#rquery').get().should.have.length(1);
+            Rise.$('#rquery').get().length.should.be.equal(1);
         });
 
         it('Should correctly return nodes count', function () {
@@ -47,11 +47,11 @@
                 }
 
                 done();
-            }).should.be.an.instanceof(Rise.RQuery);
+            }).should.be.an.instanceOf(Rise.RQuery);
         });
 
         it('Should properly return parent node', function () {
-            Rise.$('#rquery').parent().should.be.an.instanceof(Rise.RQuery);
+            Rise.$('#rquery').parent().should.be.an.instanceOf(Rise.RQuery);
             Rise.$('#rquery').parent().is('body').should.be.equal(true);
         });
 
@@ -81,15 +81,15 @@
         });
 
         it('Should properly focus at node', function () {
-            Rise.$('#rquery').focus().should.be.an.instanceof(Rise.RQuery);
+            Rise.$('#rquery').focus().should.be.an.instanceOf(Rise.RQuery);
         });
 
         it('Should properly blur from node', function () {
-            Rise.$('#rquery').blur().should.be.an.instanceof(Rise.RQuery);
+            Rise.$('#rquery').blur().should.be.an.instanceOf(Rise.RQuery);
         });
 
         it('Should properly filter out nodes', function () {
-            Rise.$('body').children().filter(function (node, index, array) {
+            Rise.$('body').children().filter(function (node) {
                 return Rise.$(node).is('#rquery');
             }).count().should.be.equal(1);
         });
@@ -105,7 +105,7 @@
             rquery.attr({
                 foo: 'test',
                 bar: 'test'
-            }).should.be.an.instanceof(Rise.RQuery);
+            }).should.be.an.instanceOf(Rise.RQuery);
 
             rquery.attr('foo').should.be.equal('test');
             rquery.attr('bar').should.be.equal('test');
@@ -113,7 +113,7 @@
             rquery.attr({
                 foo: false,
                 bar: false
-            }).should.be.an.instanceof(Rise.RQuery);
+            }).should.be.an.instanceOf(Rise.RQuery);
 
             expect(rquery.attr('foo')).be.equal(null);
             expect(rquery.attr('bar')).be.equal(null);
@@ -128,7 +128,7 @@
             rquery.css({
                 left: 100,
                 width: 100
-            }).should.be.an.instanceof(Rise.RQuery);
+            }).should.be.an.instanceOf(Rise.RQuery);
 
             rquery.css('left').should.be.equal('100px');
             rquery.css('width').should.be.equal('100px');
@@ -136,15 +136,15 @@
             rquery.css({
                 left: 200,
                 width: 200
-            }).should.be.an.instanceof(Rise.RQuery);
+            }).should.be.an.instanceOf(Rise.RQuery);
         });
 
         it('Should properly wrap and unwrap node', function () {
             var rquery = Rise.$('#rquery');
 
-            rquery.wrap(Rise.$.create('a')).should.be.an.instanceof(Rise.RQuery);
+            rquery.wrap(Rise.$.create('a')).should.be.an.instanceOf(Rise.RQuery);
             rquery.parent().is('a').should.be.equal(true);
-            rquery.unwrap().should.be.an.instanceof(Rise.RQuery);
+            rquery.unwrap().should.be.an.instanceOf(Rise.RQuery);
             rquery.parent().is('body').should.be.equal(true);
         });
 
@@ -189,10 +189,10 @@
                 clicked = !clicked;
             }
 
-            Rise.$('#rquery').on('mousedown', onMouseDown).should.be.an.instanceof(Rise.RQuery);
-            Rise.$('#rquery').triggerMouseEvent('mousedown').should.be.an.instanceof(Rise.RQuery);
-            Rise.$('#rquery').off('mousedown', onMouseDown).should.be.an.instanceof(Rise.RQuery);
-            Rise.$('#rquery').triggerMouseEvent('mousedown').should.be.an.instanceof(Rise.RQuery);
+            Rise.$('#rquery').on('mousedown', onMouseDown).should.be.an.instanceOf(Rise.RQuery);
+            Rise.$('#rquery').triggerMouseEvent('mousedown').should.be.an.instanceOf(Rise.RQuery);
+            Rise.$('#rquery').off('mousedown', onMouseDown).should.be.an.instanceOf(Rise.RQuery);
+            Rise.$('#rquery').triggerMouseEvent('mousedown').should.be.an.instanceOf(Rise.RQuery);
 
             clicked.should.be.equal(true);
         });
@@ -203,7 +203,7 @@
 
             rquery.append(clone.attr({
                 id: false
-            })).should.be.an.instanceof(Rise.RQuery);
+            })).should.be.an.instanceOf(Rise.RQuery);
 
             rquery.children().count().should.be.equal(1);
             clone.remove();

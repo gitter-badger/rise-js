@@ -5,9 +5,6 @@
      * Factory method that returns new Rise.RQuery instance
      * @static
      * @return {Rise.RQuery} Returns Rise.RQuery instance
-     * @example
-     * Rise.$('div');
-     * Rise.$('.my-selector');
      */
     Rise.$ = function () {
         return Rise.RQuery.apply(Object.create(Rise.RQuery.prototype), arguments);
@@ -16,11 +13,8 @@
     /**
      * Factory method that returns new Rise.RQuery instance with created Element
      * @static
-     * @param  {String} tag Tag element that need to create
+     * @param {String} tag Tag element that need to create
      * @return {Rise.RQuery} Returns Rise.RQuery instance with created Element
-     * @example
-     * Rise.$.create('div');
-     * Rise.$.create('span').text('My text');
      */
     Rise.$.create = function (tag) {
         return new Rise.RQuery(document.createElement(tag));
@@ -30,11 +24,9 @@
         /**
          * Create new Rise.RQuery instance
          * @constructor
-         * @param  {String|Rise.RQuery|Element|Array} selector Selector or exists Element
-         * @param  {Element|Document|Window} parent Parent from where selector will parse
+         * @param {String|Rise.RQuery|Element|Array} selector Selector or exists Element
+         * @param {Element|Document|Window} parent Parent from where selector will parse
          * @return {Rise.RQuery} Returns Rise.RQuery instance
-         * @example
-         * new Rise.RQuery('.selector');
          */
         init: function (selector, parent) {
             selector = selector || window;
@@ -81,11 +73,8 @@
 
         /**
          * Get Element by index
-         * @param {Integer} [index] Index
+         * @param {Number} [index] Index
          * @return {Array|Element} Returns Element with corresponding index or array of elements
-         * @example
-         * Rise.$('body').get(0);
-         * Rise.$('div').get();
          */
         get: function (index) {
             return Rise.Util.isUndefined(index) ? this.elements : this.elements[index];
@@ -94,8 +83,6 @@
         /**
          * Get elements count
          * @return {Integer} Returns elements count
-         * @example
-         * Rise.$('body').count(); // 1
          */
         count: function () {
             return (this.elements && this.elements.length) || 0;
@@ -105,10 +92,6 @@
          * Iterate through all elements and call callback function
          * @param  {Function} cb Callback which called at each iteration cb(element, index, array)
          * @return {Rise.RQuery}
-         * @example
-         * Rise.$('div').each(function(element, index, array) {
-         *     console.log(element, index, array);
-         * });
          */
         each: function (cb) {
             Array.prototype.forEach.call(this.get(), cb);
@@ -118,8 +101,6 @@
         /**
          * Get parent node
          * @return {Rise.RQuery} Returns parent node of element
-         * @example
-         * Rise.$('body').parent();
          */
         parent: function () {
             return new Rise.RQuery(this.get(0).parentNode);
@@ -128,8 +109,6 @@
         /**
          * Get array of children nodes
          * @return {Rise.RQuery} Return Rise.RQuery object with child nodes
-         * @example
-         * Rise.$('body').children();
          */
         children: function () {
             return new Rise.RQuery(this.get(0).children);
@@ -137,10 +116,8 @@
 
         /**
          * Check if node contains other node
-         * @param {Rise.RQuery} child Child node which need to check for exists in node
+         * @param {Array|HTMLElement|Rise.RQuery} child Child node which need to check for exists in node
          * @return {Boolean} True if contains
-         * @example
-         * Rise.$('body').contains(Rise.$('div'));
          */
         contains: function (child) {
             child = child.get(0);
@@ -153,8 +130,6 @@
         /**
          * Get node's width
          * @return {Integer} Returns offsetWidth of node
-         * @example
-         * Rise.$('div').offsetWidth();
          */
         offsetWidth: function () {
             return this.get(0).offsetWidth;
@@ -163,8 +138,6 @@
         /**
          * Get node's height
          * @return {Integer} Returns offsetHeight of node
-         * @example
-         * Rise.$('div').offsetHeight();
          */
         offsetHeight: function () {
             return this.get(0).offsetHeight;
@@ -173,8 +146,6 @@
         /**
          * Get left offset of node
          * @return {Integer} Returns offsetLeft of node
-         * @example
-         * Rise.$('div').offsetLeft();
          */
         offsetLeft: function () {
             return this.get(0).offsetLeft;
@@ -183,8 +154,6 @@
         /**
          * Get top offset of node
          * @return {Integer} Returns offsetTop of node
-         * @example
-         * Rise.$('div').offsetTop();
          */
         offsetTop: function () {
             return this.get(0).offsetTop;
@@ -193,8 +162,6 @@
         /**
          * Focus at node
          * @return {Rise.RQuery} Returns Rise.RQuery instance
-         * @example
-         * Rise.$('input').focus();
          */
         focus: function () {
             this.get(0).focus();
@@ -202,10 +169,8 @@
         },
 
         /**
-         * Unfocus from node
+         * Blur from node
          * @return {Rise.RQuery} Returns Rise.RQuery instance
-         * @example
-         * Rise.$('input').blur();
          */
         blur: function () {
             this.get(0).blur();
@@ -216,10 +181,6 @@
          * Iterate through nodes and filter them out
          * @param  {Function} cb Callback function accept 3 arguments cb(node, index, array) and must return bool
          * @return {Rise.RQuery} Returns Rise.RQuery instance with filtered nodes
-         * @example
-         * Rise.$('div').filter(function(node, index, array) {
-         *     return Rise.$(node).hasClass('example');
-         * });
          */
         filter: function (cb) {
             if (Rise.Util.isFunction(cb)) {
@@ -232,9 +193,7 @@
         /**
          * Find nodes by selector, starting from current parent node
          * @param  {String} selector Selector for find other nodes
-         * @return {Rise.RQuery} Returns new Rise.RQuery instance with finded nodes
-         * @example
-         * Rise.$('body').find('div').find('span');
+         * @return {Rise.RQuery} Returns new Rise.RQuery instance with nodes
          */
         find: function (selector) {
             return new Rise.RQuery(selector, this.get(0));
@@ -244,11 +203,6 @@
          * Set or get attribute value to nodes
          * @param  {String|Object} attr String for getting attribute value and object for set
          * @return {String|Rise.RQuery} Returns current Rise.RQuery instance or attribute value
-         * @example
-         * Rise.$('div').attr('id');
-         * Rise.$('div').attr({
-         *     id: 'test'
-         * });
          */
         attr: function (attr) {
             if (Rise.Util.isString(attr)) {
@@ -273,15 +227,9 @@
 
         /**
          * Set or get css-rules
-         * @param {Object} css Object with CSS properties
-         * @param {String} pseudoElement You can provide pseudoElement selector
+         * @param {Object|String} css Object with CSS properties
+         * @param {String} [pseudoElement] You can provide pseudoElement selector
          * @return {String|Rise.RQuery} Returns current Rise.RQuery instance or CSS value
-         * @example
-         * Rise.RQuery('div').css({
-         *     width: 200
-         * });
-         * Rise.RQuery('div').css('width', ':after');
-         * Rise.RQuery('div').css('width');
          */
         css: function (css, pseudoElement) {
             pseudoElement = pseudoElement || null;
@@ -311,10 +259,8 @@
 
         /**
          * Wrap nodes with new node
-         * @param  {Rise.RQuery} html Rise.RQuery instance with HTML which will be the wrapper
+         * @param {Rise.RQuery|Object} html Rise.RQuery instance with HTML which will be the wrapper
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('div').wrap(Rise.$.create('a')); // Wrap all div with a tag
          */
         wrap: function (html) {
             var wrapper;
@@ -329,8 +275,6 @@
         /**
          * Unwrap nodes, remove parent node from nodes
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('div').unwrap();
          */
         unwrap: function () {
             return this.each(function (element) {
@@ -342,34 +286,15 @@
          * Check if this node is matches to selector
          * @param  {String} selector Selector for checking
          * @return {Boolean} Returns true if all elements is match to selector and false otherwise
-         * @example
-         * Rise.$('div').is('div'); // true
          */
         is: function (selector) {
-            var element;
-
-            if (this.count() > 0) {
-                element = this.get(0);
-
-                return (
-                    element.matches ||
-                    element.matchesSelector ||
-                    element.msMatchesSelector ||
-                    element.mozMatchesSelector ||
-                    element.webkitMatchesSelector ||
-                    element.oMatchesSelector
-                    ).call(element, selector);
-            }
-
-            return false;
+            return this.get(0).matches(selector);
         },
 
         /**
          * Add class name to nodes
          * @param {Array|String} names Class names split with spaces
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('div').addClass('foo bar');
          */
         addClass: function (names) {
             names = names.split(/[ ]+/);
@@ -385,8 +310,6 @@
          * Remove class name from nodes
          * @param  {Array|String} names Class names that need to be removed from nodes
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('div').removeClass('foo bar');
          */
         removeClass: function (names) {
             names = names.split(/[ ]+/);
@@ -402,8 +325,6 @@
          * Toggle class name for nodes
          * @param  {Array|String} names Class names that need to be toggled
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('div').toggleClass('foo bar');
          */
         toggleClass: function (names) {
             names = names.split(/[ ]+/);
@@ -419,8 +340,6 @@
          * Check if nodes have class name
          * @param {String} name Class names
          * @return {Boolean} Returns true if ALL nodes have className and false otherwise
-         * @example
-         * Rise.$('div').hasClass('foo');
          */
         hasClass: function (name) {
             if (this.count() > 0) {
@@ -437,15 +356,6 @@
          * @param  {String|Object} eventType Event type
          * @param  {Function} handler Your function which you want execute on event
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('div').on('click', function(event) {
-         *     console.log(this, event);
-         * });
-         * Rise.$('div').on({
-         *     click: function(event) {
-         *         console.log(this, event);
-         *     }
-         * });
          */
         on: function (eventType, handler) {
             if (Rise.Util.isObject(eventType)) {
@@ -467,13 +377,8 @@
         /**
          * Unbind event from nodes
          * @param  {String} eventType Event type
-         * @param  {Function} handler Your function which you want to unsubscribe from event
+         * @param  {Function} handler Your function which you want to un subscribe from event
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('div').off('click', yourFunction);
-         * Rise.$('div').off({
-         *     click: yourFunction
-         * });
          */
         off: function (eventType, handler) {
             if (Rise.Util.isObject(eventType)) {
@@ -496,14 +401,12 @@
          * Trigger native mouse event for node
          * @param  {String} eventName Name of event
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('button').triggerMouseEvent('click');
          */
         triggerMouseEvent: function (eventName) {
             var event = document.createEvent('MouseEvents'),
                 element = this.get(0);
 
-            event.initMouseEvent(eventName, true, false, window);
+            event.initMouseEvent(eventName, true, false, window, null, null, null, null, null, false, false, false, false, null, null);
             element.dispatchEvent(event);
 
             return this;
@@ -512,8 +415,6 @@
         /**
          * Remove nodes from DOM
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('div').remove();
          */
         remove: function () {
             return this.each(function (element) {
@@ -527,9 +428,6 @@
          * Get or set HTML to nodes
          * @param  {String|Rise.RQuery} [html] HTML string or Rise.RQuery instance
          * @return {Rise.RQuery|String} Returns modified Rise.RQuery instance or HTML string
-         * @example
-         * Rise.$('div').html('test');
-         * Rise.$('div').html(); // 'test'
          */
         html: function (html) {
             if (Rise.Util.isUndefined(html)) {
@@ -543,12 +441,8 @@
 
         /**
          * Append HTML before node's end
-         * @param  {String|Rise.RQuery|Element} html You can send String or exists node
+         * @param {String|Rise.RQuery|Element|Object} html You can send String or exists node
          * @return {Rise.RQuery} Returns modified Rise.RQuery instance
-         * @example
-         * Rise.$('div').append('test');
-         * Rise.$('div').append(Rise.$.create('span'));
-         * Rise.$('div').append(document.createElement('a'));
          */
         append: function (html) {
             if (Rise.Util.isString(html)) {
@@ -570,12 +464,8 @@
 
         /**
          * Prepend HTML after node began
-         * @param  {String|Rise.RQuery|Element} html You can send String or existing Element
+         * @param  {String|Rise.RQuery|Element|Object} html You can send String or existing Element
          * @return {Rise.RQuery} Returns modified Rise.RQuery instance
-         * @example
-         * Rise.$('div').prepend('test');
-         * Rise.$('div').prepend(Rise.$.create('span'));
-         * Rise.$('div').prepend(document.createElement('a'));
          */
         prepend: function (html) {
             if (Rise.Util.isString(html)) {
@@ -599,9 +489,6 @@
          * Set or get inner text
          * @param  {String} [text] Text which you want to set in elements
          * @return {Rise.RQuery|String} Returns current Rise.RQuery instance or string with text
-         * @example
-         * Rise.$('div').text('test');
-         * Rise.$('div').text(); // 'test'
          */
         text: function (text) {
             if (Rise.Util.isUndefined(text)) {
@@ -616,8 +503,6 @@
         /**
          * Remove all child nodes from nodes
          * @return {Rise.RQuery} Returns modified Rise.RQuery instance
-         * @example
-         * Rise.$('div').empty();
          */
         empty: function () {
             return this.each(function (element) {
@@ -628,8 +513,6 @@
         /**
          * Clone node
          * @return {Rise.RQuery} Returns new Rise.RQuery instance with cloned nodes
-         * @example
-         * Rise.$('div').clone();
          */
         clone: function () {
             var clones = [];
