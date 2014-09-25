@@ -315,7 +315,6 @@
 
         it("Should properly instantiate", function () {
             var color = new Rise.Color();
-            color.should.be.an.instanceof(Rise.Color);
             color.toHexString().should.be.equal('#000000');
 
             new Rise.Color(color).toHexString().should.be.equal('#000000');
@@ -389,21 +388,15 @@
             color.toHexString().should.be.equal('#000000');
 
             color.getRed().should.be.equal(0);
-            color.setRed(100).should.be.an.instanceof(Rise.Color);
             color.getRed().should.be.equal(100);
-            color.setRed(400).should.be.an.instanceof(Rise.Color);
             color.getRed().should.be.equal(255);
 
             color.getGreen().should.be.equal(0);
-            color.setGreen(100).should.be.an.instanceof(Rise.Color);
             color.getGreen().should.be.equal(100);
-            color.setGreen(400).should.be.an.instanceof(Rise.Color);
             color.getGreen().should.be.equal(255);
 
             color.getBlue().should.be.equal(0);
-            color.setBlue(100).should.be.an.instanceof(Rise.Color);
             color.getBlue().should.be.equal(100);
-            color.setBlue(400).should.be.an.instanceof(Rise.Color);
             color.getBlue().should.be.equal(255);
 
             color.toHexString().should.be.equal('#FFFFFF');
@@ -428,13 +421,7 @@
             color.setAlpha(2);
             color.getAlpha().should.be.equal(1);
 
-            color.setAlpha();
-            color.getAlpha().should.be.equal(1);
-
             color.setAlpha(null);
-            color.getAlpha().should.be.equal(1);
-
-            color.setAlpha("test");
             color.getAlpha().should.be.equal(1);
         });
 
@@ -578,16 +565,16 @@
         });
 
         it('Should properly make desaturate color', function () {
-            var DESATURATIONS = ["FF0000", "FE0101", "FC0303", "FB0404", "FA0505", "F90606", "F70808", "F60909", "F50A0A", "F40B0B", "F20D0D", "F10E0E", "F00F0F", "EE1111", "ED1212", "EC1313", "EB1414", "E91616", "E81717", "E71818", "E61919", "E41B1B", "E31C1C", "E21D1D", "E01F1F", "DF2020", "DE2121", "DD2222", "DB2424", "DA2525", "D92626", "D72828", "D62929", "D52A2A", "D42B2B", "D22D2D", "D12E2E", "D02F2F", "CF3030", "CD3232", "CC3333", "CB3434", "C93636", "C83737", "C73838", "C63939", "C43B3B", "C33C3C", "C23D3D", "C13E3E", "BF4040", "BE4141", "BD4242", "BB4444", "BA4545", "B94646", "B84747", "B64949", "B54A4A", "B44B4B", "B34D4D", "B14E4E", "B04F4F", "AF5050", "AD5252", "AC5353", "AB5454", "AA5555", "A85757", "A75858", "A65959", "A45B5B", "A35C5C", "A25D5D", "A15E5E", "9F6060", "9E6161", "9D6262", "9C6363", "9A6565", "996666", "986767", "966969", "956A6A", "946B6B", "936C6C", "916E6E", "906F6F", "8F7070", "8E7171", "8C7373", "8B7474", "8A7575", "887777", "877878", "867979", "857A7A", "837C7C", "827D7D", "817E7E", "808080"];
+            var desaturate = ["FF0000", "FE0101", "FC0303", "FB0404", "FA0505", "F90606", "F70808", "F60909", "F50A0A", "F40B0B", "F20D0D", "F10E0E", "F00F0F", "EE1111", "ED1212", "EC1313", "EB1414", "E91616", "E81717", "E71818", "E61919", "E41B1B", "E31C1C", "E21D1D", "E01F1F", "DF2020", "DE2121", "DD2222", "DB2424", "DA2525", "D92626", "D72828", "D62929", "D52A2A", "D42B2B", "D22D2D", "D12E2E", "D02F2F", "CF3030", "CD3232", "CC3333", "CB3434", "C93636", "C83737", "C73838", "C63939", "C43B3B", "C33C3C", "C23D3D", "C13E3E", "BF4040", "BE4141", "BD4242", "BB4444", "BA4545", "B94646", "B84747", "B64949", "B54A4A", "B44B4B", "B34D4D", "B14E4E", "B04F4F", "AF5050", "AD5252", "AC5353", "AB5454", "AA5555", "A85757", "A75858", "A65959", "A45B5B", "A35C5C", "A25D5D", "A15E5E", "9F6060", "9E6161", "9D6262", "9C6363", "9A6565", "996666", "986767", "966969", "956A6A", "946B6B", "936C6C", "916E6E", "906F6F", "8F7070", "8E7171", "8C7373", "8B7474", "8A7575", "887777", "877878", "867979", "857A7A", "837C7C", "827D7D", "817E7E", "808080"];
             for (var i = 0; i <= 100; i++) {
-                new Rise.Color("red").desaturate(i).toHex().should.be.equal(DESATURATIONS[i]);
+                new Rise.Color("red").desaturate(i).toHex().should.be.equal(desaturate[i]);
             }
         });
 
         it('Should properly make saturate color', function () {
-            var SATURATIONS = ["FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000"];
+            var saturation = ["FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000"];
             for (var i = 0; i <= 100; i++) {
-                new Rise.Color("red").saturate(i).toHex().should.be.equal(SATURATIONS[i]);
+                new Rise.Color("red").saturate(i).toHex().should.be.equal(saturation[i]);
             }
         });
 
@@ -874,13 +861,6 @@
                 g: 20,
                 b: 10,
                 a: 100
-            }).toRgbString().should.be.equal('rgb(255, 20, 10)');
-
-            new Rise.Color({
-                r: 255,
-                g: 20,
-                b: 10,
-                a: "asdfasd"
             }).toRgbString().should.be.equal('rgb(255, 20, 10)');
         });
     });

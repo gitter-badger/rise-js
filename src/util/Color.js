@@ -3,18 +3,9 @@
 
     Rise.Color = Rise.Class.create({
         /**
-         * Create new Rise.Color instance
-         * @constructor
-         * @param {Rise.Color|String|Object} color String or object with appropriate properties
-         * @return {Rise.Color|Boolean} Returns Rise.Color instance
-         * @example
-         * Rise.Color('red');
-         * Rise.Color({
-         *     r: 255,
-         *     g: 0,
-         *     b: 0,
-         *     a: 1
-         * });
+         * Create new Color instance
+         * @param color Color
+         * @returns {*}
          */
         init: function (color) {
             color = color || 'black';
@@ -190,8 +181,6 @@
         /**
          * Convert color to HEX string
          * @return {String} Returns HEX value of this color without #
-         * @example
-         * new Rise.Color('black').toHex(); // '000000'
          */
         toHex: function () {
             return this.alpha === 1 ?
@@ -202,8 +191,6 @@
         /**
          * Convert color to HEX string
          * @return {String} Returns string with # and HEX color
-         * @example
-         * new Rise.Color('black').toHexString(); // '#000000'
          */
         toHexString: function () {
             return '#' + this.toHex();
@@ -272,13 +259,6 @@
         /**
          * Convert this color to name string
          * @return {String|Boolean} Returns color name or false if couldn't detect
-         * @example
-         * new Rise.Color('aqua').toName(); // 'aqua'
-         * new Rise.Color({
-         *     r: 0,
-         *     g: 0,
-         *     b: 0
-         * }).toName(); // 'black'
          */
         toName: function () {
             if (this.alpha === 0) {
@@ -315,7 +295,7 @@
         /**
          * Make color more lighten
          * @param {Integer} amount Custom amount for lighten level in [0, 100] range
-         * @return {Rise.Color} Returns modified color
+         * @return {Rise.Color|Object} Returns modified color
          */
         lighten: function (amount) {
             amount = (amount === 0) ? 0 : (amount || 10);
@@ -329,7 +309,7 @@
         /**
          * Make color more darken
          * @param {Integer} amount Custom amount for darken level in [0, 100] range
-         * @return {Rise.Color} Returns modified color
+         * @return {Rise.Color|Object} Returns modified color
          */
         darken: function (amount) {
             amount = (amount === 0) ? 0 : (amount || 10);
@@ -343,7 +323,7 @@
         /**
          * Desaturate the color
          * @param {Integer} amount Custom amount for desaturate in [0, 100] range
-         * @return {Rise.Color} Returns modified color
+         * @return {Rise.Color|Object} Returns modified color
          */
         desaturate: function (amount) {
             amount = (amount === 0) ? 0 : (amount || 10);
@@ -357,7 +337,7 @@
         /**
          * Saturate the color
          * @param {Integer} amount Custom amount for saturate level in [0, 100] range
-         * @return {Rise.Color} Returns modified color
+         * @return {Rise.Color|Object} Returns modified color
          */
         saturate: function (amount) {
             amount = (amount === 0) ? 0 : (amount || 10);
@@ -371,7 +351,7 @@
         /**
          * Make color more brighten
          * @param {Integer} amount Custom amount for brighten level in [0, 100] range
-         * @return {Rise.Color} Returns modified color
+         * @return {Rise.Color|Object} Returns modified color
          */
         brighten: function (amount) {
             amount = (amount === 0) ? 0 : (amount || 10);
@@ -395,7 +375,7 @@
         /**
          * Spin the hue level for a given amount
          * @param {Integer} amount Custom amount for spin in [-360, 360] range
-         * @return {Rise.Color} Returns modified color
+         * @return {Rise.Color|Object} Returns modified color
          */
         spin: function (amount) {
             var hsl = this.toHsl(),
@@ -430,7 +410,7 @@
 
         /**
          * Get complementary combination
-         * @return {Rise.Color} Returns Rise.Color instance with complementary color
+         * @return {Rise.Color|Object} Returns Rise.Color instance with complementary color
          */
         getComplementary: function () {
             var hsl = this.toHsl();
@@ -440,7 +420,7 @@
 
         /**
          * Get monochromatic combinations
-         * @param {Integer} results Count of results
+         * @param {Integer} [results] Count of results
          * @return {Array} Returns array with Rise.Color items
          */
         getMonochromatic: function (results) {
@@ -691,7 +671,7 @@
         },
 
         /**
-         * IIFE that returns object with regex for color's strings
+         * Function that returns object with regex for color's strings
          * @return {Object}
          * @static
          */
@@ -717,13 +697,11 @@
         /**
          * Convert RGB colour to RGB.
          * Better to use this because here processing handling of bound or percentage in RGB profile.
-         * @param  {Integer} r Red channel
-         * @param  {Integer} g Green channel
-         * @param  {Integer} b Blue channel
-         * @return {Object}    Object with r, g, b properties
+         * @param {Integer} r Red channel
+         * @param {Integer} g Green channel
+         * @param {Integer} b Blue channel
+         * @return {Object} Object with r, g, b properties
          * @static
-         * @example
-         * Rise.Color.rgbToRgb(0, 0, 0);
          */
         rgbToRgb: function (r, g, b) {
             return {
@@ -735,10 +713,10 @@
 
         /**
          * Convert RGB colour to HSV
-         * @param  {Integer} r Red channel
-         * @param  {Integer} g Green channel
-         * @param  {Integer} b Blue channel
-         * @return {Object}    Object with h, s, v properties
+         * @param {Integer} r Red channel
+         * @param {Integer} g Green channel
+         * @param {Integer} b Blue channel
+         * @return {Object} Object with h, s, v properties
          * @static
          */
         rgbToHsv: function (r, g, b) {
@@ -780,10 +758,10 @@
 
         /**
          * Convert RGB colour to HSL
-         * @param  {Integer} r Red channel
-         * @param  {Integer} g Green channel
-         * @param  {Integer} b Blue channel
-         * @return {Object}    Object with h, s, l properties
+         * @param {Integer} r Red channel
+         * @param {Integer} g Green channel
+         * @param {Integer} b Blue channel
+         * @return {Object} Object with h, s, l properties
          * @static
          */
         rgbToHsl: function (r, g, b) {
@@ -824,10 +802,10 @@
 
         /**
          * Convert HSL colour to RGB
-         * @param  {Integer} h Hue channel
-         * @param  {Integer} s Saturation channel
-         * @param  {Integer} l Lightness channel
-         * @return {Object}    Object with r, g, b properties
+         * @param {Integer} h Hue channel
+         * @param {Integer} s Saturation channel
+         * @param {Integer} l Lightness channel
+         * @return {Object} Object with r, g, b properties
          * @static
          */
         hslToRgb: function (h, s, l) {
@@ -880,10 +858,10 @@
 
         /**
          * Convert HSV colour to RGB
-         * @param  {Integer} h Hue channel
-         * @param  {Integer} s Saturation channel
-         * @param  {Integer} v Value channel
-         * @return {Object}    Object with r, g, b properties
+         * @param {Integer} h Hue channel
+         * @param {Integer} s Saturation channel
+         * @param {Integer} v Value channel
+         * @return {Object} Object with r, g, b properties
          * @static
          */
         hsvToRgb: function (h, s, v) {
@@ -910,10 +888,10 @@
 
         /**
          * Convert RGB colour to HEX
-         * @param  {Integer} r Red channel
-         * @param  {Integer} g Green channel
-         * @param  {Integer} b Blue channel
-         * @param  {Integer} a Alpha channel
+         * @param {Integer} r Red channel
+         * @param {Integer} g Green channel
+         * @param {Integer} b Blue channel
+         * @param {Integer} [a] Alpha channel
          * @return {String} HEX in string without #
          * @static
          */
@@ -944,8 +922,8 @@
 
         /**
          * Check if two colors are equals
-         * @param  {String|Object|Rise.Color} firstColor  First color
-         * @param  {String|Object|Rise.Color} secondColor Second color
+         * @param {String|Object|Rise.Color} firstColor First color
+         * @param {String|Object|Rise.Color} secondColor Second color
          * @return {Boolean} True if colors equals and false otherwise
          * @static
          */
@@ -959,7 +937,7 @@
 
         /**
          * Generate random color and return it
-         * @return {Rise.Color} Random color
+         * @return {Rise.Color|Object} Random color
          * @static
          */
         random: function () {
@@ -972,10 +950,10 @@
 
         /**
          * Mix 2 colors
-         * @param  {String} firstColor  First color
-         * @param  {String} secondColor  Second color
-         * @param  {Integer} amount Amount of mix
-         * @return {Rise.Color}     Returns mixed color
+         * @param {String|Object|Rise.Color} firstColor First color
+         * @param {String|Object|Rise.Color} secondColor Second color
+         * @param {Integer} [amount] Amount of mix
+         * @return {Rise.Color|Object} Returns mixed color
          * @static
          */
         mix: function (firstColor, secondColor, amount) {
@@ -1008,8 +986,8 @@
 
         /**
          * Create new Rise.Color instance from string colour
-         * @param  {String} color String representation of colour
-         * @return {Boolean|Rise.Color}   Returns Rise.Color instance
+         * @param {String} color String representation of colour
+         * @return {Rise.Color|Object} Returns Rise.Color instance
          */
         fromString: function (color) {
             color = color.trim().replace(/#/g, '').toLowerCase();
