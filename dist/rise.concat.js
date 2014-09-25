@@ -82,7 +82,7 @@
     Rise.prototype = Object.create({
         /**
          * Updates Rise instance (canvas) and does needed operation after some changes.
-         * This method must implements features which will fix smth after smth changes.
+         * This method must implements features which will fix changes.
          * I.e. after setHtml it will fix canvasNode property for appropriate new canvas node.
          * @return {Rise} Returns Rise instance
          */
@@ -368,8 +368,6 @@
          * Assign (extend) objects
          * @return {Object} Returns extended object
          * @static
-         * @example
-         * Rise.Util.assign({}, obj1, obj2, obj3);
          */
         assign: function () {
             /**
@@ -401,12 +399,10 @@
         /**
          * Camelize string
          * @param  {String} string String which need to camelize
-         * @return {String} Returns camelized string
+         * @return {String} Returns camelize string
          * @static
-         * @example
-         * Rise.Util.toCamelizedString('font-style'); // fontStyle
          */
-        toCamelizedString: function (string) {
+        toCamelizeString: function (string) {
             return string.replace(/\-(\w)/g, function (string, letter) {
                 return letter.toUpperCase();
             });
@@ -417,8 +413,6 @@
          * @param  {String} string String which need to make dashed
          * @return {String} Returns dashed string
          * @static
-         * @example
-         * Rise.Util.toDashedString('borderRadius'); // border-radius
          */
         toDashedString: function (string) {
             return string.replace(/([A-Z])/g, function (string) {
@@ -428,13 +422,11 @@
 
         /**
          * Get random string
-         * @param  {String} prepend   String which prepends to random string
-         * @param  {String} append    String which appends to random string
-         * @param  {String} separator String which separate prepend and appender
-         * @return {String}           Returns random generated string
+         * @param {String} [prepend] String which prepends to random string
+         * @param {String} [append] String which appends to random string
+         * @param {String} [separator] String which separate prepend and appender
+         * @return {String} Returns random generated string
          * @static
-         * @example
-         * Rise.Util.getRandomString('prefix', 'suffix', 'separator');
          */
         getRandomString: function (prepend, append, separator) {
             prepend = this.isUndefined(prepend) ? '' : prepend;
@@ -453,11 +445,6 @@
          * @param  {Object} object Object which you want to flip
          * @return {Object} Returns flipped object
          * @static
-         * @example
-         * var flipped = Rise.Util.flipObject({
-         *     foo: 'bar',
-         *     bar: 'test'
-         * });
          */
         flipObject: function (object) {
             var flipped = {};
@@ -492,7 +479,7 @@
         /**
          * Check if this is number
          * @static
-         * @param  {Object}  number Value that might be checked
+         * @param  {*}  number Value that might be checked
          * @return {Boolean}       Returns true if number
          */
         isNumber: function (number) {
@@ -2090,8 +2077,8 @@
 
     /**
      * Check if level is allow to print message
-     * @param  {Integer}  level Level that need to check
-     * @return {Boolean}        Returns true if this level can be printed out
+     * @param {Integer} level Level that need to check
+     * @return {Boolean} Returns true if this level can be printed out
      * @private
      */
     function isAllowedLevel(level) {
@@ -2100,8 +2087,8 @@
 
     /**
      * Prepend message to every log message
-     * @param  {String} string Message to what will be prepended header message
-     * @return {String}        Returns resulting string
+     * @param {String} string Message to what will be prepended header message
+     * @return {String} Returns resulting string
      * @private
      */
     function prependLoggerInfo(string) {
@@ -2110,18 +2097,16 @@
 
     /**
      * Invoke console methods
-     * @param  {String} type Type of console that need to be invoked
-     * @param  {Array} args Array of arguments to console method
+     * @param {String} type Type of console that need to be invoked
+     * @param {Array} args Array of arguments to console method
      * @private
-     * @example
-     * invokeConsole('log', ['test', 'test2']); // test test2
      */
     function invokeConsole(type, args) {
         args = Array.prototype.slice.call(args, 0);
 
-        if (window.console[type] && Rise.Util.isFunction(window.console[type])) {
+        if (console[type] && Rise.Util.isFunction(console[type])) {
             args[0] = prependLoggerInfo(args[0] ? args[0] : '');
-            window.console[type].apply(window.console, args);
+            console[type].apply(console, args);
         }
     }
 
@@ -2130,8 +2115,8 @@
      * @private
      */
     (function printWelcomeMessage() {
-        if (window.chrome) {
-            window.console.log.apply(window.console, [
+        if (navigator.userAgent.toLowerCase().indexOf('chrome') !== -1) {
+            console.log.apply(console, [
                     '%c %c %c Rise v' + Rise.getVersion() + ' %c %c %c',
                 'background: #0E173E; font-size: 8pt;',
                 'background: #020C25; font-size: 9pt;',
@@ -2141,7 +2126,7 @@
                 'background: #0E173E; font-size: 8pt;'
             ]);
         } else {
-            window.console.log('Rise v' + Rise.getVersion());
+            console.log('Rise v' + Rise.getVersion());
         }
     })();
 
@@ -2198,8 +2183,6 @@
          * @param {Integer} level Predefined constant in Rise.Logger
          * @return {Rise.Logger}
          * @static
-         * @example
-         * Rise.Logger.setLevel(Rise.Logger.VERBOSE);
          */
         setLevel: function (level) {
             currentLogLevel = level;
@@ -2342,18 +2325,15 @@
 
     Rise.Math = {
         /**
-         * Force a number in range.
-         * If value < min then returns min.
-         * If value > max then returns max.
-         * If min < value < max then returns value.
+         * Force a number in range
+         * If value < min then returns min
+         * If value > max then returns max
+         * If min < value < max then returns value
          * @param {Integer} min Minimum value of range
          * @param {Integer} max Maximum value of range
-         * @param  {Integer} value Value that need to clamp
+         * @param {Integer} value Value that need to clamp
          * @return {Integer} Returns clamped integer
          * @static
-         * @example
-         * Rise.Math.clamp(0, 1, 2); // 1
-         * Rise.Math.clamp(0, 2, 0.4); // 0.4
          */
         clamp: function (min, max, value) {
             return Math.min(max, Math.max(min, value));
@@ -2362,13 +2342,10 @@
         /**
          * Get decimal value from [min, max] range
          * @param {Integer} min Minimum value in range
-         * @param  {Integer} max Maximum value in range
-         * @param  {Number|String} value Value that need to bound
+         * @param {Integer} max Maximum value in range
+         * @param {Number|String} value Value that need to bound
          * @return {Number} Returns float decimal value
          * @static
-         * @example
-         * Rise.Math.bound(0, 100, 40); // 0.4
-         * Rise.Math.bound(0, 256, 133); // ~0.51...
          */
         bound: function (min, max, value) {
             if (Rise.Util.isString(value) && value.indexOf('.') !== -1 && parseFloat(value) === 1) {
@@ -2392,12 +2369,10 @@
 
         /**
          * Generate random value
-         * @param  {Integer} [min] Minimum value of range
-         * @param  {Integer} [max] Maximum value of range
-         * @return {Integer}       Returns random value in provided range
+         * @param {Integer} [min] Minimum value of range
+         * @param {Integer} [max] Maximum value of range
+         * @return {Integer} Returns random value in provided range
          * @static
-         * @example
-         * Rise.Math.getRandomValue(0, 100);
          */
         getRandomValue: function (min, max) {
             min = min || 0;
@@ -2408,12 +2383,9 @@
 
         /**
          * Replace decimal value with percentage value
-         * @param  {Integer} value Decimal value in [0, 1] range
+         * @param {Integer} value Decimal value in [0, 1] range
          * @return {Integer|String} Returns percentage value or the same value if not decimal
          * @static
-         * @example
-         * Rise.Math.decimalToPercentage(0.4); // '40%'
-         * Rise.Math.decimalToPercentage(2); // 2
          */
         decimalToPercentage: function (value) {
             value = parseFloat(value);
@@ -2432,12 +2404,8 @@
     Rise.Opacity = Rise.Class.create({
         /**
          * Create new Rise.Opacity object
-         * @constructor
          * @param {Number} opacity Percentage range [0, 100] (100% - transparent, 0% - blank) or [0, 1] range
          * @return {Rise.Opacity|Object} Returns new Rise.Opacity instance
-         * @example
-         * new Rise.Opacity(40).toString(); // 0.60
-         * new Rise.Opacity(0.20).getOpacity(); // 80
          */
         init: function (opacity) {
             opacity = opacity || 0;
@@ -2461,8 +2429,6 @@
          * Set opacity
          * @param {Integer} opacity Opacity in percentage range [0, 100] or [0, 1] range
          * @return {Rise.Opacity} Returns current Rise.Opacity instance
-         * @example
-         * new Rise.Opacity(20).set(60).toString(); // 0.4
          */
         set: function (opacity) {
             if (Rise.Opacity.isDecimal01Value(opacity)) {
@@ -2482,8 +2448,6 @@
         /**
          * Get opacity in percentage
          * @return {Integer} Returns opacity in range from 0% to 100%
-         * @example
-         * new Rise.Opacity(60).get(); // 60
          */
         get: function () {
             return this.opacity;
@@ -2491,7 +2455,7 @@
 
         /**
          * Convert opacity value to CSS string
-         * @return {String} Returns string which you can apply to CSS
+         * @return {Number} Returns string which you can apply to CSS
          */
         toString: function () {
             return Rise.Opacity.convertPercentageToCss(this.opacity);
@@ -2499,14 +2463,9 @@
     }, {
         /**
          * Check if provided value is percentage value in [0, 100] range and not decimal
-         * @param  {Number} value Value that need to be checked
+         * @param {Number} value Value that need to be checked
          * @return {Boolean} True if value is percentage value
          * @static
-         * @example
-         * isPercentageValue(20); // true
-         * isPercentageValue(0); // true
-         * isPercentageValue(400); // false
-         * isPercentageValue(0.40); //false
          */
         isPercentageValue: function (value) {
             return (
@@ -2519,13 +2478,9 @@
 
         /**
          * Check if provided value is decimal value in [0, 1] range
-         * @param  {Number} value Value that need to be checked
+         * @param {Number} value Value that need to be checked
          * @return {Boolean} True if value is decimal
          * @static
-         * @example
-         * isDecimal01Value(0.20); // true
-         * isDecimal01Value(2); // false
-         * isDecimal01Value(1.00); // false
          */
         isDecimal01Value: function (value) {
             return (
@@ -2538,12 +2493,9 @@
 
         /**
          * Convert CSS opacity value to percentage value
-         * @param  {Number} value CSS opacity value that need to be converted
+         * @param {Number} value CSS opacity value that need to be converted
          * @return {Number} Returns float value in percentage
          * @static
-         * @example
-         * Rise.Opacity.convertCssToPercentage(0.40); // 60%
-         * Rise.Opacity.convertCssToPercentage(1); // 0%
          */
         convertCssToPercentage: function (value) {
             return (100 - (value * 100.0).toFixed(0));
@@ -2551,12 +2503,9 @@
 
         /**
          * Convert percentage value to CSS opacity
-         * @param  {Number} value Percentage value
+         * @param {Number} value Percentage value
          * @return {Number} Returns float value for CSS opacity
          * @static
-         * @example
-         * Rise.Opacity.convertPercentageToCss(60); // 0.40
-         * Rise.Opacity.convertPercentageToCss(0); // 1
          */
         convertPercentageToCss: function (value) {
             return (100 - value) / 100.0;
@@ -2570,9 +2519,6 @@
      * Factory method that returns new Rise.RQuery instance
      * @static
      * @return {Rise.RQuery} Returns Rise.RQuery instance
-     * @example
-     * Rise.$('div');
-     * Rise.$('.my-selector');
      */
     Rise.$ = function () {
         return Rise.RQuery.apply(Object.create(Rise.RQuery.prototype), arguments);
@@ -2581,11 +2527,8 @@
     /**
      * Factory method that returns new Rise.RQuery instance with created Element
      * @static
-     * @param  {String} tag Tag element that need to create
+     * @param {String} tag Tag element that need to create
      * @return {Rise.RQuery} Returns Rise.RQuery instance with created Element
-     * @example
-     * Rise.$.create('div');
-     * Rise.$.create('span').text('My text');
      */
     Rise.$.create = function (tag) {
         return new Rise.RQuery(document.createElement(tag));
@@ -2595,11 +2538,9 @@
         /**
          * Create new Rise.RQuery instance
          * @constructor
-         * @param  {String|Rise.RQuery|Element|Array} selector Selector or exists Element
-         * @param  {Element|Document|Window} parent Parent from where selector will parse
+         * @param {String|Rise.RQuery|Element|Array} selector Selector or exists Element
+         * @param {Element|Document|Window} parent Parent from where selector will parse
          * @return {Rise.RQuery} Returns Rise.RQuery instance
-         * @example
-         * new Rise.RQuery('.selector');
          */
         init: function (selector, parent) {
             selector = selector || window;
@@ -2646,11 +2587,8 @@
 
         /**
          * Get Element by index
-         * @param {Integer} [index] Index
+         * @param {Number} [index] Index
          * @return {Array|Element} Returns Element with corresponding index or array of elements
-         * @example
-         * Rise.$('body').get(0);
-         * Rise.$('div').get();
          */
         get: function (index) {
             return Rise.Util.isUndefined(index) ? this.elements : this.elements[index];
@@ -2659,8 +2597,6 @@
         /**
          * Get elements count
          * @return {Integer} Returns elements count
-         * @example
-         * Rise.$('body').count(); // 1
          */
         count: function () {
             return (this.elements && this.elements.length) || 0;
@@ -2670,10 +2606,6 @@
          * Iterate through all elements and call callback function
          * @param  {Function} cb Callback which called at each iteration cb(element, index, array)
          * @return {Rise.RQuery}
-         * @example
-         * Rise.$('div').each(function(element, index, array) {
-         *     console.log(element, index, array);
-         * });
          */
         each: function (cb) {
             Array.prototype.forEach.call(this.get(), cb);
@@ -2683,8 +2615,6 @@
         /**
          * Get parent node
          * @return {Rise.RQuery} Returns parent node of element
-         * @example
-         * Rise.$('body').parent();
          */
         parent: function () {
             return new Rise.RQuery(this.get(0).parentNode);
@@ -2693,8 +2623,6 @@
         /**
          * Get array of children nodes
          * @return {Rise.RQuery} Return Rise.RQuery object with child nodes
-         * @example
-         * Rise.$('body').children();
          */
         children: function () {
             return new Rise.RQuery(this.get(0).children);
@@ -2702,10 +2630,8 @@
 
         /**
          * Check if node contains other node
-         * @param {Rise.RQuery} child Child node which need to check for exists in node
+         * @param {Array|HTMLElement|Rise.RQuery} child Child node which need to check for exists in node
          * @return {Boolean} True if contains
-         * @example
-         * Rise.$('body').contains(Rise.$('div'));
          */
         contains: function (child) {
             child = child.get(0);
@@ -2718,8 +2644,6 @@
         /**
          * Get node's width
          * @return {Integer} Returns offsetWidth of node
-         * @example
-         * Rise.$('div').offsetWidth();
          */
         offsetWidth: function () {
             return this.get(0).offsetWidth;
@@ -2728,8 +2652,6 @@
         /**
          * Get node's height
          * @return {Integer} Returns offsetHeight of node
-         * @example
-         * Rise.$('div').offsetHeight();
          */
         offsetHeight: function () {
             return this.get(0).offsetHeight;
@@ -2738,8 +2660,6 @@
         /**
          * Get left offset of node
          * @return {Integer} Returns offsetLeft of node
-         * @example
-         * Rise.$('div').offsetLeft();
          */
         offsetLeft: function () {
             return this.get(0).offsetLeft;
@@ -2748,8 +2668,6 @@
         /**
          * Get top offset of node
          * @return {Integer} Returns offsetTop of node
-         * @example
-         * Rise.$('div').offsetTop();
          */
         offsetTop: function () {
             return this.get(0).offsetTop;
@@ -2758,8 +2676,6 @@
         /**
          * Focus at node
          * @return {Rise.RQuery} Returns Rise.RQuery instance
-         * @example
-         * Rise.$('input').focus();
          */
         focus: function () {
             this.get(0).focus();
@@ -2767,10 +2683,8 @@
         },
 
         /**
-         * Unfocus from node
+         * Blur from node
          * @return {Rise.RQuery} Returns Rise.RQuery instance
-         * @example
-         * Rise.$('input').blur();
          */
         blur: function () {
             this.get(0).blur();
@@ -2781,10 +2695,6 @@
          * Iterate through nodes and filter them out
          * @param  {Function} cb Callback function accept 3 arguments cb(node, index, array) and must return bool
          * @return {Rise.RQuery} Returns Rise.RQuery instance with filtered nodes
-         * @example
-         * Rise.$('div').filter(function(node, index, array) {
-         *     return Rise.$(node).hasClass('example');
-         * });
          */
         filter: function (cb) {
             if (Rise.Util.isFunction(cb)) {
@@ -2797,9 +2707,7 @@
         /**
          * Find nodes by selector, starting from current parent node
          * @param  {String} selector Selector for find other nodes
-         * @return {Rise.RQuery} Returns new Rise.RQuery instance with finded nodes
-         * @example
-         * Rise.$('body').find('div').find('span');
+         * @return {Rise.RQuery} Returns new Rise.RQuery instance with nodes
          */
         find: function (selector) {
             return new Rise.RQuery(selector, this.get(0));
@@ -2809,11 +2717,6 @@
          * Set or get attribute value to nodes
          * @param  {String|Object} attr String for getting attribute value and object for set
          * @return {String|Rise.RQuery} Returns current Rise.RQuery instance or attribute value
-         * @example
-         * Rise.$('div').attr('id');
-         * Rise.$('div').attr({
-         *     id: 'test'
-         * });
          */
         attr: function (attr) {
             if (Rise.Util.isString(attr)) {
@@ -2838,15 +2741,9 @@
 
         /**
          * Set or get css-rules
-         * @param {Object} css Object with CSS properties
-         * @param {String} pseudoElement You can provide pseudoElement selector
+         * @param {Object|String} css Object with CSS properties
+         * @param {String} [pseudoElement] You can provide pseudoElement selector
          * @return {String|Rise.RQuery} Returns current Rise.RQuery instance or CSS value
-         * @example
-         * Rise.RQuery('div').css({
-         *     width: 200
-         * });
-         * Rise.RQuery('div').css('width', ':after');
-         * Rise.RQuery('div').css('width');
          */
         css: function (css, pseudoElement) {
             pseudoElement = pseudoElement || null;
@@ -2862,9 +2759,9 @@
                         if (css[key] === false) {
                             element.style.removeProperty(Rise.Util.toDashedString(key));
                         } else if (isNaN(css[key]) || Rise.RQuery.cssNumbersMap.indexOf(key) !== -1) {
-                            element.style[Rise.Util.toCamelizedString(key)] = css[key];
+                            element.style[Rise.Util.toCamelizeString(key)] = css[key];
                         } else {
-                            element.style[Rise.Util.toCamelizedString(key)] = css[key] + 'px';
+                            element.style[Rise.Util.toCamelizeString(key)] = css[key] + 'px';
                         }
                     });
                 });
@@ -2876,10 +2773,8 @@
 
         /**
          * Wrap nodes with new node
-         * @param  {Rise.RQuery} html Rise.RQuery instance with HTML which will be the wrapper
+         * @param {Rise.RQuery|Object} html Rise.RQuery instance with HTML which will be the wrapper
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('div').wrap(Rise.$.create('a')); // Wrap all div with a tag
          */
         wrap: function (html) {
             var wrapper;
@@ -2894,8 +2789,6 @@
         /**
          * Unwrap nodes, remove parent node from nodes
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('div').unwrap();
          */
         unwrap: function () {
             return this.each(function (element) {
@@ -2907,9 +2800,12 @@
          * Check if this node is matches to selector
          * @param  {String} selector Selector for checking
          * @return {Boolean} Returns true if all elements is match to selector and false otherwise
-         * @example
-         * Rise.$('div').is('div'); // true
          */
+        /** @namespace element.matchesSelector */
+        /** @namespace element.msMatchesSelector */
+        /** @namespace element.mozMatchesSelector */
+        /** @namespace element.webkitMatchesSelector */
+        /** @namespace element.oMatchesSelector */
         is: function (selector) {
             var element;
 
@@ -2933,8 +2829,6 @@
          * Add class name to nodes
          * @param {Array|String} names Class names split with spaces
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('div').addClass('foo bar');
          */
         addClass: function (names) {
             names = names.split(/[ ]+/);
@@ -2950,8 +2844,6 @@
          * Remove class name from nodes
          * @param  {Array|String} names Class names that need to be removed from nodes
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('div').removeClass('foo bar');
          */
         removeClass: function (names) {
             names = names.split(/[ ]+/);
@@ -2967,8 +2859,6 @@
          * Toggle class name for nodes
          * @param  {Array|String} names Class names that need to be toggled
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('div').toggleClass('foo bar');
          */
         toggleClass: function (names) {
             names = names.split(/[ ]+/);
@@ -2984,8 +2874,6 @@
          * Check if nodes have class name
          * @param {String} name Class names
          * @return {Boolean} Returns true if ALL nodes have className and false otherwise
-         * @example
-         * Rise.$('div').hasClass('foo');
          */
         hasClass: function (name) {
             if (this.count() > 0) {
@@ -3002,15 +2890,6 @@
          * @param  {String|Object} eventType Event type
          * @param  {Function} handler Your function which you want execute on event
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('div').on('click', function(event) {
-         *     console.log(this, event);
-         * });
-         * Rise.$('div').on({
-         *     click: function(event) {
-         *         console.log(this, event);
-         *     }
-         * });
          */
         on: function (eventType, handler) {
             if (Rise.Util.isObject(eventType)) {
@@ -3032,13 +2911,8 @@
         /**
          * Unbind event from nodes
          * @param  {String} eventType Event type
-         * @param  {Function} handler Your function which you want to unsubscribe from event
+         * @param  {Function} handler Your function which you want to un subscribe from event
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('div').off('click', yourFunction);
-         * Rise.$('div').off({
-         *     click: yourFunction
-         * });
          */
         off: function (eventType, handler) {
             if (Rise.Util.isObject(eventType)) {
@@ -3061,14 +2935,12 @@
          * Trigger native mouse event for node
          * @param  {String} eventName Name of event
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('button').triggerMouseEvent('click');
          */
         triggerMouseEvent: function (eventName) {
             var event = document.createEvent('MouseEvents'),
                 element = this.get(0);
 
-            event.initMouseEvent(eventName, true, false, window);
+            event.initMouseEvent(eventName, true, false, window, null, null, null, null, null, false, false, false, false, null, null);
             element.dispatchEvent(event);
 
             return this;
@@ -3077,8 +2949,6 @@
         /**
          * Remove nodes from DOM
          * @return {Rise.RQuery} Returns current Rise.RQuery instance
-         * @example
-         * Rise.$('div').remove();
          */
         remove: function () {
             return this.each(function (element) {
@@ -3092,9 +2962,6 @@
          * Get or set HTML to nodes
          * @param  {String|Rise.RQuery} [html] HTML string or Rise.RQuery instance
          * @return {Rise.RQuery|String} Returns modified Rise.RQuery instance or HTML string
-         * @example
-         * Rise.$('div').html('test');
-         * Rise.$('div').html(); // 'test'
          */
         html: function (html) {
             if (Rise.Util.isUndefined(html)) {
@@ -3108,12 +2975,8 @@
 
         /**
          * Append HTML before node's end
-         * @param  {String|Rise.RQuery|Element} html You can send String or exists node
+         * @param {String|Rise.RQuery|Element|Object} html You can send String or exists node
          * @return {Rise.RQuery} Returns modified Rise.RQuery instance
-         * @example
-         * Rise.$('div').append('test');
-         * Rise.$('div').append(Rise.$.create('span'));
-         * Rise.$('div').append(document.createElement('a'));
          */
         append: function (html) {
             if (Rise.Util.isString(html)) {
@@ -3135,12 +2998,8 @@
 
         /**
          * Prepend HTML after node began
-         * @param  {String|Rise.RQuery|Element} html You can send String or existing Element
+         * @param  {String|Rise.RQuery|Element|Object} html You can send String or existing Element
          * @return {Rise.RQuery} Returns modified Rise.RQuery instance
-         * @example
-         * Rise.$('div').prepend('test');
-         * Rise.$('div').prepend(Rise.$.create('span'));
-         * Rise.$('div').prepend(document.createElement('a'));
          */
         prepend: function (html) {
             if (Rise.Util.isString(html)) {
@@ -3164,9 +3023,6 @@
          * Set or get inner text
          * @param  {String} [text] Text which you want to set in elements
          * @return {Rise.RQuery|String} Returns current Rise.RQuery instance or string with text
-         * @example
-         * Rise.$('div').text('test');
-         * Rise.$('div').text(); // 'test'
          */
         text: function (text) {
             if (Rise.Util.isUndefined(text)) {
@@ -3181,8 +3037,6 @@
         /**
          * Remove all child nodes from nodes
          * @return {Rise.RQuery} Returns modified Rise.RQuery instance
-         * @example
-         * Rise.$('div').empty();
          */
         empty: function () {
             return this.each(function (element) {
@@ -3193,8 +3047,6 @@
         /**
          * Clone node
          * @return {Rise.RQuery} Returns new Rise.RQuery instance with cloned nodes
-         * @example
-         * Rise.$('div').clone();
          */
         clone: function () {
             var clones = [];
@@ -3236,13 +3088,6 @@
          * @constructor
          * @param {Object} shadow Object with color, blur, offsetX, offsetY attributes or string
          * @return {Rise.Shadow|Object} Returns new Rise.Shadow instance
-         * @example
-         * new Rise.Shadow({
-         *     color: new Rise.Color('aqua'),
-         *     blur: 2,
-         *     offsetX: 5,
-         *     offsetY: 10
-         * });
          */
         init: function (shadow) {
             shadow = shadow || {};
@@ -3274,8 +3119,6 @@
          * Set color
          * @param {Rise.Color|String|Object} color Color that you want set to shadow
          * @return {Rise.Shadow} Returns current Rise.Shadow instance
-         * @example
-         * new Rise.Shadow().setColor(new Rise.Color('aqua'));
          */
         setColor: function (color) {
             this.color = new Rise.Color(color);
@@ -3285,8 +3128,6 @@
         /**
          * Get color
          * @return {Rise.Color} Returns Rise.Color instance
-         * @example
-         * new Rise.Shadow().getColor();
          */
         getColor: function () {
             return this.color;
@@ -3296,8 +3137,6 @@
          * Set blur
          * @param {Integer} blur Blur in integer
          * @return {Rise.Shadow} Returns current Rise.Shadow instance
-         * @example
-         * new Rise.Shadow().setBlur(3);
          */
         setBlur: function (blur) {
             this.blur = blur;
@@ -3307,8 +3146,6 @@
         /**
          * Get blur
          * @return {Integer} Returns current value of blur
-         * @example
-         * new Rise.Shadow().getBlur();
          */
         getBlur: function () {
             return this.blur;
@@ -3318,8 +3155,6 @@
          * Set offsetX
          * @param {Integer} x OffsetX
          * @return {Rise.Shadow} Returns current Rise.Shadow instance
-         * @example
-         * new Rise.Shadow().setOffsetX(5);
          */
         setOffsetX: function (x) {
             this.offsetX = x;
@@ -3329,8 +3164,6 @@
         /**
          * Get offsetX
          * @return {Integer} Returns offsetX
-         * @example
-         * new Rise.Shadow().getOffsetX();
          */
         getOffsetX: function () {
             return this.offsetX;
@@ -3340,8 +3173,6 @@
          * Set offsetY
          * @param {Integer} y OffsetY
          * @return {Rise.Shadow} Returns Rise.Shadow instance
-         * @example
-         * new Rise.Shadow().setOffsetY(5);
          */
         setOffsetY: function (y) {
             this.offsetY = y;
@@ -3351,8 +3182,6 @@
         /**
          * Get offsetY
          * @return {Integer} Returns offsetY
-         * @example
-         * new Rise.Shadow().getOffsetY();
          */
         getOffsetY: function () {
             return this.offsetY;
@@ -3361,8 +3190,6 @@
         /**
          * Returns CSS string
          * @return {String} Returns CSS shadow string representation
-         * @example
-         * new Rise.Shadow().toString();
          */
         toString: function () {
             return [
@@ -3376,9 +3203,6 @@
         /**
          * Regex that match shadow offsetX, offsetY and blur
          * @static
-         * @example
-         * 2px 2px 10px rgba(0, 0, 0, 0.2)
-         * rgb(0,255,0) 2px 2px
          */
         shadowRegex: /(?:\s|^)(-?\d+(?:px)?(?:\s?|$))?(-?\d+(?:px)?(?:\s?|$))?(\d+(?:px)?)?(?:\s?|$)(?:$|\s)/,
 
@@ -3387,8 +3211,6 @@
          * @static
          * @param {String} shadow Shadow value that need to parse
          * @return {Rise.Shadow} Rise.Shadow instance
-         * @example
-         * var shadow = Rise.Shadow.fromString('2px 2px 10px rgba(0, 0, 0, 0.2)');
          */
         fromString: function (shadow) {
             shadow = shadow.trim();

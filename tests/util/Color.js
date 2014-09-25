@@ -388,15 +388,21 @@
             color.toHexString().should.be.equal('#000000');
 
             color.getRed().should.be.equal(0);
+            color.setRed(100);
             color.getRed().should.be.equal(100);
+            color.setRed(255);
             color.getRed().should.be.equal(255);
 
             color.getGreen().should.be.equal(0);
+            color.setGreen(100);
             color.getGreen().should.be.equal(100);
+            color.setGreen(255);
             color.getGreen().should.be.equal(255);
 
             color.getBlue().should.be.equal(0);
+            color.setBlue(100);
             color.getBlue().should.be.equal(100);
+            color.setBlue(255);
             color.getBlue().should.be.equal(255);
 
             color.toHexString().should.be.equal('#FFFFFF');

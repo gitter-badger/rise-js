@@ -287,8 +287,28 @@
          * @param  {String} selector Selector for checking
          * @return {Boolean} Returns true if all elements is match to selector and false otherwise
          */
+        /** @namespace element.matchesSelector */
+        /** @namespace element.msMatchesSelector */
+        /** @namespace element.mozMatchesSelector */
+        /** @namespace element.webkitMatchesSelector */
+        /** @namespace element.oMatchesSelector */
         is: function (selector) {
-            return this.get(0).matches(selector);
+            var element;
+
+            if (this.count() > 0) {
+                element = this.get(0);
+
+                return (
+                    element.matches ||
+                    element.matchesSelector ||
+                    element.msMatchesSelector ||
+                    element.mozMatchesSelector ||
+                    element.webkitMatchesSelector ||
+                    element.oMatchesSelector
+                    ).call(element, selector);
+            }
+
+            return false;
         },
 
         /**

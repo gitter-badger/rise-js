@@ -82,7 +82,7 @@
     Rise.prototype = Object.create({
         /**
          * Updates Rise instance (canvas) and does needed operation after some changes.
-         * This method must implements features which will fix smth after smth changes.
+         * This method must implements features which will fix changes.
          * I.e. after setHtml it will fix canvasNode property for appropriate new canvas node.
          * @return {Rise} Returns Rise instance
          */

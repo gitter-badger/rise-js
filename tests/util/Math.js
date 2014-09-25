@@ -27,6 +27,9 @@
         });
 
         it('Should properly return random value', function () {
+            /**
+             * @namespace be.within
+             */
             for (var i = 0; i < 100; i++) {
                 Rise.Math.getRandomValue(50, 200).should.be.within(50, 200);
                 Rise.Math.getRandomValue(50).should.be.within(50, 100);
