@@ -93,7 +93,7 @@
 
         /**
          * Set parent node
-         * @param {Rise.RQuery|Element} node
+         * @param {Rise.RQuery|Object} node
          * @return {Rise} Returns Rise instance
          */
         setParentNode: function (node) {
@@ -111,7 +111,7 @@
 
         /**
          * Set canvas node
-         * @param {Rise.RQuery|Element} node
+         * @param {Rise.RQuery|Element|Object} node
          * @return {Rise} Returns Rise instance
          */
         setCanvasNode: function (node) {
@@ -212,8 +212,8 @@
 
         /**
          * Set new dimensions to canvas
-         * @param {Integer} width  Width in px
-         * @param {Integer} height Height in px
+         * @param {Integer|Null} [width] Width in px
+         * @param {Integer} [height] Height in px
          * @return {Rise} Returns Rise instance
          */
         setDimensions: function (width, height) {
@@ -254,7 +254,7 @@
 
         /**
          * Add element to canvas
-         * @param {Rise.Element} element Rise.Element instance that you want to add
+         * @param {Rise.Element|Object} element Rise.Element instance that you want to add
          * @return {Rise} Returns Rise instance
          * @example
          * var canvas = new Rise();

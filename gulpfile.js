@@ -12,7 +12,6 @@
             bumpVersionType: 'prerelease',
             sourceMap: [
                 "src/Rise.js",
-                "src/DI.js",
                 "src/util/Util.js",
                 "src/util/**/*.js",
                 "src/element/Element.js",

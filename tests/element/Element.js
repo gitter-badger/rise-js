@@ -10,14 +10,14 @@
 
         it('Should properly instantiate', function () {
             var element = new Rise.Element();
-            element.should.be.an.instanceof(Rise.Element);
+            element.should.be.an.instanceOf(Rise.Element);
         });
 
         it('Should properly get/set node', function () {
             var element = new Rise.Element();
 
-            element.setNode(Rise.$.create('div')).should.be.an.instanceof(Rise.Element);
-            element.getNode().should.be.an.instanceof(Rise.RQuery);
+            element.setNode(Rise.$.create('div')).should.be.an.instanceOf(Rise.Element);
+            element.getNode().should.be.an.instanceOf(Rise.RQuery);
             element.getNode().is('div').should.be.equal(true);
         });
 

@@ -27,7 +27,7 @@
 
         /**
          * Set Element's node
-         * @param {Rise.RQuery} node Element's node which contains all nodes that needs for Element
+         * @param {Rise.RQuery|Object} node Element's node which contains all nodes that needs for Element
          * @return {Rise.Element} Returns Rise.Element instance
          */
         setNode: function (node) {
