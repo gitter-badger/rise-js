@@ -7,10 +7,9 @@
         it('Should create basic class', function () {
             var Test = Rise.Class.create();
             Test.extend.should.be.a('function');
-            new Test().should.be.an.instanceof(Test);
         });
 
-        it('Should create class with prototype, static and mixins', function () {
+        it('Should create class with prototype, static and mixin', function () {
             var Test = Rise.Class.create({
                 init: function () {
                     this.test = 'test';

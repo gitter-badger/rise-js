@@ -3,8 +3,8 @@
 
     /**
      * Wrap method with function which set super to object
-     * @param sourceMethod Source method that need to wrap
-     * @param superMethod super method that will be called
+     * @param {Function} sourceMethod Source method that need to wrap
+     * @param {Function} superMethod super method that will be called
      * @returns {Function} Returns wrapped function
      */
     function wrapMethod(sourceMethod, superMethod) {
@@ -46,9 +46,9 @@
 
     /**
      * Create new class
-     * @param prototype Prototype object for class
-     * @param staticProperties Static properties for new class
-     * @param mixin Array of object which will be mixed into class prototype
+     * @param {Object} [prototype] Prototype object for class
+     * @param {Object} [staticProperties] Static properties for new class
+     * @param {Array} [mixin] Array of object which will be mixed into class prototype
      * @returns {Constructor} Returns new created class
      */
     Class.create = function (prototype, staticProperties, mixin) {
