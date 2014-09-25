@@ -27,9 +27,9 @@
         });
 
         it('Should properly convert string to camelCase string', function () {
-            Rise.Util.toCamelizedString('font-family').should.be.equal('fontFamily');
-            Rise.Util.toCamelizedString('fontFamily').should.be.equal('fontFamily');
-            Rise.Util.toCamelizedString('very-big-some-thing').should.be.equal('veryBigSomeThing');
+            Rise.Util.toCamelizeString('font-family').should.be.equal('fontFamily');
+            Rise.Util.toCamelizeString('fontFamily').should.be.equal('fontFamily');
+            Rise.Util.toCamelizeString('very-big-some-thing').should.be.equal('veryBigSomeThing');
         });
 
         it('Should properly convert string to dashed string', function () {

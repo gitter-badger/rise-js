@@ -11,8 +11,6 @@
          * Assign (extend) objects
          * @return {Object} Returns extended object
          * @static
-         * @example
-         * Rise.Util.assign({}, obj1, obj2, obj3);
          */
         assign: function () {
             /**
@@ -44,12 +42,10 @@
         /**
          * Camelize string
          * @param  {String} string String which need to camelize
-         * @return {String} Returns camelized string
+         * @return {String} Returns camelize string
          * @static
-         * @example
-         * Rise.Util.toCamelizedString('font-style'); // fontStyle
          */
-        toCamelizedString: function (string) {
+        toCamelizeString: function (string) {
             return string.replace(/\-(\w)/g, function (string, letter) {
                 return letter.toUpperCase();
             });
@@ -60,8 +56,6 @@
          * @param  {String} string String which need to make dashed
          * @return {String} Returns dashed string
          * @static
-         * @example
-         * Rise.Util.toDashedString('borderRadius'); // border-radius
          */
         toDashedString: function (string) {
             return string.replace(/([A-Z])/g, function (string) {
@@ -71,13 +65,11 @@
 
         /**
          * Get random string
-         * @param  {String} prepend   String which prepends to random string
-         * @param  {String} append    String which appends to random string
-         * @param  {String} separator String which separate prepend and appender
-         * @return {String}           Returns random generated string
+         * @param {String} [prepend] String which prepends to random string
+         * @param {String} [append] String which appends to random string
+         * @param {String} [separator] String which separate prepend and appender
+         * @return {String} Returns random generated string
          * @static
-         * @example
-         * Rise.Util.getRandomString('prefix', 'suffix', 'separator');
          */
         getRandomString: function (prepend, append, separator) {
             prepend = this.isUndefined(prepend) ? '' : prepend;
@@ -96,11 +88,6 @@
          * @param  {Object} object Object which you want to flip
          * @return {Object} Returns flipped object
          * @static
-         * @example
-         * var flipped = Rise.Util.flipObject({
-         *     foo: 'bar',
-         *     bar: 'test'
-         * });
          */
         flipObject: function (object) {
             var flipped = {};
@@ -135,7 +122,7 @@
         /**
          * Check if this is number
          * @static
-         * @param  {Object}  number Value that might be checked
+         * @param  {*}  number Value that might be checked
          * @return {Boolean}       Returns true if number
          */
         isNumber: function (number) {
