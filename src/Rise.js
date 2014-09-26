@@ -6,7 +6,7 @@
      * @type {String}
      * @private
      */
-    var VERSION = '0.0.6';
+    var VERSION = '0.1.0';
 
     /**
      * Default configuration object
@@ -26,16 +26,9 @@
 
     /**
      * Rise constructor
-     * @constructor
-     * @param {String|Element} selector String selector or already parsed Element
-     * @param {Object} config Configuration object for Rise
-     * @return {Boolean|Rise|String}
-     * @example
-     * var Editor = new Rise('#rise-example', {
-     *     draggable: {
-     *         enabled: false
-     *     }
-     * });
+     * @param {String|Element} [selector] String selector or already parsed Element
+     * @param {Object} [config] Configuration object for Rise
+     * @return {Rise|Object} Returns Rise instance
      */
     function Rise(selector, config) {
         selector = selector || '#rise';
@@ -111,7 +104,7 @@
 
         /**
          * Set canvas node
-         * @param {Rise.RQuery|Element|Object} node
+         * @param {Rise.RQuery|Object} node
          * @return {Rise} Returns Rise instance
          */
         setCanvasNode: function (node) {
@@ -130,8 +123,6 @@
         /**
          * Update configuration object
          * @return {Rise} Returns Rise instance
-         * @example
-         * Rise.setConfig(config1, config2, config3);
          */
         setConfig: function () {
             this.config = this.config || {};
@@ -146,10 +137,7 @@
         /**
          * Get configuration object or config value
          * @param  {String} key Key in dot-notation
-         * @return {Object}     Returns config object or value
-         * @example
-         * Rise.getConfig();
-         * Rise.getConfig('draggable.enabled');
+         * @return {Object} Returns config object or value
          */
         getConfig: function (key) {
             if (Rise.Util.isUndefined(key)) {
@@ -166,7 +154,7 @@
 
         /**
          * Set new width to canvas
-         * @param {Integer} width Width in px
+         * @param {Number} width Width in px
          * @return {Rise} Returns Rise instance
          */
         setWidth: function (width) {
@@ -181,7 +169,7 @@
 
         /**
          * Get current width of canvas in px
-         * @return {Integer} Returns width of canvas in px
+         * @return {Number} Returns width of canvas in px
          */
         getWidth: function () {
             return this.getCanvasNode().offsetWidth();
@@ -189,7 +177,7 @@
 
         /**
          * Set new height for canvas
-         * @param {Integer} height New height in px
+         * @param {Number} height New height in px
          * @return {Rise} Returns Rise instance
          */
         setHeight: function (height) {
@@ -204,7 +192,7 @@
 
         /**
          * Get current height of canvas
-         * @return {Integer} Returns height in px
+         * @return {Number} Returns height in px
          */
         getHeight: function () {
             return this.getCanvasNode().offsetHeight();
@@ -212,8 +200,8 @@
 
         /**
          * Set new dimensions to canvas
-         * @param {Integer|Null} [width] Width in px
-         * @param {Integer} [height] Height in px
+         * @param {Number|Null} [width] Width in px
+         * @param {Number} [height] Height in px
          * @return {Rise} Returns Rise instance
          */
         setDimensions: function (width, height) {
@@ -256,17 +244,9 @@
          * Add element to canvas
          * @param {Rise.Element|Object} element Rise.Element instance that you want to add
          * @return {Rise} Returns Rise instance
-         * @example
-         * var canvas = new Rise();
-         * var element = new Rise.TextElement();
-         * canvas.addElement(element);
          */
         addElement: function (element) {
-            if (
-                element instanceof Rise.Element &&
-                element.getType() &&
-                element.getNode
-                ) {
+            if (element instanceof Rise.Element && element.getNode) {
                 this.getCanvasNode().append(element.getNode());
             } else {
                 Rise.Logger.error("Can't add element -> %O. It's not an Rise Element.", element);

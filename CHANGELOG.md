@@ -7,6 +7,7 @@ Edge version
 - Optimized all modules;
 - Moved from Should.js to Chai.js;
 - Rewrite all tests;
+- Add task that implements own web-server (you don't need Apache now);
 - Many small fixes and improvements;
 
 Version 0.0.5
