@@ -8,6 +8,8 @@
 
         configLocation = path.resolve(__dirname, 'tasks/local.json'),
         config = extend({
+            port: 3000,
+            livereload: true,
             appRoot: '/usr/docs/rise-js/',
             bumpVersionType: 'prerelease',
             sourceMap: [
