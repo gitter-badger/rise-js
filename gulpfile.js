@@ -16,6 +16,8 @@
                 "src/Rise.js",
                 "src/util/Util.js",
                 "src/util/**/*.js",
+                "src/extension/Extension.js",
+                "src/extension/**/*.js",
                 "src/element/Element.js",
                 "src/element/**/*.js",
                 "src/**/*.js"

@@ -64,6 +64,9 @@
                 });
 
             this.getParentNode().append(this.getCanvasNode());
+
+            this.registerExtensions();
+            this.registerElements();
         } else {
             Rise.Logger.error('Selector -> %O not parsed', selector);
             return false;
@@ -73,6 +76,36 @@
     }
 
     Rise.prototype = Object.create({
+        /**
+         * Register all extensions in Rise namespace
+         * @returns {Rise} Returns Rise instance
+         */
+        registerExtensions: function () {
+            var self = this;
+
+            this.extensions = Object.keys(Rise).filter(function (item) {
+                return item.match(/^(.)+Extension$/);
+            }).map(function (extension) {
+                return new extension(self);
+            });
+
+            return this;
+        },
+
+        /**
+         * Register all elements in Rise namespace
+         * @returns {Rise} Returns Rise instance
+         */
+        registerElements: function () {
+            var elements = Object.keys(Rise).filter(function (item) {
+                return item.match(/^(.)+Element$/);
+            });
+
+            console.log(elements);
+
+            return this;
+        },
+
         /**
          * Updates Rise instance (canvas) and does needed operation after some changes.
          * This method must implements features which will fix changes.
