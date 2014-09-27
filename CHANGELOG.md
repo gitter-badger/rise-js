@@ -4,6 +4,7 @@ Changelog
 Edge version
 ---
 - All code checked with new configured JSHint and JSLint bundled with WebStorm;
+- Realize basic Extensions and Elements;
 - Optimized all modules;
 - Moved from Should.js to Chai.js;
 - Rewrite all tests;

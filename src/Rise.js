@@ -52,6 +52,9 @@
                 return new Rise(node.get(0), config);
             }
         } else if (selector instanceof Element) {
+            this.extensions = [];
+            this.elements = [];
+
             this.setConfig(defaultConfig, config);
             this.setParentNode(selector);
             this.setCanvasNode(Rise.$.create('div'));
@@ -66,7 +69,6 @@
             this.getParentNode().append(this.getCanvasNode());
 
             this.registerExtensions();
-            this.registerElements();
         } else {
             Rise.Logger.error('Selector -> %O not parsed', selector);
             return false;
@@ -77,33 +79,69 @@
 
     Rise.prototype = Object.create({
         /**
-         * Register all extensions in Rise namespace
+         * Publish event for all extensions and elements
+         * @param {String} eventType Type of event which need publish
+         * @param {Object} data Object with custom data
          * @returns {Rise} Returns Rise instance
          */
-        registerExtensions: function () {
+        publishEvent: function (eventType, data) {
+            eventType = 'on' + eventType;
+
             var self = this;
 
-            this.extensions = Object.keys(Rise).filter(function (item) {
-                return item.match(/^(.)+Extension$/);
-            }).map(function (extension) {
-                return new extension(self);
+            this.extensions.forEach(function (extension) {
+                if (Rise.Util.isFunction(extension[eventType])) {
+                    extension[eventType](data);
+                }
+            });
+
+            this.elements.forEach(function (element) {
+                if (Rise.Util.isFunction(element[eventType])) {
+                    element[eventType](data);
+                }
             });
 
             return this;
         },
 
         /**
-         * Register all elements in Rise namespace
+         * Register all extensions in Rise namespace
          * @returns {Rise} Returns Rise instance
          */
-        registerElements: function () {
-            var elements = Object.keys(Rise).filter(function (item) {
-                return item.match(/^(.)+Element$/);
+        registerExtensions: function () {
+            var self = this;
+
+            this.unregisterExtensions();
+            this.extensions = Object.keys(Rise).filter(function (item) {
+                return item.match(/^(.)+Extension$/);
+            }).map(function (extension) {
+                return new Rise[extension](self);
             });
 
-            console.log(elements);
+            return this;
+        },
+
+        /**
+         * Unregister all extensions from Rise
+         * @returns {Rise} Returns Rise instance
+         */
+        unregisterExtensions: function () {
+            var self = this;
+
+            this.extensions.forEach(function (extension) {
+                extension.onDestroy(self);
+            });
 
             return this;
+        },
+
+        /**
+         * Get Extension
+         * @param {String} key Key of extension
+         * @returns {Object} Returns extension object
+         */
+        getExtension: function (key) {
+            return this.extensions[key];
         },
 
         /**
