@@ -67,8 +67,6 @@
                 });
 
             this.getParentNode().append(this.getCanvasNode());
-
-            this.registerExtensions();
         } else {
             Rise.Logger.error('Selector -> %O not parsed', selector);
             return false;
@@ -85,6 +83,7 @@
          * @returns {Rise} Returns Rise instance
          */
         publishEvent: function (eventType, data) {
+            // TODO: implement first upper case
             eventType = 'on' + eventType;
 
             var self = this;
@@ -105,43 +104,28 @@
         },
 
         /**
-         * Register all extensions in Rise namespace
-         * @returns {Rise} Returns Rise instance
+         * Add element to canvas
+         * @param {Rise.Element|Object} element Rise.Element instance that you want to add
+         * @return {Rise} Returns Rise instance
          */
-        registerExtensions: function () {
-            var self = this;
-
-            this.unregisterExtensions();
-            this.extensions = Object.keys(Rise).filter(function (item) {
-                return item.match(/^(.)+Extension$/);
-            }).map(function (extension) {
-                return new Rise[extension](self);
-            });
+        addElement: function (element) {
+            if (element instanceof Rise.Element && element.getNode) {
+                this.getCanvasNode().append(element.getNode());
+            } else {
+                Rise.Logger.error("Can't add element -> %O. It's not an Rise Element.", element);
+            }
 
             return this;
         },
 
         /**
-         * Unregister all extensions from Rise
-         * @returns {Rise} Returns Rise instance
+         * Remove element from canvas
+         * @param {Rise.Element|Object} element Element that need remove
          */
-        unregisterExtensions: function () {
-            var self = this;
-
-            this.extensions.forEach(function (extension) {
-                extension.onDestroy(self);
-            });
-
-            return this;
-        },
-
-        /**
-         * Get Extension
-         * @param {String} key Key of extension
-         * @returns {Object} Returns extension object
-         */
-        getExtension: function (key) {
-            return this.extensions[key];
+        removeElement: function (element) {
+            if (element instanceof Rise.Element && element.remove) {
+                element.remove();
+            }
         },
 
         /**
@@ -309,21 +293,6 @@
          */
         getHtml: function () {
             return this.getParentNode().html();
-        },
-
-        /**
-         * Add element to canvas
-         * @param {Rise.Element|Object} element Rise.Element instance that you want to add
-         * @return {Rise} Returns Rise instance
-         */
-        addElement: function (element) {
-            if (element instanceof Rise.Element && element.getNode) {
-                this.getCanvasNode().append(element.getNode());
-            } else {
-                Rise.Logger.error("Can't add element -> %O. It's not an Rise Element.", element);
-            }
-
-            return this;
         }
     });
 
