@@ -52,6 +52,7 @@
                 return new Rise(node.get(0), config);
             }
         } else if (selector instanceof Element) {
+            // TODO: think about elements
             this.elements = [];
 
             this.setConfig(defaultConfig, config);
@@ -272,6 +273,7 @@
          * @return {Rise} Returns Rise instance
          */
         setHtml: function (html) {
+            // TODO: make normal saving maybe in JSON
             this.getParentNode().html(html);
             this.update();
             return this;
