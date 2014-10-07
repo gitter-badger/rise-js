@@ -113,7 +113,7 @@
                 element = new Rise.Element();
 
             rise.getCanvasNode().children().count().should.be.equal(0);
-            rise.addElement(element).should.be.an.instanceOf(Rise);
+            rise.add(element).should.be.an.instanceOf(Rise);
             rise.getCanvasNode().children().count().should.be.equal(1);
             rise.getCanvasNode().empty().should.be.an.instanceOf(Rise.RQuery);
             rise.getCanvasNode().children().count().should.be.equal(0);

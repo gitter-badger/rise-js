@@ -26,8 +26,8 @@
 
     /**
      * Rise constructor
-     * @param {String|Element} selector String selector or already parsed Element
-     * @param {Object} config Configuration object for Rise
+     * @param {String|Element} [selector] String selector or already parsed Element
+     * @param {Object} [config] Configuration object for Rise
      * @return {Rise|Object} Returns Rise instance
      */
     function Rise(selector, config) {
@@ -52,6 +52,8 @@
                 return new Rise(node.get(0), config);
             }
         } else if (selector instanceof Element) {
+            this.elements = [];
+
             this.setConfig(defaultConfig, config);
             this.setParentNode(selector);
             this.setCanvasNode(Rise.$.create('div'));
@@ -74,7 +76,45 @@
 
     Rise.prototype = Object.create({
         /**
-         * Updates Rise instance (canvas) and does needed operation after some changes.
+         * Trigger event and notify all modules
+         * @param {String} eventType Event type i.e. elementAdded
+         * @param {Object} [context] Context of subscribed function
+         * @return {Rise} Returns Rise instance
+         */
+        publishEvent: function (eventType, context) {
+            eventType = 'on' + eventType.charAt(0).toUpperCase() + eventType.slice(1);
+            context = context || this;
+
+            var args = Array.prototype.slice.call(arguments, 2);
+
+            this.elements.forEach(function (element) {
+                if (Rise.Util.isFunction(element[eventType])) {
+                    element[eventType].apply(context, args);
+                }
+            });
+
+            return this;
+        },
+
+        /**
+         * Add element to canvas
+         * @param {Rise.Element|Object} element Rise.Element instance that you want to add
+         * @return {Rise} Returns Rise instance
+         */
+        add: function (element) {
+            if (element instanceof Rise.Element && element.getNode) {
+                this.elements.push(element);
+                this.getCanvasNode().append(element.getNode());
+                this.publishEvent('elementAdded', this, element);
+            } else {
+                Rise.Logger.error("Can't add element -> %O. It's not an Rise Element.", element);
+            }
+
+            return this;
+        },
+
+        /**
+         * Updates Rise instance (canvas) and doing needed operation after some changes.
          * This method must implements features which will fix changes.
          * I.e. after setHtml it will fix canvasNode property for appropriate new canvas node.
          * @return {Rise} Returns Rise instance
@@ -238,21 +278,6 @@
          */
         getHtml: function () {
             return this.getParentNode().html();
-        },
-
-        /**
-         * Add element to canvas
-         * @param {Rise.Element|Object} element Rise.Element instance that you want to add
-         * @return {Rise} Returns Rise instance
-         */
-        addElement: function (element) {
-            if (element instanceof Rise.Element && element.getNode) {
-                this.getCanvasNode().append(element.getNode());
-            } else {
-                Rise.Logger.error("Can't add element -> %O. It's not an Rise Element.", element);
-            }
-
-            return this;
         }
     });
 
@@ -467,14 +492,14 @@
      */
     function wrapMethod(sourceMethod, superMethod) {
         return function () {
-            var backup = this.super;
+            var backup = this._super;
 
-            this.super = superMethod;
+            this._super = superMethod;
 
             try {
                 return sourceMethod.apply(this, arguments);
             } finally {
-                this.super = backup;
+                this._super = backup;
             }
         };
     }
@@ -487,7 +512,7 @@
      */
     function copyProperties(source, target, parent) {
         Object.keys(source).forEach(function (key) {
-            if (typeof source[key] === "function" && typeof parent[key] === "function" && /this\.super\(/.test(source[key])) {
+            if (typeof source[key] === "function" && typeof parent[key] === "function" && /this\._super\(/.test(source[key])) {
                 target[key] = wrapMethod(source[key], parent[key]);
             } else {
                 target[key] = source[key];
@@ -3141,6 +3166,41 @@
     });
 })();
 (function () {
+    "use strict";
+
+    Rise.Extension = Rise.Class.create({
+        /**
+         * Name of extension
+         */
+        name: 'Basic',
+
+        /**
+         * Basic constructor for new extensions
+         * @param {Rise} rise Current Rise instance where extension is instantiated
+         * @returns {Rise.Extension} Returns basic extension class that you can extend
+         */
+        init: function (rise) {
+            Rise.Logger.log('Registered %s extension for -> %O', this.name, rise);
+            return this;
+        }
+    });
+
+}());
+(function () {
+    "use strict";
+
+    Rise.DragExtension = Rise.Extension.extend({
+        init: function (rise) {
+
+        },
+
+        onElementAdded: function () {
+            console.log('element added');
+        }
+    });
+
+}());
+(function () {
     'use strict';
 
     Rise.Element = Rise.Class.create({
@@ -3148,7 +3208,13 @@
          * Field that declare what exactly type of this element
          * @type {String}
          */
-        type: 'Basic',
+        name: 'Basic',
+
+        /**
+         * By default element node is null
+         * @type {Rise.RQuery}
+         */
+        node: null,
 
         /**
          * Create basic element
@@ -3181,16 +3247,53 @@
          * Get type of Element
          * @return {String} Returns type of Element
          */
-        getType: function () {
-            return this.type;
+        getName: function () {
+            return this.name;
+        },
+
+        /**
+         * Remove element from canvas
+         * @return {Rise.Element} Returns Rise.Element instance
+         */
+        remove: function () {
+            this.node.remove();
+            return this;
         }
     });
 })();
 (function () {
     "use strict";
 
+    Rise.EmbedElement = Rise.Element.extend();
+
+}());
+(function () {
+    "use strict";
+
+    Rise.ImageElement = Rise.Element.extend({
+        type: 'Image',
+
+        init: function (options) {
+            this.super();
+
+            var node = Rise.$.create('img');
+
+            node
+                .attr({
+                    src: options.src
+                })
+                .css(options.css);
+
+            this.setNode(node);
+            return this;
+        }
+    });
+}());
+(function () {
+    "use strict";
+
     Rise.TextElement = Rise.Element.extend({
-        type: 'Text',
+        name: 'Text',
 
         /**
          * Instantiate new Text Element
@@ -3199,9 +3302,22 @@
         init: function () {
             var textNode = Rise.$.create('span').text('test node');
 
-            this.super();
+            this._super();
             this.setNode(textNode);
             return this;
+        },
+
+        onElementAdded: function (element) {
+            // TODO: make normal edit
+            element.getNode().on('dblclick', function () {
+                Rise.$(this).attr({
+                    contenteditable: true
+                });
+            }).on('blur', function () {
+                Rise.$(this).attr({
+                    contenteditable: false
+                });
+            });
         }
     });
 })();

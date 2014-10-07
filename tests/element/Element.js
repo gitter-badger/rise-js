@@ -23,8 +23,8 @@
 
         it('Should properly return type', function () {
             var element = new Rise.Element();
-            element.getType().should.be.a('string');
-            element.getType().should.be.equal('Basic');
+            element.getName().should.be.a('string');
+            element.getName().should.be.equal('Basic');
         });
     });
 }());

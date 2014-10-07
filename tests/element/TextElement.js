@@ -15,7 +15,7 @@
 
         it('Should properly return type', function () {
             var element = new Rise.TextElement();
-            element.getType().should.be.equal('Text');
+            element.getName().should.be.equal('Text');
         });
     });
 }());

@@ -6,7 +6,13 @@
          * Field that declare what exactly type of this element
          * @type {String}
          */
-        type: 'Basic',
+        name: 'Basic',
+
+        /**
+         * By default element node is null
+         * @type {Rise.RQuery}
+         */
+        node: null,
 
         /**
          * Create basic element
@@ -39,8 +45,17 @@
          * Get type of Element
          * @return {String} Returns type of Element
          */
-        getType: function () {
-            return this.type;
+        getName: function () {
+            return this.name;
+        },
+
+        /**
+         * Remove element from canvas
+         * @return {Rise.Element} Returns Rise.Element instance
+         */
+        remove: function () {
+            this.node.remove();
+            return this;
         }
     });
 })();

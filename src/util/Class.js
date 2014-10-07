@@ -9,14 +9,14 @@
      */
     function wrapMethod(sourceMethod, superMethod) {
         return function () {
-            var backup = this.super;
+            var backup = this._super;
 
-            this.super = superMethod;
+            this._super = superMethod;
 
             try {
                 return sourceMethod.apply(this, arguments);
             } finally {
-                this.super = backup;
+                this._super = backup;
             }
         };
     }
@@ -29,7 +29,7 @@
      */
     function copyProperties(source, target, parent) {
         Object.keys(source).forEach(function (key) {
-            if (typeof source[key] === "function" && typeof parent[key] === "function" && /this\.super\(/.test(source[key])) {
+            if (typeof source[key] === "function" && typeof parent[key] === "function" && /this\._super\(/.test(source[key])) {
                 target[key] = wrapMethod(source[key], parent[key]);
             } else {
                 target[key] = source[key];

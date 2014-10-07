@@ -63,7 +63,7 @@
 
             var Foo = Test.extend({
                 init: function () {
-                    this.super();
+                    this._super();
                     this.foo = 'bar';
                 },
 

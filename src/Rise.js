@@ -52,7 +52,6 @@
                 return new Rise(node.get(0), config);
             }
         } else if (selector instanceof Element) {
-            this.extensions = [];
             this.elements = [];
 
             this.setConfig(defaultConfig, config);
@@ -77,26 +76,24 @@
 
     Rise.prototype = Object.create({
         /**
-         * Publish event for all extensions and elements
-         * @param {String} eventType Type of event which need publish
-         * @param {Object} data Object with custom data
-         * @returns {Rise} Returns Rise instance
+         * Trigger event and notify all modules
+         * @param {String} eventType Event type i.e. elementAdded
+         * @param {Object} [context] Context of subscribed function
+         * @return {Rise} Returns Rise instance
          */
-        publishEvent: function (eventType, data) {
-            // TODO: implement first upper case
-            eventType = 'on' + eventType;
-
-            var self = this;
-
-            this.extensions.forEach(function (extension) {
-                if (Rise.Util.isFunction(extension[eventType])) {
-                    extension[eventType](data);
-                }
+        publishEvent: function (eventType, context) {
+            eventType = eventType.charAt(0).toUpperCase() + eventType.slice(1);
+            eventType = 'on' + eventType.replace(/:(.)/g, function (match) {
+                return match.charAt(1).toUpperCase();
             });
+            context = context || this;
 
+            var args = Array.prototype.slice.call(arguments, 2);
+
+            // TODO: think about elements
             this.elements.forEach(function (element) {
                 if (Rise.Util.isFunction(element[eventType])) {
-                    element[eventType](data);
+                    element[eventType].apply(context, args);
                 }
             });
 
@@ -108,9 +105,12 @@
          * @param {Rise.Element|Object} element Rise.Element instance that you want to add
          * @return {Rise} Returns Rise instance
          */
-        addElement: function (element) {
+        add: function (element) {
             if (element instanceof Rise.Element && element.getNode) {
+                // TODO: think about elements
+                this.elements.push(element);
                 this.getCanvasNode().append(element.getNode());
+                this.publishEvent('element:added', this, element);
             } else {
                 Rise.Logger.error("Can't add element -> %O. It's not an Rise Element.", element);
             }
@@ -119,17 +119,7 @@
         },
 
         /**
-         * Remove element from canvas
-         * @param {Rise.Element|Object} element Element that need remove
-         */
-        removeElement: function (element) {
-            if (element instanceof Rise.Element && element.remove) {
-                element.remove();
-            }
-        },
-
-        /**
-         * Updates Rise instance (canvas) and does needed operation after some changes.
+         * Updates Rise instance (canvas) and doing needed operation after some changes.
          * This method must implements features which will fix changes.
          * I.e. after setHtml it will fix canvasNode property for appropriate new canvas node.
          * @return {Rise} Returns Rise instance
