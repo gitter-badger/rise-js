@@ -103,11 +103,11 @@
 
         /**
          * Add element to canvas
-         * @param {Rise.Element|Object} element Rise.Element instance that you want to add
+         * @param {Rise.BasicElement|Object} element Rise.Element instance that you want to add
          * @return {Rise} Returns Rise instance
          */
         add: function (element) {
-            if (element instanceof Rise.Element && element.getNode) {
+            if (element instanceof Rise.BasicElement && element.getNode) {
                 // TODO: think about elements
                 this.elements.push(element);
                 this.getCanvasNode().append(element.getNode());
@@ -126,6 +126,7 @@
          * @return {Rise} Returns Rise instance
          */
         update: function () {
+            // TODO: maybe remove this method
             this.setCanvasNode(this.getParentNode().children());
             return this;
         },

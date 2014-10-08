@@ -52,6 +52,7 @@
                 return new Rise(node.get(0), config);
             }
         } else if (selector instanceof Element) {
+            // TODO: think about elements
             this.elements = [];
 
             this.setConfig(defaultConfig, config);
@@ -82,11 +83,15 @@
          * @return {Rise} Returns Rise instance
          */
         publishEvent: function (eventType, context) {
-            eventType = 'on' + eventType.charAt(0).toUpperCase() + eventType.slice(1);
+            eventType = eventType.charAt(0).toUpperCase() + eventType.slice(1);
+            eventType = 'on' + eventType.replace(/:(.)/g, function (match) {
+                return match.charAt(1).toUpperCase();
+            });
             context = context || this;
 
             var args = Array.prototype.slice.call(arguments, 2);
 
+            // TODO: think about elements
             this.elements.forEach(function (element) {
                 if (Rise.Util.isFunction(element[eventType])) {
                     element[eventType].apply(context, args);
@@ -98,14 +103,15 @@
 
         /**
          * Add element to canvas
-         * @param {Rise.Element|Object} element Rise.Element instance that you want to add
+         * @param {Rise.BasicElement|Object} element Rise.Element instance that you want to add
          * @return {Rise} Returns Rise instance
          */
         add: function (element) {
-            if (element instanceof Rise.Element && element.getNode) {
+            if (element instanceof Rise.BasicElement && element.getNode) {
+                // TODO: think about elements
                 this.elements.push(element);
                 this.getCanvasNode().append(element.getNode());
-                this.publishEvent('elementAdded', this, element);
+                this.publishEvent('element:added', this, element);
             } else {
                 Rise.Logger.error("Can't add element -> %O. It's not an Rise Element.", element);
             }
@@ -120,6 +126,7 @@
          * @return {Rise} Returns Rise instance
          */
         update: function () {
+            // TODO: maybe remove this method
             this.setCanvasNode(this.getParentNode().children());
             return this;
         },
@@ -267,6 +274,7 @@
          * @return {Rise} Returns Rise instance
          */
         setHtml: function (html) {
+            // TODO: make normal saving maybe in JSON
             this.getParentNode().html(html);
             this.update();
             return this;
@@ -3168,6 +3176,149 @@
 (function () {
     "use strict";
 
+    Rise.ElementFactory = Rise.Class.create({
+        /**
+         * Create new Rise.Element
+         * @param {String} type Element's type i.e. Text
+         * @param {Object} [options] Additional options to element constructor
+         * @returns {Boolean|Rise.Element|Object} Returns created element of false
+         */
+        create: function (type, options) {
+            type = [type.charAt(0).toUpperCase() , type.slice(1) , 'Element'].join('');
+
+            if (!Rise.Util.isFunction(Rise[type])) {
+                return false;
+            }
+
+            return new Rise[type](options);
+        }
+    });
+
+    Rise.Element = new Rise.ElementFactory();
+}());
+(function () {
+    'use strict';
+
+    Rise.BasicElement = Rise.Class.create({
+        /**
+         * Field that declare what exactly type of this element
+         * @type {String}
+         */
+        name: 'Basic',
+
+        /**
+         * By default element node is null
+         * @type {Rise.RQuery}
+         */
+        node: null,
+
+        /**
+         * Create basic element
+         * @return {Rise.BasicElement} Returns Rise.Element instance
+         */
+        init: function () {
+            this.setNode(Rise.$.create('span').text('Basic Element'));
+            return this;
+        },
+
+        /**
+         * Get Element's node
+         * @return {Rise.RQuery} Returns Rise.RQuery instance
+         */
+        getNode: function () {
+            return this.node;
+        },
+
+        /**
+         * Set Element's node
+         * @param {Rise.RQuery|Object} node Element's node which contains all nodes that needs for Element
+         * @return {Rise.BasicElement} Returns Rise.Element instance
+         */
+        setNode: function (node) {
+            this.node = Rise.$(node);
+            return this;
+        },
+
+        /**
+         * Get type of Element
+         * @return {String} Returns type of Element
+         */
+        getName: function () {
+            return this.name;
+        },
+
+        /**
+         * Remove element from canvas
+         * @return {Rise.BasicElement} Returns Rise.Element instance
+         */
+        remove: function () {
+            this.node.remove();
+            return this;
+        }
+    });
+})();
+(function () {
+    "use strict";
+
+    Rise.EmbedElement = Rise.BasicElement.extend();
+}());
+(function () {
+    "use strict";
+
+    Rise.ImageElement = Rise.BasicElement.extend({
+        type: 'Image',
+
+        init: function (options) {
+            this._super();
+
+            var node = Rise.$.create('img');
+
+            node
+                .attr({
+                    src: options.src
+                })
+                .css(options.css);
+
+            this.setNode(node);
+            return this;
+        }
+    });
+}());
+(function () {
+    "use strict";
+
+    Rise.TextElement = Rise.BasicElement.extend({
+        name: 'Text',
+
+        /**
+         * Instantiate new Text Element
+         * @returns {Rise.TextElement}
+         */
+        init: function () {
+            var textNode = Rise.$.create('span').text('test node');
+
+            this._super();
+            this.setNode(textNode);
+            return this;
+        },
+
+        onElementAdded: function (element) {
+            // TODO: make normal edit
+            element.getNode().on('dblclick', function () {
+                Rise.$(this).attr({
+                    contenteditable: true
+                });
+            }).on('blur', function () {
+                Rise.$(this).attr({
+                    contenteditable: false
+                });
+            });
+        }
+    });
+})();
+(function () {
+    "use strict";
+
     Rise.Extension = Rise.Class.create({
         /**
          * Name of extension
@@ -3200,124 +3351,3 @@
     });
 
 }());
-(function () {
-    'use strict';
-
-    Rise.Element = Rise.Class.create({
-        /**
-         * Field that declare what exactly type of this element
-         * @type {String}
-         */
-        name: 'Basic',
-
-        /**
-         * By default element node is null
-         * @type {Rise.RQuery}
-         */
-        node: null,
-
-        /**
-         * Create basic element
-         * @return {Rise.Element} Returns Rise.Element instance
-         */
-        init: function () {
-            this.setNode(Rise.$.create('span').text('Basic Element'));
-            return this;
-        },
-
-        /**
-         * Get Element's node
-         * @return {Rise.RQuery} Returns Rise.RQuery instance
-         */
-        getNode: function () {
-            return this.node;
-        },
-
-        /**
-         * Set Element's node
-         * @param {Rise.RQuery|Object} node Element's node which contains all nodes that needs for Element
-         * @return {Rise.Element} Returns Rise.Element instance
-         */
-        setNode: function (node) {
-            this.node = Rise.$(node);
-            return this;
-        },
-
-        /**
-         * Get type of Element
-         * @return {String} Returns type of Element
-         */
-        getName: function () {
-            return this.name;
-        },
-
-        /**
-         * Remove element from canvas
-         * @return {Rise.Element} Returns Rise.Element instance
-         */
-        remove: function () {
-            this.node.remove();
-            return this;
-        }
-    });
-})();
-(function () {
-    "use strict";
-
-    Rise.EmbedElement = Rise.Element.extend();
-
-}());
-(function () {
-    "use strict";
-
-    Rise.ImageElement = Rise.Element.extend({
-        type: 'Image',
-
-        init: function (options) {
-            this.super();
-
-            var node = Rise.$.create('img');
-
-            node
-                .attr({
-                    src: options.src
-                })
-                .css(options.css);
-
-            this.setNode(node);
-            return this;
-        }
-    });
-}());
-(function () {
-    "use strict";
-
-    Rise.TextElement = Rise.Element.extend({
-        name: 'Text',
-
-        /**
-         * Instantiate new Text Element
-         * @returns {Rise.TextElement}
-         */
-        init: function () {
-            var textNode = Rise.$.create('span').text('test node');
-
-            this._super();
-            this.setNode(textNode);
-            return this;
-        },
-
-        onElementAdded: function (element) {
-            // TODO: make normal edit
-            element.getNode().on('dblclick', function () {
-                Rise.$(this).attr({
-                    contenteditable: true
-                });
-            }).on('blur', function () {
-                Rise.$(this).attr({
-                    contenteditable: false
-                });
-            });
-        }
-    });
-})();

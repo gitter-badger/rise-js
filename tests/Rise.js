@@ -110,7 +110,7 @@
 
         it('Should properly add new Element', function () {
             var rise = new Rise('#rise-test'),
-                element = new Rise.Element();
+                element = new Rise.BasicElement();
 
             rise.getCanvasNode().children().count().should.be.equal(0);
             rise.add(element).should.be.an.instanceOf(Rise);

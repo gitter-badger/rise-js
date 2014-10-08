@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    Rise.TextElement = Rise.Element.extend({
+    Rise.TextElement = Rise.BasicElement.extend({
         name: 'Text',
 
         /**

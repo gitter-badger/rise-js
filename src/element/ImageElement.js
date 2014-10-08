@@ -1,11 +1,11 @@
 (function () {
     "use strict";
 
-    Rise.ImageElement = Rise.Element.extend({
+    Rise.ImageElement = Rise.BasicElement.extend({
         type: 'Image',
 
         init: function (options) {
-            this.super();
+            this._super();
 
             var node = Rise.$.create('img');
 

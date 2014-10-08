@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    Rise.Element = Rise.Class.create({
+    Rise.BasicElement = Rise.Class.create({
         /**
          * Field that declare what exactly type of this element
          * @type {String}
@@ -16,7 +16,7 @@
 
         /**
          * Create basic element
-         * @return {Rise.Element} Returns Rise.Element instance
+         * @return {Rise.BasicElement} Returns Rise.Element instance
          */
         init: function () {
             this.setNode(Rise.$.create('span').text('Basic Element'));
@@ -34,7 +34,7 @@
         /**
          * Set Element's node
          * @param {Rise.RQuery|Object} node Element's node which contains all nodes that needs for Element
-         * @return {Rise.Element} Returns Rise.Element instance
+         * @return {Rise.BasicElement} Returns Rise.Element instance
          */
         setNode: function (node) {
             this.node = Rise.$(node);
@@ -51,7 +51,7 @@
 
         /**
          * Remove element from canvas
-         * @return {Rise.Element} Returns Rise.Element instance
+         * @return {Rise.BasicElement} Returns Rise.Element instance
          */
         remove: function () {
             this.node.remove();

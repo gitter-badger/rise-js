@@ -16,10 +16,11 @@
                 "src/Rise.js",
                 "src/util/Util.js",
                 "src/util/**/*.js",
+                "src/ElementFactory.js",
+                "src/element/BasicElement.js",
+                "src/element/**/*.js",
                 "src/extension/Extension.js",
                 "src/extension/**/*.js",
-                "src/element/Element.js",
-                "src/element/**/*.js",
                 "src/**/*.js"
             ].map(function (item) {
                     return path.resolve(__dirname, item);

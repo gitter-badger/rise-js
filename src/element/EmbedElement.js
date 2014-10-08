@@ -1,6 +1,5 @@
 (function () {
     "use strict";
 
-    Rise.EmbedElement = Rise.Element.extend();
-
+    Rise.EmbedElement = Rise.BasicElement.extend();
 }());
