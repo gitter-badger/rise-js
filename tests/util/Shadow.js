@@ -1,8 +1,6 @@
 (function () {
     "use strict";
 
-    chai.should();
-
     describe('Rise.Shadow', function () {
         it('Should Shadow exists globally', function () {
             Rise.Shadow.should.be.a('function');

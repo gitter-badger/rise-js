@@ -1,8 +1,6 @@
 (function () {
     "use strict";
 
-    chai.should();
-
     describe('Rise.Math', function () {
         it('Should properly clamp value', function () {
             Rise.Math.clamp(0, 2, -2).should.be.equal(0);

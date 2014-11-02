@@ -1,8 +1,6 @@
 (function () {
     "use strict";
 
-    chai.should();
-
     describe('Rise.Opacity', function () {
         it('Should exists in global scope', function () {
             Rise.Opacity.should.be.a('function');

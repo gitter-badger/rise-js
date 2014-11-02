@@ -1,49 +1,45 @@
 {
-    "author": {
-        "name": "Eugene Obrezkov",
-        "email": "ghaiklor@gmail.com",
-        "url": "https://www.facebook.com/ghaiklor"
-    },
-    "contributors": [],
-    "name": "rise-js",
-    "version": "0.1.0-2",
-    "description": "JavaScript library that provides interactive editor on top of html elements",
-    "keywords": [
-        "html",
-        "interactive",
-        "editor"
-    ],
-    "homepage": "http://ghaiklor.github.io/rise-js",
-    "bugs": {
-        "url": "https://github.com/ghaiklor/rise-js/issues",
-        "email": "ghaiklor@gmail.com"
-    },
-    "license": "MIT",
-    "main": "dist/rise.min.js",
-    "scripts": {
-        "start": "gulp",
-        "test": "gulp run-tests"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ghaiklor/rise-js.git"
-    },
-    "devDependencies": {
-        "chai": "latest",
-        "del": "latest",
-        "extend": "latest",
-        "gulp": "latest",
-        "gulp-bump": "latest",
-        "gulp-concat": "latest",
-        "gulp-jshint": "latest",
-        "gulp-linker": "latest",
-        "gulp-mocha-phantomjs": "latest",
-        "gulp-rename": "latest",
-        "gulp-sourcemaps": "latest",
-        "gulp-uglify": "latest",
-        "gulp-webserver": "latest",
-        "jshint-stylish": "latest",
-        "mocha": "latest",
-        "require-all": "latest"
-    }
+  "author": {
+    "name": "Eugene Obrezkov",
+    "email": "ghaiklor@gmail.com",
+    "url": "https://www.facebook.com/ghaiklor"
+  },
+  "contributors": [],
+  "name": "rise-js",
+  "version": "0.1.0-2",
+  "description": "JavaScript library that provides interactive editor on top of html elements",
+  "keywords": [
+    "html",
+    "interactive",
+    "editor"
+  ],
+  "homepage": "http://ghaiklor.github.io/rise-js",
+  "bugs": {
+    "url": "https://github.com/ghaiklor/rise-js/issues",
+    "email": "ghaiklor@gmail.com"
+  },
+  "license": "MIT",
+  "main": "dist/rise.min.js",
+  "scripts": {
+    "start": "gulp",
+    "test": "gulp run-tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ghaiklor/rise-js.git"
+  },
+  "devDependencies": {
+    "chai": "latest",
+    "del": "latest",
+    "extend": "latest",
+    "gulp": "latest",
+    "gulp-concat": "latest",
+    "gulp-linker": "latest",
+    "gulp-mocha-phantomjs": "latest",
+    "gulp-sourcemaps": "^1.2.7",
+    "gulp-tsc": "latest",
+    "gulp-uglify": "latest",
+    "gulp-webserver": "latest",
+    "require-all": "latest"
+  }
 }

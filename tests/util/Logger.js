@@ -1,8 +1,6 @@
 (function () {
     "use strict";
 
-    chai.should();
-
     describe('Rise.Logger', function () {
         it('Should set and get level', function () {
             Rise.Logger.setLevel(Rise.Logger.VERBOSE);

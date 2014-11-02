@@ -1,8 +1,6 @@
 (function () {
     "use strict";
 
-    chai.should();
-
     describe('Rise', function () {
         it('Should Rise exists globally', function () {
             Rise.getVersion().should.be.a('string');

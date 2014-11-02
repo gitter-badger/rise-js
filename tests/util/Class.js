@@ -1,8 +1,6 @@
 (function () {
     "use strict";
 
-    chai.should();
-
     describe('Rise.Class', function () {
         it('Should create basic class', function () {
             var Test = Rise.Class.create();

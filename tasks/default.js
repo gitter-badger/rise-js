@@ -2,6 +2,6 @@
     "use strict";
 
     module.exports = function (gulp) {
-        gulp.task('default', ['linker-dev', 'webserver']);
+        gulp.task('default', ['webserver']);
     };
 }());

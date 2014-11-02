@@ -1,8 +1,6 @@
 (function () {
     "use strict";
 
-    chai.should();
-
     describe('Rise.Util', function () {
         it('Should properly assign (extend) objects', function () {
             var testObject = Rise.Util.assign({}, {

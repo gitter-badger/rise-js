@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style type="text/css">
+        #rquery {
+            width: 200px;
+            height: 200px;
+            left: 200px;
+            top: 200px;
+            position: fixed;
+        }
+    </style>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+          href="../node_modules/gulp-mocha-phantomjs/node_modules/mocha-phantomjs/node_modules/mocha/mocha.css">
+    <title>RiseJS Tests Runner</title>
+</head>
+
+<body>
+<div id="mocha"></div>
+<div id="rquery"></div>
+<div id="rise-test"></div>
+
+<script src="../dist/rise.min.js"></script>
+<script src="../node_modules/gulp-mocha-phantomjs/node_modules/mocha-phantomjs/node_modules/mocha/mocha.js"></script>
+<script src="../node_modules/chai/chai.js"></script>
+<script>
+    mocha.setup('bdd');
+    chai.should();
+</script>
+
+<!--SCRIPTS-->
+<script src="Rise.js"></script>
+<script src="util/Class.js"></script>
+<script src="util/Color.js"></script>
+<script src="util/Font.js"></script>
+<script src="util/Logger.js"></script>
+<script src="util/Math.js"></script>
+<script src="util/Opacity.js"></script>
+<script src="util/RQuery.js"></script>
+<script src="util/Shadow.js"></script>
+<script src="util/Util.js"></script>
+<!--SCRIPTS END-->
+
+<script>
+    if (window.mochaPhantomJS) {
+        mochaPhantomJS.run();
+    } else {
+        mocha.run();
+    }
+</script>
+</body>
+
+</html>

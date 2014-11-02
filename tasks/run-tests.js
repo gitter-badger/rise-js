@@ -6,8 +6,8 @@
         path = require('path');
 
     module.exports = function (gulp, config) {
-        gulp.task('run-tests', ['build-js'], function () {
-            return gulp.src(path.resolve(__dirname, '../run-tests.html'))
+        gulp.task('run-tests', function () {
+            return gulp.src(path.resolve(__dirname, '../tests/index.html'))
                 .pipe(linker({
                     scripts: path.resolve(__dirname, '../tests/**/*.js'),
                     startTag: '<!--SCRIPTS-->',

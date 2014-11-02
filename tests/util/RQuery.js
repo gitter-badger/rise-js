@@ -3,8 +3,6 @@
 
     var expect = chai.expect;
 
-    chai.should();
-
     describe('Rise.RQuery', function () {
         it('Should shorthand Rise.$ exists globally', function () {
             Rise.$.should.be.a('function');

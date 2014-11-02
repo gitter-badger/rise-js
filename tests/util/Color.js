@@ -3,8 +3,6 @@
 
     var expect = chai.expect;
 
-    chai.should();
-
     describe('Rise.Color', function () {
         var colorConversions = [
             {

@@ -10,6 +10,9 @@ Edge version
 - Rewrite all tests;
 - Add task that implements own web-server (you don't need Apache now);
 - Many small fixes and improvements;
+- Change `tasks/local.json` to `tasks/config.json`;
+- Remove unused tasks;
+- Move from JavaScript to TypeScript transpiler;
 
 Version 0.0.5
 ---

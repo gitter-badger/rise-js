@@ -1,8 +1,6 @@
 (function () {
     "use strict";
 
-    chai.should();
-
     describe('Rise.Font', function () {
         it('Should create instance with default font options', function () {
             var font = new Rise.Font();

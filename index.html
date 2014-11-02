@@ -2,36 +2,56 @@
 <html>
 
 <head>
-    <title>RiseJS Example Page</title>
+    <style type="text/css">
+        #rquery {
+            width: 200px;
+            height: 200px;
+            left: 200px;
+            top: 200px;
+            position: fixed;
+        }
+    </style>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../node_modules/mocha-phantomjs/node_modules/mocha/mocha.css">
+    <title>RiseJS Tests Runner</title>
 </head>
 
 <body>
-<div id="rise-example"></div>
+<div id="mocha"></div>
+<div id="rquery"></div>
+<div id="rise-test"></div>
 
-<!--SCRIPTS-->
-<!--suppress HtmlUnknownTarget --><script src="src/Rise.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="src/util/Util.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="src/util/Class.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="src/util/Color.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="src/util/Font.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="src/util/Logger.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="src/util/Math.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="src/util/Opacity.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="src/util/RQuery.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="src/util/Shadow.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="src/ElementFactory.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="src/element/BasicElement.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="src/element/EmbedElement.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="src/element/ImageElement.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="src/element/TextElement.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="src/extension/Extension.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="src/extension/DragExtension.js"></script>
-<!--SCRIPTS END-->
-
-<script type="text/javascript">
-    var Editor = new Rise('#rise-example');
+<script src="../dist/rise.min.js"></script>
+<script src="../node_modules/mocha-phantomjs/node_modules/mocha/mocha.js"></script>
+<script src="../node_modules/chai/chai.js"></script>
+<script>
+    mocha.setup('bdd');
+    chai.should();
 </script>
 
+<!--SCRIPTS-->
+<!--suppress HtmlUnknownTarget --><script src="tests/Rise.js"></script>
+<!--suppress HtmlUnknownTarget --><script src="tests/util/Class.js"></script>
+<!--suppress HtmlUnknownTarget --><script src="tests/util/Color.js"></script>
+<!--suppress HtmlUnknownTarget --><script src="tests/util/Font.js"></script>
+<!--suppress HtmlUnknownTarget --><script src="tests/util/Logger.js"></script>
+<!--suppress HtmlUnknownTarget --><script src="tests/util/Math.js"></script>
+<!--suppress HtmlUnknownTarget --><script src="tests/util/Opacity.js"></script>
+<!--suppress HtmlUnknownTarget --><script src="tests/util/RQuery.js"></script>
+<!--suppress HtmlUnknownTarget --><script src="tests/util/Shadow.js"></script>
+<!--suppress HtmlUnknownTarget --><script src="tests/util/Util.js"></script>
+<!--SCRIPTS END-->
+
+<script>
+    if (window.mochaPhantomJS) {
+        mochaPhantomJS.run();
+    } else {
+        mocha.run();
+    }
+</script>
 </body>
 
 </html>
