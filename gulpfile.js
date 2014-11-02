@@ -13,15 +13,15 @@
             livereload: true,
             appRoot: '/usr/docs/rise-js/',
             sourceMap: [
-                //"src/Rise.ts",
-                //"src/util/Util.ts",
-                //"src/util/**/*.ts",
-                //"src/ElementFactory.ts",
+                "src/Rise.ts",
+                "src/util/Util.ts",
+                "src/util/**/*.ts",
+                "src/ElementFactory.ts",
                 "src/element/BasicElement.ts",
-                "src/element/**/*.ts"
-                //"src/extension/Extension.ts",
-                //"src/extension/**/*.ts",
-                //"src/**/*.ts"
+                "src/element/**/*.ts",
+                "src/extension/Extension.ts",
+                "src/extension/**/*.ts",
+                "src/**/*.ts"
             ].map(function (item) {
                     return path.resolve(__dirname, item);
                 })
