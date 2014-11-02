@@ -1,7 +1,9 @@
-class ImageElement extends BasicElement {
-    name:string = 'Image';
+module Rise {
+    export class ImageElement extends Rise.BasicElement {
+        name:string = 'Image';
 
-    constructor() {
-        super();
+        constructor() {
+            super();
+        }
     }
 }

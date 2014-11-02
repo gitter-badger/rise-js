@@ -1,28 +1,30 @@
-class BasicElement {
-    private _name:string = 'Basic';
-    private _node:any;
+module Rise {
+    export class BasicElement {
+        private _name:string = 'Basic';
+        private _node:any;
 
-    constructor() {
-        //this.setNode(Rise.$.create('span').text('Basic Element'));
-    }
+        constructor() {
+            //this.setNode(Rise.$.create('span').text('Basic Element'));
+        }
 
-    get name() {
-        return this._name;
-    }
+        get name() {
+            return this._name;
+        }
 
-    set name(name:string) {
-        this._name = name;
-    }
+        set name(name:string) {
+            this._name = name;
+        }
 
-    get node() {
-        return this._node;
-    }
+        get node() {
+            return this._node;
+        }
 
-    set node(node:any) {
-        this._node = node;
-    }
+        set node(node:any) {
+            this._node = node;
+        }
 
-    remove() {
-        this._node.remove();
+        remove() {
+            this._node.remove();
+        }
     }
 }
