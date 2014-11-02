@@ -1,10 +1,8 @@
 module Rise {
     export class Color {
-        constructor(color:string);
+        constructor(color:string = 'black');
         constructor(color:Rise.Color);
         constructor(color:Object) {
-            color = color || 'black';
-
             var rgb = {};
 
             if (color instanceof Rise.Color) {
