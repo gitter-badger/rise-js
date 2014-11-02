@@ -2,56 +2,17 @@
 <html>
 
 <head>
-    <style type="text/css">
-        #rquery {
-            width: 200px;
-            height: 200px;
-            left: 200px;
-            top: 200px;
-            position: fixed;
-        }
-    </style>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../node_modules/mocha-phantomjs/node_modules/mocha/mocha.css">
-    <title>RiseJS Tests Runner</title>
+    <title>RiseJS Example Page</title>
 </head>
 
 <body>
-<div id="mocha"></div>
-<div id="rquery"></div>
-<div id="rise-test"></div>
+<div id="rise-example"></div>
 
-<script src="../dist/rise.min.js"></script>
-<script src="../node_modules/mocha-phantomjs/node_modules/mocha/mocha.js"></script>
-<script src="../node_modules/chai/chai.js"></script>
-<script>
-    mocha.setup('bdd');
-    chai.should();
+<script src="dist/rise.min.js"></script>
+<script type="text/javascript">
+    var Editor = new Rise('#rise-example');
 </script>
 
-<!--SCRIPTS-->
-<!--suppress HtmlUnknownTarget --><script src="tests/Rise.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="tests/util/Class.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="tests/util/Color.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="tests/util/Font.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="tests/util/Logger.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="tests/util/Math.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="tests/util/Opacity.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="tests/util/RQuery.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="tests/util/Shadow.js"></script>
-<!--suppress HtmlUnknownTarget --><script src="tests/util/Util.js"></script>
-<!--SCRIPTS END-->
-
-<script>
-    if (window.mochaPhantomJS) {
-        mochaPhantomJS.run();
-    } else {
-        mocha.run();
-    }
-</script>
 </body>
 
 </html>

@@ -6,9 +6,7 @@
 
     module.exports = function (gulp) {
         gulp.task('clean', function (done) {
-            del([
-                path.resolve(__dirname, '../dist/*.*')
-            ], done);
+            del(path.resolve(__dirname, '../dist/**/*.*'), done);
         });
     };
 }());

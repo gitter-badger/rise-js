@@ -1,10 +1,10 @@
 (function () {
     "use strict";
 
-    var concat = require('gulp-concat'),
+    var tsc = require('gulp-tsc'),
+        concat = require('gulp-concat'),
         uglify = require('gulp-uglify'),
-        sourcemaps = require('gulp-sourcemaps'),
-        tsc = require('gulp-tsc');
+        sourcemaps = require('gulp-sourcemaps');
 
     module.exports = function (gulp, config) {
         gulp.task('build-js', ['clean'], function () {

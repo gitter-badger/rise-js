@@ -15,7 +15,7 @@
                     fileTmpl: '<!--suppress HtmlUnknownTarget --><script src="%s"></script>',
                     appRoot: config.appRoot
                 }))
-                .pipe(gulp.dest('./'))
+                .pipe(gulp.dest('./tests/'))
                 .pipe(mocha({
                     reporter: 'spec'
                 }));
