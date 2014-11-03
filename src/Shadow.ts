@@ -1,15 +1,7 @@
 module Rise {
     var shadowRegExp:RegExp = /(?:\s|^)(-?\d+(?:px)?(?:\s?|$))?(-?\d+(?:px)?(?:\s?|$))?(\d+(?:px)?)?(?:\s?|$)(?:$|\s)/;
 
-    export interface IShadow {
-        color:Rise.Color;
-        blur:Number;
-        offsetX:Number;
-        offsetY:Number;
-        toString():String;
-    }
-
-    export class Shadow implements IShadow {
+    export class Shadow {
         private _color:Rise.Color;
         private _blur:Number;
         private _offsetX:Number;
@@ -17,7 +9,6 @@ module Rise {
 
         constructor(shadow:Shadow);
         constructor(shadow:String);
-        constructor(shadow:Object);
         constructor(shadow:any) {
             if (shadow instanceof Shadow) {
                 return shadow;
@@ -84,10 +75,6 @@ module Rise {
                 offsetX: parseInt(offsetsAndBlur[1], 10) || 0,
                 offsetY: parseInt(offsetsAndBlur[2], 10) || 0
             });
-        }
-
-        static fromObject(shadow:Object) {
-            return new Rise.Shadow(shadow);
         }
     }
 }

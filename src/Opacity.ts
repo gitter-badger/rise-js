@@ -1,18 +1,14 @@
 module Rise {
-    export interface IOpacity {
-        opacity:Number;
-        toString():String;
-    }
-
-    export class Opacity implements IOpacity {
+    export class Opacity {
         private _opacity:Number;
 
-        constructor(opacity:Opacity) {
-            return opacity;
-        }
-
+        constructor(opacity:Opacity);
         constructor(opacity:Number) {
-            this.opacity = opacity;
+            if (opacity instanceof Opacity) {
+                return opacity;
+            } else if (isFinite(opacity)) {
+                this.opacity = opacity;
+            }
         }
 
         get opacity() {
