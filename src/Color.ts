@@ -1,75 +1,105 @@
 module Rise {
-    var cssInteger:String = "[-\\+]?\\d+%?",
-        cssNumber:String = "[-\\+]?\\d*\\.\\d+%?",
-        cssUnit:String = "(?:" + cssNumber + ")|(?:" + cssInteger + ")",
-        permissiveMatch3:String = "[\\s|\\(]+(" + cssUnit + ")[,|\\s]+(" + cssUnit + ")[,|\\s]+(" + cssUnit + ")\\s*\\)?",
-        permissiveMatch4:String = "[\\s|\\(]+(" + cssUnit + ")[,|\\s]+(" + cssUnit + ")[,|\\s]+(" + cssUnit + ")[,|\\s]+(" + cssUnit + ")\\s*\\)?",
-        colorRegexMap:Object = {
-            rgb: new RegExp("rgb" + permissiveMatch3),
-            rgba: new RegExp("rgba" + permissiveMatch4),
-            hsl: new RegExp("hsl" + permissiveMatch3),
-            hsla: new RegExp("hsla" + permissiveMatch4),
-            hsv: new RegExp("hsv" + permissiveMatch3),
+    var colorRegExpMap = (function () {
+        var cssIntegerRegExp:String = "[-\\+]?\\d+%?",
+            cssNumberRegExp:String = "[-\\+]?\\d*\\.\\d+%?",
+            cssUnitRegExp:String = "(?:" + cssNumberRegExp + ")|(?:" + cssIntegerRegExp + ")",
+            permissiveMatch3RegExp:String = "[\\s|\\(]+(" + cssUnitRegExp + ")[,|\\s]+(" + cssUnitRegExp + ")[,|\\s]+(" + cssUnitRegExp + ")\\s*\\)?",
+            permissiveMatch4RegExp:String = "[\\s|\\(]+(" + cssUnitRegExp + ")[,|\\s]+(" + cssUnitRegExp + ")[,|\\s]+(" + cssUnitRegExp + ")[,|\\s]+(" + cssUnitRegExp + ")\\s*\\)?";
+
+        return {
+            rgb: new RegExp("rgb" + permissiveMatch3RegExp),
+            rgba: new RegExp("rgba" + permissiveMatch4RegExp),
+            hsl: new RegExp("hsl" + permissiveMatch3RegExp),
+            hsla: new RegExp("hsla" + permissiveMatch4RegExp),
+            hsv: new RegExp("hsv" + permissiveMatch3RegExp),
             hex3: /^([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/,
             hex6: /^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/,
             hex8: /^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
         };
+    }());
 
-    export module Color {
-        export interface IRGBColor {
-            r: Number;
-            g: Number;
-            b: Number;
+    function clamp(min, max, value) {
+        return Math.min(max, Math.max(min, value));
+    }
+
+    function bound(min, max, value) {
+        if (typeof value == 'string' && value.indexOf('.') !== -1 && parseFloat(value) === 1) {
+            value = '100%';
         }
 
-        export interface IHSVColor {
-            h:Number;
-            s:Number;
-            v:Number;
+        var isPercentageValue = typeof value == 'string' && value.indexOf('%') !== -1;
+
+        value = clamp(min, max, parseFloat(value));
+
+        if (isPercentageValue) {
+            value = parseInt(value * max, 10) / 100;
         }
 
-        export interface IHSLColor {
-            h:Number;
-            s:Number;
-            l:Number;
+        if (Math.abs(value - max) < 0.000001) {
+            return 1;
+        }
+
+        return (value % max) / parseFloat(max);
+    }
+
+    function decimalToPercentage(value) {
+        value = parseFloat(value);
+
+        if (isFinite(value) && value >= 0 && value <= 1) {
+            return (value * 100) + "%";
+        } else {
+            return value;
         }
     }
 
-    export class Color {
-        constructor(color:Color) {
-            return color;
-        }
+    export interface IRGBColor {
+        r: Number;
+        g: Number;
+        b: Number;
+    }
 
-        constructor(color:string = 'black') {
+    export interface IHSVColor {
+        h: Number;
+        s: Number;
+        v: Number;
+    }
 
-        }
+    export interface IHSLColor {
+        h: Number;
+        s: Number;
+        l: Number;
+    }
 
-        constructor(color:Object) {
+    export class Color implements IColor {
+        private _r:Number;
+        private _g:Number;
+        private _b:Number;
+        private _a:Number;
+
+        constructor(color:Color);
+        constructor(color:String);
+        constructor(color:IRGBColor);
+        constructor(color:IHSVColor);
+        constructor(color:IHSLColor);
+        constructor(color:any) {
             var rgb = {};
 
             if (color instanceof Rise.Color) {
                 return color;
-            } else if (Rise.Util.isString(color)) {
+            } else if (typeof color == 'string') {
                 return Rise.Color.fromString(color);
-            } else if (Rise.Util.isObject(color)) {
-                Rise.Logger.startGroup(true, 'Rise.Color -> init()');
-                Rise.Logger.log('Trying to parse color -> %O', color);
-
+            } else if (typeof color == 'object') {
                 if (color.hasOwnProperty('r') && color.hasOwnProperty('g') && color.hasOwnProperty('b')) {
-                    Rise.Logger.log('Convert RGB -> %O', color);
                     rgb = Rise.Color.rgbToRgb(color.r, color.g, color.b);
                 } else if (color.hasOwnProperty('h') && color.hasOwnProperty('s') && color.hasOwnProperty('v')) {
-                    Rise.Logger.log('Convert HSV -> %O', color);
-                    color.s = Rise.Math.decimalToPercentage(color.s);
-                    color.v = Rise.Math.decimalToPercentage(color.v);
+                    color.s = decimalToPercentage(color.s);
+                    color.v = decimalToPercentage(color.v);
                     rgb = Rise.Color.hsvToRgb(color.h, color.s, color.v);
                 } else if (color.hasOwnProperty('h') && color.hasOwnProperty('s') && color.hasOwnProperty('l')) {
-                    Rise.Logger.log('Convert HSL -> %O', color);
-                    color.s = Rise.Math.decimalToPercentage(color.s);
-                    color.l = Rise.Math.decimalToPercentage(color.l);
+                    color.s = decimalToPercentage(color.s);
+                    color.l = decimalToPercentage(color.l);
                     rgb = Rise.Color.hslToRgb(color.h, color.s, color.l);
                 } else {
-                    Rise.Logger.warning('Color -> %O not parsed', color);
                     return false;
                 }
 
@@ -78,10 +108,7 @@ module Rise {
                 this.setBlue(rgb.b);
                 this.setAlpha(color.hasOwnProperty('a') ? color.a : 1);
 
-                Rise.Logger.log('Instantiated new Rise.Color instance -> %O', this);
-                Rise.Logger.endGroup();
             } else {
-                Rise.Logger.warning('Color -> %O not parsed', color);
                 return false;
             }
 
@@ -737,9 +764,9 @@ module Rise {
 
         static random() {
             return new Rise.Color({
-                r: Rise.Math.getRandomValue(0, 255),
-                g: Rise.Math.getRandomValue(0, 255),
-                b: Rise.Math.getRandomValue(0, 255)
+                r: Math.random() * 255,
+                g: Math.random() * 255,
+                b: Math.random() * 255
             });
         }
 
@@ -784,59 +811,58 @@ module Rise {
                     b: 0,
                     a: 0
                 });
-            } else if ((match = colorRegexMap.rgb.exec(color))) {
+            } else if ((match = colorRegExpMap.rgb.exec(color))) {
                 return new Rise.Color({
                     r: match[1],
                     g: match[2],
                     b: match[3]
                 });
-            } else if ((match = colorRegexMap.rgba.exec(color))) {
+            } else if ((match = colorRegExpMap.rgba.exec(color))) {
                 return new Rise.Color({
                     r: match[1],
                     g: match[2],
                     b: match[3],
                     a: match[4]
                 });
-            } else if ((match = colorRegexMap.hsl.exec(color))) {
+            } else if ((match = colorRegExpMap.hsl.exec(color))) {
                 return new Rise.Color({
                     h: match[1],
                     s: match[2],
                     l: match[3]
                 });
-            } else if ((match = colorRegexMap.hsla.exec(color))) {
+            } else if ((match = colorRegExpMap.hsla.exec(color))) {
                 return new Rise.Color({
                     h: match[1],
                     s: match[2],
                     l: match[3],
                     a: match[4]
                 });
-            } else if ((match = colorRegexMap.hsv.exec(color))) {
+            } else if ((match = colorRegExpMap.hsv.exec(color))) {
                 return new Rise.Color({
                     h: match[1],
                     s: match[2],
                     v: match[3]
                 });
-            } else if ((match = colorRegexMap.hex8.exec(color))) {
+            } else if ((match = colorRegExpMap.hex8.exec(color))) {
                 return new Rise.Color({
                     a: parseInt(match[1], 16) / 255,
                     r: parseInt(match[2], 16),
                     g: parseInt(match[3], 16),
                     b: parseInt(match[4], 16)
                 });
-            } else if ((match = colorRegexMap.hex6.exec(color))) {
+            } else if ((match = colorRegExpMap.hex6.exec(color))) {
                 return new Rise.Color({
                     r: parseInt(match[1], 16),
                     g: parseInt(match[2], 16),
                     b: parseInt(match[3], 16)
                 });
-            } else if ((match = colorRegexMap.hex3.exec(color))) {
+            } else if ((match = colorRegExpMap.hex3.exec(color))) {
                 return new Rise.Color({
                     r: parseInt(match[1] + '' + match[1], 16),
                     g: parseInt(match[2] + '' + match[2], 16),
                     b: parseInt(match[3] + '' + match[3], 16)
                 });
             } else {
-                Rise.Logger.warning('Color -> %O not parsed', color);
                 return false;
             }
         }
