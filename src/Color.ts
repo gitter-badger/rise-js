@@ -1,4 +1,20 @@
 module Rise {
+    var cssInteger:String = "[-\\+]?\\d+%?",
+        cssNumber:String = "[-\\+]?\\d*\\.\\d+%?",
+        cssUnit:String = "(?:" + cssNumber + ")|(?:" + cssInteger + ")",
+        permissiveMatch3:String = "[\\s|\\(]+(" + cssUnit + ")[,|\\s]+(" + cssUnit + ")[,|\\s]+(" + cssUnit + ")\\s*\\)?",
+        permissiveMatch4:String = "[\\s|\\(]+(" + cssUnit + ")[,|\\s]+(" + cssUnit + ")[,|\\s]+(" + cssUnit + ")[,|\\s]+(" + cssUnit + ")\\s*\\)?",
+        colorRegexMap:Object = {
+            rgb: new RegExp("rgb" + permissiveMatch3),
+            rgba: new RegExp("rgba" + permissiveMatch4),
+            hsl: new RegExp("hsl" + permissiveMatch3),
+            hsla: new RegExp("hsla" + permissiveMatch4),
+            hsv: new RegExp("hsv" + permissiveMatch3),
+            hex3: /^([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/,
+            hex6: /^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/,
+            hex8: /^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
+        };
+
     export class Color {
         constructor(color:string = 'black');
         constructor(color:Rise.Color);
@@ -742,52 +758,52 @@ module Rise {
                     b: 0,
                     a: 0
                 });
-            } else if ((match = Rise.Color.colorRegexMap.rgb.exec(color))) {
+            } else if ((match = colorRegexMap.rgb.exec(color))) {
                 return new Rise.Color({
                     r: match[1],
                     g: match[2],
                     b: match[3]
                 });
-            } else if ((match = Rise.Color.colorRegexMap.rgba.exec(color))) {
+            } else if ((match = colorRegexMap.rgba.exec(color))) {
                 return new Rise.Color({
                     r: match[1],
                     g: match[2],
                     b: match[3],
                     a: match[4]
                 });
-            } else if ((match = Rise.Color.colorRegexMap.hsl.exec(color))) {
+            } else if ((match = colorRegexMap.hsl.exec(color))) {
                 return new Rise.Color({
                     h: match[1],
                     s: match[2],
                     l: match[3]
                 });
-            } else if ((match = Rise.Color.colorRegexMap.hsla.exec(color))) {
+            } else if ((match = colorRegexMap.hsla.exec(color))) {
                 return new Rise.Color({
                     h: match[1],
                     s: match[2],
                     l: match[3],
                     a: match[4]
                 });
-            } else if ((match = Rise.Color.colorRegexMap.hsv.exec(color))) {
+            } else if ((match = colorRegexMap.hsv.exec(color))) {
                 return new Rise.Color({
                     h: match[1],
                     s: match[2],
                     v: match[3]
                 });
-            } else if ((match = Rise.Color.colorRegexMap.hex8.exec(color))) {
+            } else if ((match = colorRegexMap.hex8.exec(color))) {
                 return new Rise.Color({
                     a: parseInt(match[1], 16) / 255,
                     r: parseInt(match[2], 16),
                     g: parseInt(match[3], 16),
                     b: parseInt(match[4], 16)
                 });
-            } else if ((match = Rise.Color.colorRegexMap.hex6.exec(color))) {
+            } else if ((match = colorRegexMap.hex6.exec(color))) {
                 return new Rise.Color({
                     r: parseInt(match[1], 16),
                     g: parseInt(match[2], 16),
                     b: parseInt(match[3], 16)
                 });
-            } else if ((match = Rise.Color.colorRegexMap.hex3.exec(color))) {
+            } else if ((match = colorRegexMap.hex3.exec(color))) {
                 return new Rise.Color({
                     r: parseInt(match[1] + '' + match[1], 16),
                     g: parseInt(match[2] + '' + match[2], 16),
@@ -800,22 +816,3 @@ module Rise {
         }
     }
 }
-
-Rise.Color.colorRegexMap = (function () {
-    var cssInteger = "[-\\+]?\\d+%?",
-        cssNumber = "[-\\+]?\\d*\\.\\d+%?",
-        cssUnit = "(?:" + cssNumber + ")|(?:" + cssInteger + ")",
-        permissiveMatch3 = "[\\s|\\(]+(" + cssUnit + ")[,|\\s]+(" + cssUnit + ")[,|\\s]+(" + cssUnit + ")\\s*\\)?",
-        permissiveMatch4 = "[\\s|\\(]+(" + cssUnit + ")[,|\\s]+(" + cssUnit + ")[,|\\s]+(" + cssUnit + ")[,|\\s]+(" + cssUnit + ")\\s*\\)?";
-
-    return {
-        rgb: new RegExp("rgb" + permissiveMatch3),
-        rgba: new RegExp("rgba" + permissiveMatch4),
-        hsl: new RegExp("hsl" + permissiveMatch3),
-        hsla: new RegExp("hsla" + permissiveMatch4),
-        hsv: new RegExp("hsv" + permissiveMatch3),
-        hex3: /^([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/,
-        hex6: /^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/,
-        hex8: /^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
-    };
-}());

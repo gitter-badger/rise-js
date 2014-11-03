@@ -14,7 +14,7 @@
             appRoot: '/usr/docs/rise-js/',
             sourceMap: [
                 //"src/**/*.ts"
-                //"src/Rise.ts",
+                //"src/Editor.ts",
                 //"src/util/Util.ts",
                 //"src/util/Color.ts",
                 //"src/util/Shadow.ts"

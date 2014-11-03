@@ -11,4 +11,4 @@ TODO List
 - util/RQuery
 - util/Shadow
 - util/Util
-- Rise.ts
+- Editor.ts
