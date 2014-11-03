@@ -17,7 +17,7 @@
                 //"src/Editor.ts",
                 //"src/util/Util.ts",
                 //"src/util/Color.ts",
-                //"src/util/Shadow.ts"
+                "src/Shadow.ts"
                 //"src/util/**/*.ts",
                 //"src/ElementFactory.ts",
                 //"src/element/BasicElement.ts",

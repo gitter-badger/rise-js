@@ -15,9 +15,35 @@ module Rise {
             hex8: /^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
         };
 
+    export module Color {
+        export interface IRGBColor {
+            r: Number;
+            g: Number;
+            b: Number;
+        }
+
+        export interface IHSVColor {
+            h:Number;
+            s:Number;
+            v:Number;
+        }
+
+        export interface IHSLColor {
+            h:Number;
+            s:Number;
+            l:Number;
+        }
+    }
+
     export class Color {
-        constructor(color:string = 'black');
-        constructor(color:Rise.Color);
+        constructor(color:Color) {
+            return color;
+        }
+
+        constructor(color:string = 'black') {
+
+        }
+
         constructor(color:Object) {
             var rgb = {};
 

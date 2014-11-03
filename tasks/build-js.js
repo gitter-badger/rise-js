@@ -14,7 +14,7 @@
                     target: "ES5"
                 }))
                 .pipe(concat('rise.min.js'))
-                .pipe(uglify())
+                //.pipe(uglify())
                 .pipe(sourcemaps.write())
                 .pipe(gulp.dest('./dist'));
         });
