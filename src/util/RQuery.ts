@@ -1,3 +1,4 @@
+//TODO: make normal
 module Rise {
     var cssNumbersMap:Array<String> = [
         "columnCount",
