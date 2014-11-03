@@ -1,12 +1,15 @@
 module Rise {
     let shadowRegExp:RegExp = /(?:\s|^)(-?\d+(?:px)?(?:\s?|$))?(-?\d+(?:px)?(?:\s?|$))?(\d+(?:px)?)?(?:\s?|$)(?:$|\s)/;
 
-    export interface IShadow {
+    export interface IShadowParam {
         color:Rise.Color;
         blur:number;
         offsetX:number;
         offsetY:number;
-        toString?():string;
+    }
+
+    export interface IShadow extends IShadowParam {
+        toString():string;
     }
 
     export class Shadow implements IShadow {
@@ -15,7 +18,7 @@ module Rise {
         private _offsetX:number;
         private _offsetY:number;
 
-        constructor(shadow:Rise.Shadow) {
+        constructor(shadow:Shadow) {
             return shadow;
         }
 
@@ -33,17 +36,11 @@ module Rise {
             });
         }
 
-        constructor(shadow:IShadow) {
-            Rise.Logger.startGroup(true, 'Rise.Shadow -> init()');
-            Rise.Logger.log('Trying to parse options -> %O', shadow);
-
+        constructor(shadow:IShadowParam) {
             this.color = shadow.color || 'black';
             this.blur = shadow.blur || 0;
             this.offsetX = shadow.offsetX || 0;
             this.offsetY = shadow.offsetY || 0;
-
-            Rise.Logger.log('Instantiated new Rise.Shadow -> %O', this);
-            Rise.Logger.endGroup();
         }
 
         get color() {
@@ -52,7 +49,6 @@ module Rise {
 
         set color(color:any) {
             this._color = new Rise.Color(color);
-            return this;
         }
 
         get blur() {
@@ -61,7 +57,6 @@ module Rise {
 
         set blur(blur:number) {
             this._blur = blur;
-            return this;
         }
 
         get offsetX() {
@@ -70,7 +65,6 @@ module Rise {
 
         set offsetX(offsetX:number) {
             this._offsetX = offsetX;
-            return this;
         }
 
         get offsetY() {
