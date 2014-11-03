@@ -245,9 +245,9 @@
                         if (css[key] === false) {
                             element.style.removeProperty(Rise.Util.toDashedString(key));
                         } else if (isNaN(css[key]) || Rise.RQuery.cssNumbersMap.indexOf(key) !== -1) {
-                            element.style[Rise.Util.toCamelizeString(key)] = css[key];
+                            element.style[Rise.Util.toCamelizedString(key)] = css[key];
                         } else {
-                            element.style[Rise.Util.toCamelizeString(key)] = css[key] + 'px';
+                            element.style[Rise.Util.toCamelizedString(key)] = css[key] + 'px';
                         }
                     });
                 });

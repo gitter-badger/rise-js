@@ -1,3 +1,9 @@
+module Rise {
+    export class Logger {
+
+    }
+}
+
 (function () {
     'use strict';
 
@@ -50,7 +56,7 @@
     (function printWelcomeMessage() {
         if (navigator.userAgent.toLowerCase().indexOf('chrome') !== -1) {
             console.log.apply(console, [
-                    '%c %c %c Rise v' + Rise.getVersion() + ' %c %c %c',
+                '%c %c %c Rise v' + Rise.getVersion() + ' %c %c %c',
                 'background: #0E173E; font-size: 8pt;',
                 'background: #020C25; font-size: 9pt;',
                 'color: #FFFFFF; background: #0D0B0E; font-size: 10pt',

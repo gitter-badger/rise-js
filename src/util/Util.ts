@@ -1,13 +1,15 @@
 module Rise {
-    export var Util:Object = {
+    export var Util = {
         assign: function (destination, ...source) {
-            for (var i = 0; i < source.length; i++) {
-                Object.keys(source[i]).forEach((key) => {
-                    if (source[key] && source[key].constructor && source[key].constructor === Object) {
+            for (let i = 0; i < source.length; i++) {
+                let obj = source[i];
+
+                Object.keys(obj).forEach((key) => {
+                    if (obj[key] && obj[key].constructor && obj[key].constructor === Object) {
                         destination[key] = destination[key] || {};
-                        this.assign(destination[key], source[key]);
+                        this.assign(destination[key], obj[key]);
                     } else {
-                        destination[key] = source[key];
+                        destination[key] = obj[key];
                     }
                 });
             }
@@ -15,7 +17,7 @@ module Rise {
             return destination;
         },
 
-        toCamelizeString: function (text:string) {
+        toCamelizedString: function (text:string) {
             return text.replace(/\-(\w)/g, function (text, letter) {
                 return letter.toUpperCase();
             });

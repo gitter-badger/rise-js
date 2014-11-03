@@ -1,141 +1,29 @@
-(function () {
-    'use strict';
+module Rise {
+    let shadowRegExp:RegExp = /(?:\s|^)(-?\d+(?:px)?(?:\s?|$))?(-?\d+(?:px)?(?:\s?|$))?(\d+(?:px)?)?(?:\s?|$)(?:$|\s)/;
 
-    Rise.Shadow = Rise.Class.create({
-        /**
-         * Create new Rise.Shadow instance
-         * @constructor
-         * @param {Object} shadow Object with color, blur, offsetX, offsetY attributes or string
-         * @return {Rise.Shadow|Object} Returns new Rise.Shadow instance
-         */
-        init: function (shadow) {
-            shadow = shadow || {};
+    export interface IShadow {
+        color:Rise.Color;
+        blur:number;
+        offsetX:number;
+        offsetY:number;
+        toString?():string;
+    }
 
-            if (shadow instanceof Rise.Shadow) {
-                return shadow;
-            } else if (Rise.Util.isString(shadow)) {
-                return Rise.Shadow.fromString(shadow);
-            } else if (Rise.Util.isObject(shadow)) {
-                Rise.Logger.startGroup(true, 'Rise.Shadow -> init()');
-                Rise.Logger.log('Trying to parse options -> %O', shadow);
+    export class Shadow implements IShadow {
+        private _color:Rise.Color;
+        private _blur:number;
+        private _offsetX:number;
+        private _offsetY:number;
 
-                this.setColor(shadow.color || 'black');
-                this.setBlur(shadow.blur || 0);
-                this.setOffsetX(shadow.offsetX || 0);
-                this.setOffsetY(shadow.offsetY || 0);
-
-                Rise.Logger.log('Instantiated new Rise.Shadow -> %O', this);
-                Rise.Logger.endGroup();
-            } else {
-                Rise.Logger.warning('Shadow -> %O not parsed', shadow);
-                return false;
-            }
-
-            return this;
-        },
-
-        /**
-         * Set color
-         * @param {Rise.Color|String|Object} color Color that you want set to shadow
-         * @return {Rise.Shadow} Returns current Rise.Shadow instance
-         */
-        setColor: function (color) {
-            this.color = new Rise.Color(color);
-            return this;
-        },
-
-        /**
-         * Get color
-         * @return {Rise.Color} Returns Rise.Color instance
-         */
-        getColor: function () {
-            return this.color;
-        },
-
-        /**
-         * Set blur
-         * @param {Integer} blur Blur in integer
-         * @return {Rise.Shadow} Returns current Rise.Shadow instance
-         */
-        setBlur: function (blur) {
-            this.blur = blur;
-            return this;
-        },
-
-        /**
-         * Get blur
-         * @return {Integer} Returns current value of blur
-         */
-        getBlur: function () {
-            return this.blur;
-        },
-
-        /**
-         * Set offsetX
-         * @param {Integer} x OffsetX
-         * @return {Rise.Shadow} Returns current Rise.Shadow instance
-         */
-        setOffsetX: function (x) {
-            this.offsetX = x;
-            return this;
-        },
-
-        /**
-         * Get offsetX
-         * @return {Integer} Returns offsetX
-         */
-        getOffsetX: function () {
-            return this.offsetX;
-        },
-
-        /**
-         * Set offsetY
-         * @param {Integer} y OffsetY
-         * @return {Rise.Shadow} Returns Rise.Shadow instance
-         */
-        setOffsetY: function (y) {
-            this.offsetY = y;
-            return this;
-        },
-
-        /**
-         * Get offsetY
-         * @return {Integer} Returns offsetY
-         */
-        getOffsetY: function () {
-            return this.offsetY;
-        },
-
-        /**
-         * Returns CSS string
-         * @return {String} Returns CSS shadow string representation
-         */
-        toString: function () {
-            return [
-                this.offsetX,
-                this.offsetY,
-                this.blur,
-                this.color.toRgbString()
-            ].join('px ');
+        constructor(shadow:Rise.Shadow) {
+            return shadow;
         }
-    }, {
-        /**
-         * Regex that match shadow offsetX, offsetY and blur
-         * @static
-         */
-        shadowRegex: /(?:\s|^)(-?\d+(?:px)?(?:\s?|$))?(-?\d+(?:px)?(?:\s?|$))?(\d+(?:px)?)?(?:\s?|$)(?:$|\s)/,
 
-        /**
-         * Create Rise.Shadow from shadow string representation
-         * @static
-         * @param {String} shadow Shadow value that need to parse
-         * @return {Rise.Shadow} Rise.Shadow instance
-         */
-        fromString: function (shadow) {
+        constructor(shadow:string) {
             shadow = shadow.trim();
 
-            var offsetsAndBlur = Rise.Shadow.shadowRegex.exec(shadow) || [],
-                color = shadow.replace(Rise.Shadow.shadowRegex, '') || 'rgb(0, 0, 0)';
+            let offsetsAndBlur = shadowRegExp.exec(shadow) || [],
+                color = shadow.replace(shadowRegExp, '') || 'rgb(0, 0, 0)';
 
             return new Rise.Shadow({
                 color: new Rise.Color(color),
@@ -144,5 +32,63 @@
                 offsetY: parseInt(offsetsAndBlur[2], 10) || 0
             });
         }
-    });
-})();
+
+        constructor(shadow:IShadow) {
+            Rise.Logger.startGroup(true, 'Rise.Shadow -> init()');
+            Rise.Logger.log('Trying to parse options -> %O', shadow);
+
+            this.color = shadow.color || 'black';
+            this.blur = shadow.blur || 0;
+            this.offsetX = shadow.offsetX || 0;
+            this.offsetY = shadow.offsetY || 0;
+
+            Rise.Logger.log('Instantiated new Rise.Shadow -> %O', this);
+            Rise.Logger.endGroup();
+        }
+
+        get color() {
+            return this._color;
+        }
+
+        set color(color:any) {
+            this._color = new Rise.Color(color);
+            return this;
+        }
+
+        get blur() {
+            return this._blur;
+        }
+
+        set blur(blur:number) {
+            this._blur = blur;
+            return this;
+        }
+
+        get offsetX() {
+            return this._offsetX;
+        }
+
+        set offsetX(offsetX:number) {
+            this._offsetX = offsetX;
+            return this;
+        }
+
+        get offsetY() {
+            return this._offsetY;
+        }
+
+        set offsetY(offsetY:number) {
+            this._offsetY = offsetY;
+            return this;
+        }
+
+        toString() {
+            return [
+                this.offsetX,
+                this.offsetY,
+                this.blur,
+                this.color.toRgbString()
+            ].join('px ');
+        }
+    }
+}
