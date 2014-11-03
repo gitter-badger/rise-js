@@ -1,5 +1,5 @@
 module Rise {
-    let shadowRegExp:RegExp = /(?:\s|^)(-?\d+(?:px)?(?:\s?|$))?(-?\d+(?:px)?(?:\s?|$))?(\d+(?:px)?)?(?:\s?|$)(?:$|\s)/;
+    var shadowRegExp:RegExp = /(?:\s|^)(-?\d+(?:px)?(?:\s?|$))?(-?\d+(?:px)?(?:\s?|$))?(\d+(?:px)?)?(?:\s?|$)(?:$|\s)/;
 
     export interface IShadowParam {
         color:Rise.Color;
@@ -25,7 +25,7 @@ module Rise {
         constructor(shadow:string) {
             shadow = shadow.trim();
 
-            let offsetsAndBlur = shadowRegExp.exec(shadow) || [],
+            var offsetsAndBlur = shadowRegExp.exec(shadow) || [],
                 color = shadow.replace(shadowRegExp, '') || 'rgb(0, 0, 0)';
 
             return new Rise.Shadow({
