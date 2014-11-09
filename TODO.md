@@ -1,6 +1,7 @@
 TODO List
 ---
 
+- Create basic Component and Component Interface;
 - Rewrite all Elements;
 - Rewrite all Extensions;
 - util/Color

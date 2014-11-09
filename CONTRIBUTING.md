@@ -121,9 +121,7 @@ npm install
 ```
 
 ### Run RiseJS locally
-You can create virtual host that points to your project folder and will open `index.html`. Or you can just open `index.html` as file in your browser.
-
-**_Note_**: if you will get error that assets not found, check relative URLs in `tasks/local.json` (more about it in Gulp section) and run `gulp linker-dev`. This task will inject assets URL into `index.html` relative to your current location.
+When all dependencies will be installed, you can run it with `gulp` or `gulp web-server` command. By default server lift on 3000 port.
 
 Project structure
 ---
@@ -163,17 +161,17 @@ module.exports = function(gulp, config) {
 
 ### Gulp configuration
 
-Default Gulp configuration is located in `gulpfile.js`. **DON'T** change this file until you really need do something here. If you want override default configuration, you **MUST** use `tasks/local.json`.
+Default Gulp configuration is located in `gulpfile.js`. **DON'T** change this file until you really need do something here. If you want override default configuration, you **MUST** use `tasks/config.json`.
 
 In default Gulp configuration we are set appRoot folder, source dependency order, type of bump version and more. In general, defaults Gulp configuration enough for start development right from box.
 
-But if for some reasons you need override default configuration - create `tasks/local.json` file. This file is excluded from git, so you can not worry about conflicts in configuration files and don't need modify `gulpfile.js`.
+But if for some reasons you need override default configuration - create `tasks/config.json` file. This file is excluded from git, so you can not worry about conflicts in configuration files and don't need modify `gulpfile.js`.
 
-For example, you have problem that `appRoot` variable for linker tasks differents in different environments. So, in the result, you will got always conflicting relative URLs in `index.html` and `run-tests.html` on making commit.
+For example, you have problem that `appRoot` variable for linker tasks differents in different environments. So, in the result, you will got always conflicting relative URLs in `index.html` and `tests/index.html` on making commit.
 
-How fix that? Just create `tasks/local.json` file and set `appRoot` property to fit your needs. If you store your project at `/srv/http/rise-js/` then set `appRoot` in your local config to `srv/http/rise-js`.
+How fix that? Just create `tasks/config.json` file and set `appRoot` property to fit your needs. If you store your project at `/srv/http/rise-js/` then set `appRoot` in your local config to `srv/http/rise-js/`.
 
-I'm using also Windows sometimes and always had problems with URLs. So I create `local.json` file that resolves the problem.
+I'm using also Windows sometimes and always had problems with URLs. So I create `config.json` file that resolves the problem.
 
 ```javascript
 {

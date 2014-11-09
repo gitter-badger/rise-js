@@ -13,6 +13,7 @@ Edge version
 - Change `tasks/local.json` to `tasks/config.json`;
 - Remove unused tasks;
 - Move from JavaScript to TypeScript transpiler;
+- Created Component from which all other classes will extends;
 
 Version 0.0.5
 ---
