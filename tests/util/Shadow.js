@@ -2,7 +2,7 @@
     "use strict";
 
     describe('Rise.Shadow', function () {
-        it('Should Shadow exists globally', function () {
+        it('Should BaseShadow exists globally', function () {
             Rise.Shadow.should.be.a('function');
         });
 

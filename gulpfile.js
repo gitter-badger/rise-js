@@ -17,12 +17,12 @@
                 //"src/Editor.ts",
                 //"src/util/Util.ts",
                 //"src/util/Color.ts",
-                "src/Shadow.ts"
+                "src/BaseShadow.ts"
                 //"src/util/**/*.ts",
                 //"src/ElementFactory.ts",
-                //"src/element/BasicElement.ts",
+                //"src/element/BaseElement.ts",
                 //"src/element/**/*.ts"
-                //"src/extension/Extension.ts",
+                //"src/extension/BaseExtension.ts",
                 //"src/extension/**/*.ts",
                 //"src/**/*.ts"
             ].map(function (item) {

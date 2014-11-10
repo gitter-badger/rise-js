@@ -1,5 +1,5 @@
-module Rise {
-    export class BasicElement {
+module Rise.Element {
+    export class BaseElement {
         private _name:string = 'Basic';
         private _node:any;
 

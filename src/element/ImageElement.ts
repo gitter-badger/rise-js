@@ -1,5 +1,5 @@
-module Rise {
-    export class ImageElement extends Rise.BasicElement {
+module Rise.Element {
+    export class ImageElement extends Rise.Element.BaseElement {
         name:string = 'Image';
 
         constructor() {

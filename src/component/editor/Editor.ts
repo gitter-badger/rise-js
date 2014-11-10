@@ -94,11 +94,11 @@ Rise.prototype = Object.create({
 
     /**
      * Add element to canvas
-     * @param {Rise.BasicElement|Object} element Rise.Element instance that you want to add
+     * @param {Rise.BaseElement|Object} element Rise.Element instance that you want to add
      * @return {Rise} Returns Rise instance
      */
     add: function (element) {
-        if (element instanceof Rise.BasicElement && element.getNode) {
+        if (element instanceof Rise.BaseElement && element.getNode) {
             // TODO: think about elements
             this.elements.push(element);
             this.getCanvasNode().append(element.getNode());

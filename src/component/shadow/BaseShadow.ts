@@ -1,20 +1,20 @@
 module Rise.Shadow {
     var shadowRegExp:RegExp = /(?:\s|^)(-?\d+(?:px)?(?:\s?|$))?(-?\d+(?:px)?(?:\s?|$))?(\d+(?:px)?)?(?:\s?|$)(?:$|\s)/;
 
-    export class Shadow {
+    export class BaseShadow {
         private _color:Rise.Color;
         private _blur:number;
         private _offsetX:number;
         private _offsetY:number;
 
-        constructor(shadow:Shadow);
+        constructor(shadow:BaseShadow);
         constructor(shadow:IShadow);
         constructor(shadow:string);
         constructor(shadow:any) {
-            if (shadow instanceof Shadow) {
+            if (shadow instanceof BaseShadow) {
                 return shadow;
             } else if (typeof shadow == 'string') {
-                return Rise.Shadow.fromString(shadow);
+                return Rise.Shadow.BaseShadow.fromString(shadow);
             } else if (typeof shadow == 'object') {
                 this.color = shadow.color || 'black';
                 this.blur = shadow.blur || 0;

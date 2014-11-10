@@ -1,14 +1,5 @@
-(function () {
-    "use strict";
+module Rise.Extension {
+    export class DragExtension extends Rise.Extension.BaseExtension {
 
-    Rise.DragExtension = Rise.Extension.extend({
-        init: function (rise) {
-
-        },
-
-        onElementAdded: function () {
-            console.log('element added');
-        }
-    });
-
-}());
+    }
+}
