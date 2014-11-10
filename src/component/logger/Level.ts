@@ -1,5 +1,5 @@
 module Rise.Logger {
-    export enum LogLevel {
+    export enum Level {
         VERBOSE = 1,
         ERROR = 2,
         WARNING = 3,

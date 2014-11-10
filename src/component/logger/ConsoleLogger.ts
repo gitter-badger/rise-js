@@ -1,5 +1,5 @@
 module Rise.Logger {
-    export class ConsoleLogger extends Rise.Logger.BaseLogger implements Rise.Logger.IAdvancedLogger {
+    export class ConsoleLogger extends Rise.Logger.BaseLogger implements Rise.Logger.ILogger {
         verbose(message:string):void {
         }
 
