@@ -1,14 +1,15 @@
-module Rise {
+module Rise.Shadow {
     var shadowRegExp:RegExp = /(?:\s|^)(-?\d+(?:px)?(?:\s?|$))?(-?\d+(?:px)?(?:\s?|$))?(\d+(?:px)?)?(?:\s?|$)(?:$|\s)/;
 
     export class Shadow {
         private _color:Rise.Color;
-        private _blur:Number;
-        private _offsetX:Number;
-        private _offsetY:Number;
+        private _blur:number;
+        private _offsetX:number;
+        private _offsetY:number;
 
         constructor(shadow:Shadow);
-        constructor(shadow:String);
+        constructor(shadow:IShadow);
+        constructor(shadow:string);
         constructor(shadow:any) {
             if (shadow instanceof Shadow) {
                 return shadow;

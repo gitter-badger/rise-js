@@ -3,7 +3,7 @@ module Rise {
         private _opacity:Number;
 
         constructor(opacity:Opacity);
-        constructor(opacity:Number) {
+        constructor(opacity:number) {
             if (opacity instanceof Opacity) {
                 return opacity;
             } else if (isFinite(opacity)) {
