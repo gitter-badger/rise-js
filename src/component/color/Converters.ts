@@ -1,19 +1,39 @@
 module Rise.Color {
-    export function rgbToRgb(r, g, b) {
+    function bound(min, max, value) {
+        if (typeof value == 'string' && value.indexOf('.') !== -1 && parseFloat(value) === 1) {
+            value = '100%';
+        }
+
+        var isPercentageValue = typeof value == 'string' && value.indexOf('%') !== -1;
+
+        value = Math.min(max, Math.max(min, value));
+
+        if (isPercentageValue) {
+            value = parseInt(value * max, 10) / 100;
+        }
+
+        if (Math.abs(value - max) < 0.000001) {
+            return 1;
+        }
+
+        return (value % max) / parseFloat(max);
+    }
+
+    export function rgbToRgb(red:number, green:number, blue:number) {
         return {
-            red: Rise.Math.bound(0, 255, r) * 255,
-            green: Rise.Math.bound(0, 255, g) * 255,
-            blue: Rise.Math.bound(0, 255, b) * 255
+            red: bound(0, 255, red) * 255,
+            green: bound(0, 255, green) * 255,
+            blue: bound(0, 255, blue) * 255
         };
     }
 
-    export function rgbToHsv(r, g, b) {
-        r = Rise.Math.bound(0, 255, r);
-        g = Rise.Math.bound(0, 255, g);
-        b = Rise.Math.bound(0, 255, b);
+    export function rgbToHsv(red:number, green:number, blue:number) {
+        red = bound(0, 255, red);
+        green = bound(0, 255, green);
+        blue = bound(0, 255, blue);
 
-        var max = Math.max(r, g, b),
-            min = Math.min(r, g, b),
+        var max = Math.max(red, green, blue),
+            min = Math.min(red, green, blue),
             h, s, v = max,
             d = max - min;
 
@@ -23,14 +43,14 @@ module Rise.Color {
             h = 0;
         } else {
             switch (max) {
-                case r:
-                    h = (g - b) / d + (g < b ? 6 : 0);
+                case red:
+                    h = (green - blue) / d + (green < blue ? 6 : 0);
                     break;
-                case g:
-                    h = (b - r) / d + 2;
+                case green:
+                    h = (blue - red) / d + 2;
                     break;
-                case b:
-                    h = (r - g) / d + 4;
+                case blue:
+                    h = (red - green) / d + 4;
                     break;
             }
 
@@ -45,9 +65,9 @@ module Rise.Color {
     }
 
     export function rgbToHsl(r, g, b) {
-        r = Rise.Math.bound(0, 255, r);
-        g = Rise.Math.bound(0, 255, g);
-        b = Rise.Math.bound(0, 255, b);
+        r = bound(0, 255, r);
+        g = bound(0, 255, g);
+        b = bound(0, 255, b);
 
         var max = Math.max(r, g, b),
             min = Math.min(r, g, b),
@@ -81,9 +101,9 @@ module Rise.Color {
     }
 
     export function hslToRgb(h, s, l) {
-        h = Rise.Math.bound(0, 360, h);
-        s = Rise.Math.bound(0, 100, s);
-        l = Rise.Math.bound(0, 100, l);
+        h = bound(0, 360, h);
+        s = bound(0, 100, s);
+        l = bound(0, 100, l);
 
         function hue2rgb(p, q, t) {
             if (t < 0) {
@@ -129,9 +149,9 @@ module Rise.Color {
     }
 
     export function hsvToRgb(h, s, v) {
-        h = Rise.Math.bound(0, 360, h) * 6;
-        s = Rise.Math.bound(0, 100, s);
-        v = Rise.Math.bound(0, 100, v);
+        h = bound(0, 360, h) * 6;
+        s = bound(0, 100, s);
+        v = bound(0, 100, v);
 
         var i = Math.floor(h),
             f = h - i,

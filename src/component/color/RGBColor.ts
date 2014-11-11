@@ -19,30 +19,6 @@ module Rise.Color {
         };
     }());
 
-    function clamp(min, max, value) {
-        return Math.min(max, Math.max(min, value));
-    }
-
-    function bound(min, max, value) {
-        if (typeof value == 'string' && value.indexOf('.') !== -1 && parseFloat(value) === 1) {
-            value = '100%';
-        }
-
-        var isPercentageValue = typeof value == 'string' && value.indexOf('%') !== -1;
-
-        value = clamp(min, max, parseFloat(value));
-
-        if (isPercentageValue) {
-            value = parseInt(value * max, 10) / 100;
-        }
-
-        if (Math.abs(value - max) < 0.000001) {
-            return 1;
-        }
-
-        return (value % max) / parseFloat(max);
-    }
-
     function decimalToPercentage(value) {
         value = parseFloat(value);
 
@@ -75,25 +51,11 @@ module Rise.Color {
             } else if (typeof color == 'string') {
                 return Rise.Color.fromString(color);
             } else if (typeof color == 'object') {
-                if (color.hasOwnProperty('red') && color.hasOwnProperty('green') && color.hasOwnProperty('blue')) {
-                    rgb = Rise.Color.rgbToRgb(color.red, color.green, color.blue);
-                } else if (color.hasOwnProperty('h') && color.hasOwnProperty('s') && color.hasOwnProperty('v')) {
-                    color.s = decimalToPercentage(color.s);
-                    color.v = decimalToPercentage(color.v);
-                    rgb = Rise.Color.hsvToRgb(color.h, color.s, color.v);
-                } else if (color.hasOwnProperty('h') && color.hasOwnProperty('s') && color.hasOwnProperty('l')) {
-                    color.s = decimalToPercentage(color.s);
-                    color.l = decimalToPercentage(color.l);
-                    rgb = Rise.Color.hslToRgb(color.h, color.s, color.l);
-                } else {
-                    return false;
-                }
-
+                rgb = Rise.Color.rgbToRgb(color.red, color.green, color.blue);
                 this.setRed(rgb.red);
                 this.setGreen(rgb.green);
                 this.setBlue(rgb.blue);
                 this.setAlpha(color.hasOwnProperty('alpha') ? color.alpha : 1);
-
             } else {
                 return false;
             }

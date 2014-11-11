@@ -11,6 +11,13 @@ module Rise.Color {
         private _saturation:number;
         private _value:number;
 
+        constructor() {
+            super();
+            color.s = decimalToPercentage(color.s);
+            color.v = decimalToPercentage(color.v);
+            rgb = Rise.Color.hsvToRgb(color.h, color.s, color.v);
+        }
+
         get hue() {
             return this._hue;
         }
@@ -81,7 +88,7 @@ module Rise.Color {
 
             return this.alpha === 1 ?
             "hsv(" + h + ", " + s + "%, " + v + "%)" :
-            "hsva(" + h + ", " + s + "%, " + v + "%, " + this.roundAlpha + ")";
+            "hsva(" + h + ", " + s + "%, " + v + "%, " + this.getAlpha() + ")";
         }
     }
 }
