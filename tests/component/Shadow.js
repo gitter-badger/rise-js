@@ -3,7 +3,7 @@
 
     describe('Rise.Shadow', function () {
         it('Should BaseShadow exists globally', function () {
-            Rise.Shadow.should.be.a('function');
+            Rise.Shadow.should.be.alpha('function');
         });
 
         it('Should create instance with default options', function () {

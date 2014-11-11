@@ -5,13 +5,13 @@
 
     describe('Rise.RQuery', function () {
         it('Should shorthand Rise.$ exists globally', function () {
-            Rise.$.should.be.a('function');
-            Rise.$.create.should.be.a('function');
+            Rise.$.should.be.alpha('function');
+            Rise.$.create.should.be.alpha('function');
         });
 
         it('Should correctly create new node', function () {
-            Rise.$.create('a').count().should.be.equal(1);
-            Rise.$.create('a').should.be.an.instanceOf(Rise.RQuery);
+            Rise.$.create('alpha').count().should.be.equal(1);
+            Rise.$.create('alpha').should.be.an.instanceOf(Rise.RQuery);
         });
 
         it('Should correctly instantiate new object with all supported types', function () {
@@ -19,7 +19,7 @@
 
             Rise.$(rquery).count().should.be.equal(1);
             Rise.$(document.querySelectorAll('#rquery')).count().should.be.equal(1);
-            Rise.$(document.createElement('a')).count().should.be.equal(1);
+            Rise.$(document.createElement('alpha')).count().should.be.equal(1);
             Rise.$('#rquery').count().should.be.equal(1);
         });
 
@@ -140,8 +140,8 @@
         it('Should properly wrap and unwrap node', function () {
             var rquery = Rise.$('#rquery');
 
-            rquery.wrap(Rise.$.create('a')).should.be.an.instanceOf(Rise.RQuery);
-            rquery.parent().is('a').should.be.equal(true);
+            rquery.wrap(Rise.$.create('alpha')).should.be.an.instanceOf(Rise.RQuery);
+            rquery.parent().is('alpha').should.be.equal(true);
             rquery.unwrap().should.be.an.instanceOf(Rise.RQuery);
             rquery.parent().is('body').should.be.equal(true);
         });
@@ -224,8 +224,8 @@
             rquery.html().should.be.equal('test');
             rquery.empty();
 
-            rquery.append(Rise.$.create('a'));
-            rquery.children().is('a').should.be.equal(true);
+            rquery.append(Rise.$.create('alpha'));
+            rquery.children().is('alpha').should.be.equal(true);
             rquery.empty();
 
             rquery.append(document.createElement('span'));
@@ -236,8 +236,8 @@
             rquery.html().should.be.equal('test');
             rquery.empty();
 
-            rquery.prepend(Rise.$.create('a'));
-            rquery.children().is('a').should.be.equal(true);
+            rquery.prepend(Rise.$.create('alpha'));
+            rquery.children().is('alpha').should.be.equal(true);
             rquery.empty();
 
             rquery.prepend(document.createElement('span'));

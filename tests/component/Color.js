@@ -9,9 +9,9 @@
                 "hex": "#FFFFFF",
                 "hex8": "#FFFFFFFF",
                 "rgb": {
-                    "r": "100.0%",
-                    "g": "100.0%",
-                    "b": "100.0%"
+                    "red": "100.0%",
+                    "green": "100.0%",
+                    "blue": "100.0%"
                 },
                 "hsv": {
                     "h": "0",
@@ -28,9 +28,9 @@
                 "hex": "#808080",
                 "hex8": "#FF808080",
                 "rgb": {
-                    "r": "050.0%",
-                    "g": "050.0%",
-                    "b": "050.0%"
+                    "red": "050.0%",
+                    "green": "050.0%",
+                    "blue": "050.0%"
                 },
                 "hsv": {
                     "h": "0",
@@ -47,9 +47,9 @@
                 "hex": "#000000",
                 "hex8": "#FF000000",
                 "rgb": {
-                    "r": "000.0%",
-                    "g": "000.0%",
-                    "b": "000.0%"
+                    "red": "000.0%",
+                    "green": "000.0%",
+                    "blue": "000.0%"
                 },
                 "hsv": {
                     "h": "0",
@@ -66,9 +66,9 @@
                 "hex": "#FF0000",
                 "hex8": "#FFFF0000",
                 "rgb": {
-                    "r": "100.0%",
-                    "g": "000.0%",
-                    "b": "000.0%"
+                    "red": "100.0%",
+                    "green": "000.0%",
+                    "blue": "000.0%"
                 },
                 "hsv": {
                     "h": "0.0",
@@ -85,9 +85,9 @@
                 "hex": "#BFBF00",
                 "hex8": "#FFBFBF00",
                 "rgb": {
-                    "r": "075.0%",
-                    "g": "075.0%",
-                    "b": "000.0%"
+                    "red": "075.0%",
+                    "green": "075.0%",
+                    "blue": "000.0%"
                 },
                 "hsv": {
                     "h": "60.0",
@@ -104,9 +104,9 @@
                 "hex": "#008000",
                 "hex8": "#FF008000",
                 "rgb": {
-                    "r": "000.0%",
-                    "g": "050.0%",
-                    "b": "000.0%"
+                    "red": "000.0%",
+                    "green": "050.0%",
+                    "blue": "000.0%"
                 },
                 "hsv": {
                     "h": "120.0",
@@ -123,9 +123,9 @@
                 "hex": "#80FFFF",
                 "hex8": "#FF80FFFF",
                 "rgb": {
-                    "r": "050.0%",
-                    "g": "100.0%",
-                    "b": "100.0%"
+                    "red": "050.0%",
+                    "green": "100.0%",
+                    "blue": "100.0%"
                 },
                 "hsv": {
                     "h": "180.0",
@@ -142,9 +142,9 @@
                 "hex": "#8080FF",
                 "hex8": "#FF8080FF",
                 "rgb": {
-                    "r": "050.0%",
-                    "g": "050.0%",
-                    "b": "100.0%"
+                    "red": "050.0%",
+                    "green": "050.0%",
+                    "blue": "100.0%"
                 },
                 "hsv": {
                     "h": "240.0",
@@ -161,9 +161,9 @@
                 "hex": "#BF40BF",
                 "hex8": "#FFBF40BF",
                 "rgb": {
-                    "r": "075.0%",
-                    "g": "025.0%",
-                    "b": "075.0%"
+                    "red": "075.0%",
+                    "green": "025.0%",
+                    "blue": "075.0%"
                 },
                 "hsv": {
                     "h": "300.0",
@@ -180,9 +180,9 @@
                 "hex": "#A0A424",
                 "hex8": "#FFA0A424",
                 "rgb": {
-                    "r": "062.8%",
-                    "g": "064.3%",
-                    "b": "014.2%"
+                    "red": "062.8%",
+                    "green": "064.3%",
+                    "blue": "014.2%"
                 },
                 "hsv": {
                     "h": "61.8",
@@ -199,9 +199,9 @@
                 "hex": "#1EAC41",
                 "hex8": "#FF1EAC41",
                 "rgb": {
-                    "r": "011.6%",
-                    "g": "067.5%",
-                    "b": "025.5%"
+                    "red": "011.6%",
+                    "green": "067.5%",
+                    "blue": "025.5%"
                 },
                 "hsv": {
                     "h": "134.9",
@@ -218,9 +218,9 @@
                 "hex": "#B430E5",
                 "hex8": "#FFB430E5",
                 "rgb": {
-                    "r": "070.4%",
-                    "g": "018.7%",
-                    "b": "089.7%"
+                    "red": "070.4%",
+                    "green": "018.7%",
+                    "blue": "089.7%"
                 },
                 "hsv": {
                     "h": "283.7",
@@ -237,9 +237,9 @@
                 "hex": "#FEF888",
                 "hex8": "#FFFEF888",
                 "rgb": {
-                    "r": "099.8%",
-                    "g": "097.4%",
-                    "b": "053.2%"
+                    "red": "099.8%",
+                    "green": "097.4%",
+                    "blue": "053.2%"
                 },
                 "hsv": {
                     "h": "56.9",
@@ -256,9 +256,9 @@
                 "hex": "#19CB97",
                 "hex8": "#FF19CB97",
                 "rgb": {
-                    "r": "009.9%",
-                    "g": "079.5%",
-                    "b": "059.1%"
+                    "red": "009.9%",
+                    "green": "079.5%",
+                    "blue": "059.1%"
                 },
                 "hsv": {
                     "h": "162.4",
@@ -275,9 +275,9 @@
                 "hex": "#362698",
                 "hex8": "#FF362698",
                 "rgb": {
-                    "r": "021.1%",
-                    "g": "014.9%",
-                    "b": "059.7%"
+                    "red": "021.1%",
+                    "green": "014.9%",
+                    "blue": "059.7%"
                 },
                 "hsv": {
                     "h": "248.3",
@@ -294,9 +294,9 @@
                 "hex": "#7E7EB8",
                 "hex8": "#FF7E7EB8",
                 "rgb": {
-                    "r": "049.5%",
-                    "g": "049.3%",
-                    "b": "072.1%"
+                    "red": "049.5%",
+                    "green": "049.3%",
+                    "blue": "072.1%"
                 },
                 "hsv": {
                     "h": "240.5",
@@ -319,15 +319,15 @@
             new Rise.Color('white').toHexString().should.be.equal('#FFFFFF');
 
             new Rise.Color({
-                r: 1,
-                g: 1,
-                b: 1
+                red: 1,
+                green: 1,
+                blue: 1
             }).toHexString().should.be.equal('#010101');
 
             new Rise.Color({
-                r: 0.1,
-                g: 0.1,
-                b: 0.1
+                red: 0.1,
+                green: 0.1,
+                blue: 0.1
             }).toHexString().should.be.equal('#000000');
         });
 
@@ -439,23 +439,23 @@
             new Rise.Color('rgb(100%, 0%, 0%)').toHexString().should.be.equal('#FF0000');
             new Rise.Color('rgb (100%, 0%, 0%)').toHexString().should.be.equal('#FF0000');
             new Rise.Color({
-                r: 255,
-                g: 0,
-                b: 0
+                red: 255,
+                green: 0,
+                blue: 0
             }).toHexString().should.be.equal('#FF0000');
 
             colorConversions.forEach(function (colorItem) {
                 var color = new Rise.Color(colorItem.hex),
-                    input = color.toRgb(),
-                    output = new Rise.Color(color.toRgbString()).toRgb(),
+                    input = color.toRgbObject(),
+                    output = new Rise.Color(color.toRgbString()).toRgbObject(),
                     maxDiff = 2;
 
-                color.toHexString().should.be.equal(new Rise.Color(color.toRgb()).toHexString());
+                color.toHexString().should.be.equal(new Rise.Color(color.toRgbObject()).toHexString());
                 color.toHexString().should.be.equal(new Rise.Color(color.toRgbString()).toHexString());
 
-                expect(Math.abs(input.r - output.r) <= maxDiff).be.equal(true);
-                expect(Math.abs(input.g - output.g) <= maxDiff).be.equal(true);
-                expect(Math.abs(input.b - output.b) <= maxDiff).be.equal(true);
+                expect(Math.abs(input.red - output.red) <= maxDiff).be.equal(true);
+                expect(Math.abs(input.green - output.green) <= maxDiff).be.equal(true);
+                expect(Math.abs(input.blue - output.blue) <= maxDiff).be.equal(true);
             });
         });
 
@@ -463,10 +463,10 @@
             new Rise.Color('#ff0000').toHexString().should.be.equal('#FF0000');
             new Rise.Color('rgba(255, 255, 255, 0.5)').toHexString().should.be.equal('#80FFFFFF');
             new Rise.Color({
-                r: 255,
-                g: 255,
-                b: 255,
-                a: 0.5
+                red: 255,
+                green: 255,
+                blue: 255,
+                alpha: 0.5
             }).toHexString().should.be.equal('#80FFFFFF');
 
             colorConversions.forEach(function (colorItem) {
@@ -487,15 +487,15 @@
 
             colorConversions.forEach(function (colorItem) {
                 var color = new Rise.Color(colorItem.hex),
-                    input = color.toRgb(),
-                    output = new Rise.Color(color.toHsvString()).toRgb(),
+                    input = color.toRgbObject(),
+                    output = new Rise.Color(color.toHsvString()).toRgbObject(),
                     maxDiff = 2;
 
-                color.toHexString().should.be.equal(new Rise.Color(color.toHsv()).toHexString());
+                color.toHexString().should.be.equal(new Rise.Color(color.toHsvObject()).toHexString());
 
-                expect(Math.abs(input.r - output.r) <= maxDiff).be.equal(true);
-                expect(Math.abs(input.g - output.g) <= maxDiff).be.equal(true);
-                expect(Math.abs(input.b - output.b) <= maxDiff).be.equal(true);
+                expect(Math.abs(input.red - output.red) <= maxDiff).be.equal(true);
+                expect(Math.abs(input.green - output.green) <= maxDiff).be.equal(true);
+                expect(Math.abs(input.blue - output.blue) <= maxDiff).be.equal(true);
             });
         });
 
@@ -510,15 +510,15 @@
 
             colorConversions.forEach(function (colorItem) {
                 var color = new Rise.Color(colorItem.hex),
-                    input = color.toRgb(),
-                    output = new Rise.Color(color.toHslString()).toRgb(),
+                    input = color.toRgbObject(),
+                    output = new Rise.Color(color.toHslString()).toRgbObject(),
                     maxDiff = 2;
 
-                color.toHexString().should.be.equal(new Rise.Color(color.toHsl()).toHexString());
+                color.toHexString().should.be.equal(new Rise.Color(color.toHslObject()).toHexString());
 
-                expect(Math.abs(input.r - output.r) <= maxDiff).be.equal(true);
-                expect(Math.abs(input.g - output.g) <= maxDiff).be.equal(true);
-                expect(Math.abs(input.b - output.b) <= maxDiff).be.equal(true);
+                expect(Math.abs(input.red - output.red) <= maxDiff).be.equal(true);
+                expect(Math.abs(input.green - output.green) <= maxDiff).be.equal(true);
+                expect(Math.abs(input.blue - output.blue) <= maxDiff).be.equal(true);
             });
         });
 
@@ -531,10 +531,10 @@
 
         it("Should properly return string", function () {
             var color = new Rise.Color({
-                r: 255,
-                g: 0,
-                b: 0,
-                a: 0.5
+                red: 255,
+                green: 0,
+                blue: 0,
+                alpha: 0.5
             });
 
             color.toString('rgb').should.be.equal('rgba(255, 0, 0, 0.5)');
@@ -807,7 +807,7 @@
                 Rise.Color.mix('#f00', '#000', i).toHex().should.be.equal(newHex + '0000');
                 Rise.Color.mix('#0f0', '#000', i).toHex().should.be.equal('00' + newHex + '00');
                 Rise.Color.mix('#00f', '#000', i).toHex().should.be.equal('0000' + newHex);
-                Rise.Color.mix(new Rise.Color('transparent'), '#000', i).toRgb().a.should.be.equal(i / 100);
+                Rise.Color.mix(new Rise.Color('transparent'), '#000', i).toRgb().alpha.should.be.equal(i / 100);
             }
         });
 
@@ -826,45 +826,45 @@
 
         it("Should invalid alpha normalize to 1", function () {
             new Rise.Color({
-                r: 255,
-                g: 20,
-                b: 10,
-                a: -1
+                red: 255,
+                green: 20,
+                blue: 10,
+                alpha: -1
             }).toRgbString().should.be.equal('rgb(255, 20, 10)');
 
             new Rise.Color({
-                r: 255,
-                g: 20,
-                b: 10,
-                a: -0
+                red: 255,
+                green: 20,
+                blue: 10,
+                alpha: -0
             }).toRgbString().should.be.equal('rgba(255, 20, 10, 0)');
 
             new Rise.Color({
-                r: 255,
-                g: 20,
-                b: 10,
-                a: 0
+                red: 255,
+                green: 20,
+                blue: 10,
+                alpha: 0
             }).toRgbString().should.be.equal('rgba(255, 20, 10, 0)');
 
             new Rise.Color({
-                r: 255,
-                g: 20,
-                b: 10,
-                a: 0.5
+                red: 255,
+                green: 20,
+                blue: 10,
+                alpha: 0.5
             }).toRgbString().should.be.equal('rgba(255, 20, 10, 0.5)');
 
             new Rise.Color({
-                r: 255,
-                g: 20,
-                b: 10,
-                a: 1
+                red: 255,
+                green: 20,
+                blue: 10,
+                alpha: 1
             }).toRgbString().should.be.equal('rgb(255, 20, 10)');
 
             new Rise.Color({
-                r: 255,
-                g: 20,
-                b: 10,
-                a: 100
+                red: 255,
+                green: 20,
+                blue: 10,
+                alpha: 100
             }).toRgbString().should.be.equal('rgb(255, 20, 10)');
         });
     });

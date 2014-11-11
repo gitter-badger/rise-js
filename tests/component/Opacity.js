@@ -3,7 +3,7 @@
 
     describe('Rise.Opacity', function () {
         it('Should exists in global scope', function () {
-            Rise.Opacity.should.be.a('function');
+            Rise.Opacity.should.be.alpha('function');
         });
 
         it('Should create basic instance', function () {

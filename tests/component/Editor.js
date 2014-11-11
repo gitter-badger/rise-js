@@ -3,7 +3,7 @@
 
     describe('Rise', function () {
         it('Should Rise exists globally', function () {
-            Rise.getVersion().should.be.a('string');
+            Rise.getVersion().should.be.alpha('string');
         });
 
         it('Should Rise instantiated successfully', function () {
@@ -26,9 +26,9 @@
             rise.getParentNode().should.be.an.instanceOf(Rise.RQuery);
             rise.getParentNode().is('div').should.be.equal(true);
 
-            rise.setParentNode(Rise.$.create('a')).should.be.an.instanceOf(Rise);
+            rise.setParentNode(Rise.$.create('alpha')).should.be.an.instanceOf(Rise);
             rise.getParentNode().should.be.an.instanceOf(Rise.RQuery);
-            rise.getParentNode().is('a').should.be.equal(true);
+            rise.getParentNode().is('alpha').should.be.equal(true);
         });
 
         it('Should properly get/set canvas node', function () {
@@ -97,7 +97,7 @@
         it('Should properly get/set HTML', function () {
             var rise = new Rise('#rise-test');
 
-            rise.getHtml().should.be.a('string');
+            rise.getHtml().should.be.alpha('string');
             rise.setHtml('<span>Test</span>').should.be.an.instanceOf(Rise);
             rise.getHtml().should.be.equal('<span>Test</span>');
 
@@ -118,7 +118,7 @@
         });
 
         it('Should properly return current version', function () {
-            Rise.getVersion().should.be.a('string');
+            Rise.getVersion().should.be.alpha('string');
         });
     });
 }());

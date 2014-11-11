@@ -1,5 +1,5 @@
 module Rise.Color {
-    export enum ColorNames {
+    export enum Names {
         ALICEBLUE = "F0F8FF",
         ANTIQUEWHITE = "FAEBD7",
         AQUA = "00FFFF",
