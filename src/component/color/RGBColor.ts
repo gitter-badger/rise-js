@@ -1,24 +1,4 @@
 module Rise.Color {
-    var colorRegExpMap = (function () {
-        // TODO: make normal
-        var cssIntegerRegExp:String = "[-\\+]?\\d+%?",
-            cssNumberRegExp:String = "[-\\+]?\\d*\\.\\d+%?",
-            cssUnitRegExp:String = "(?:" + cssNumberRegExp + ")|(?:" + cssIntegerRegExp + ")",
-            permissiveMatch3RegExp:String = "[\\s|\\(]+(" + cssUnitRegExp + ")[,|\\s]+(" + cssUnitRegExp + ")[,|\\s]+(" + cssUnitRegExp + ")\\s*\\)?",
-            permissiveMatch4RegExp:String = "[\\s|\\(]+(" + cssUnitRegExp + ")[,|\\s]+(" + cssUnitRegExp + ")[,|\\s]+(" + cssUnitRegExp + ")[,|\\s]+(" + cssUnitRegExp + ")\\s*\\)?";
-
-        return {
-            rgb: new RegExp("rgb" + permissiveMatch3RegExp),
-            rgba: new RegExp("rgba" + permissiveMatch4RegExp),
-            hsl: new RegExp("hsl" + permissiveMatch3RegExp),
-            hsla: new RegExp("hsla" + permissiveMatch4RegExp),
-            hsv: new RegExp("hsv" + permissiveMatch3RegExp),
-            hex3: /^([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/,
-            hex6: /^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/,
-            hex8: /^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
-        };
-    }());
-
     function decimalToPercentage(value) {
         value = parseFloat(value);
 

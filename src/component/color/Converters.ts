@@ -1,5 +1,6 @@
 module Rise.Color {
     function bound(min, max, value) {
+        // TODO: make normal
         if (typeof value == 'string' && value.indexOf('.') !== -1 && parseFloat(value) === 1) {
             value = '100%';
         }
@@ -19,12 +20,45 @@ module Rise.Color {
         return (value % max) / parseFloat(max);
     }
 
+    var colorRegExpMap = (function () {
+        // TODO: make normal
+        var cssIntegerRegExp:String = "[-\\+]?\\d+%?",
+            cssNumberRegExp:String = "[-\\+]?\\d*\\.\\d+%?",
+            cssUnitRegExp:String = "(?:" + cssNumberRegExp + ")|(?:" + cssIntegerRegExp + ")",
+            permissiveMatch3RegExp:String = "[\\s|\\(]+(" + cssUnitRegExp + ")[,|\\s]+(" + cssUnitRegExp + ")[,|\\s]+(" + cssUnitRegExp + ")\\s*\\)?",
+            permissiveMatch4RegExp:String = "[\\s|\\(]+(" + cssUnitRegExp + ")[,|\\s]+(" + cssUnitRegExp + ")[,|\\s]+(" + cssUnitRegExp + ")[,|\\s]+(" + cssUnitRegExp + ")\\s*\\)?";
+
+        return {
+            rgb: new RegExp("rgb" + permissiveMatch3RegExp),
+            rgba: new RegExp("rgba" + permissiveMatch4RegExp),
+            hsl: new RegExp("hsl" + permissiveMatch3RegExp),
+            hsla: new RegExp("hsla" + permissiveMatch4RegExp),
+            hsv: new RegExp("hsv" + permissiveMatch3RegExp),
+            hex3: /^([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/,
+            hex6: /^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/,
+            hex8: /^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
+        };
+    }());
+
     export function rgbToRgb(red:number, green:number, blue:number) {
         return {
             red: bound(0, 255, red) * 255,
             green: bound(0, 255, green) * 255,
             blue: bound(0, 255, blue) * 255
         };
+    }
+
+    export function rgbToHex(red:number, green:number, blue:number, alpha:number = 1) {
+        function pad2(value:string) {
+            return value.length === 1 ? '0' + value : value;
+        }
+
+        return [
+            pad2(Math.round(alpha * 255).toString(16)),
+            pad2(Math.round(red).toString(16)),
+            pad2(Math.round(green).toString(16)),
+            pad2(Math.round(blue).toString(16))
+        ].join('').toUpperCase();
     }
 
     export function rgbToHsv(red:number, green:number, blue:number) {
@@ -34,76 +68,78 @@ module Rise.Color {
 
         var max = Math.max(red, green, blue),
             min = Math.min(red, green, blue),
-            h, s, v = max,
+            hue, saturation, value = max,
             d = max - min;
 
-        s = max === 0 ? 0 : d / max;
+        saturation = max === 0 ? 0 : d / max;
 
         if (max === min) {
-            h = 0;
+            hue = 0;
         } else {
             switch (max) {
                 case red:
-                    h = (green - blue) / d + (green < blue ? 6 : 0);
+                    hue = (green - blue) / d + (green < blue ? 6 : 0);
                     break;
                 case green:
-                    h = (blue - red) / d + 2;
+                    hue = (blue - red) / d + 2;
                     break;
                 case blue:
-                    h = (red - green) / d + 4;
+                    hue = (red - green) / d + 4;
                     break;
             }
 
-            h /= 6;
+            hue /= 6;
         }
 
         return {
-            h: h,
-            s: s,
-            v: v
+            hue: hue,
+            saturation: saturation,
+            value: value
         };
     }
 
-    export function rgbToHsl(r, g, b) {
-        r = bound(0, 255, r);
-        g = bound(0, 255, g);
-        b = bound(0, 255, b);
+    export function rgbToHsl(red:number, green:number, blue:number) {
+        red = bound(0, 255, red);
+        green = bound(0, 255, green);
+        blue = bound(0, 255, blue);
 
-        var max = Math.max(r, g, b),
-            min = Math.min(r, g, b),
-            h, s, l = (max + min) / 2;
+        var max = Math.max(red, green, blue),
+            min = Math.min(red, green, blue),
+            hue, saturation, lightness = (max + min) / 2;
 
         if (max === min) {
-            h = s = 0;
+            hue = saturation = 0;
         } else {
             var d = max - min;
-            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+            saturation = lightness > 0.5 ? d / (2 - max - min) : d / (max + min);
+
             switch (max) {
-                case r:
-                    h = (g - b) / d + (g < b ? 6 : 0);
+                case red:
+                    hue = (green - blue) / d + (green < blue ? 6 : 0);
                     break;
-                case g:
-                    h = (b - r) / d + 2;
+                case green:
+                    hue = (blue - red) / d + 2;
                     break;
-                case b:
-                    h = (r - g) / d + 4;
+                case blue:
+                    hue = (red - green) / d + 4;
                     break;
             }
 
-            h /= 6;
+            hue /= 6;
         }
 
         return {
-            h: h,
-            s: s,
-            l: l
+            hue: hue,
+            saturation: saturation,
+            lightness: lightness
         };
     }
 
-    export function hslToRgb(h, s, l) {
-        h = bound(0, 360, h);
-        s = bound(0, 100, s);
-        l = bound(0, 100, l);
+    export function hslToRgb(hue, saturation, lightness) {
+        hue = bound(0, 360, hue);
+        saturation = bound(0, 100, saturation);
+        lightness = bound(0, 100, lightness);
 
         function hue2rgb(p, q, t) {
             if (t < 0) {
@@ -128,40 +164,40 @@ module Rise.Color {
             return p;
         }
 
-        var r, g, b;
+        var red, green, blue;
 
-        if (s === 0) {
-            r = g = b = l;
+        if (saturation === 0) {
+            red = green = blue = lightness;
         } else {
-            var q = l < 0.5 ? l * (1 + s) : l + s - l * s,
-                p = 2 * l - q;
+            var q = lightness < 0.5 ? lightness * (1 + saturation) : lightness + saturation - lightness * saturation,
+                p = 2 * lightness - q;
 
-            r = hue2rgb(p, q, h + 1 / 3);
-            g = hue2rgb(p, q, h);
-            b = hue2rgb(p, q, h - 1 / 3);
+            red = hue2rgb(p, q, hue + 1 / 3);
+            green = hue2rgb(p, q, hue);
+            blue = hue2rgb(p, q, hue - 1 / 3);
         }
 
         return {
-            red: r * 255,
-            green: g * 255,
-            blue: b * 255
+            red: red * 255,
+            green: green * 255,
+            blue: blue * 255
         };
     }
 
-    export function hsvToRgb(h, s, v) {
-        h = bound(0, 360, h) * 6;
-        s = bound(0, 100, s);
-        v = bound(0, 100, v);
+    export function hsvToRgb(hue, saturation, value) {
+        hue = bound(0, 360, hue) * 6;
+        saturation = bound(0, 100, saturation);
+        value = bound(0, 100, value);
 
-        var i = Math.floor(h),
-            f = h - i,
-            p = v * (1 - s),
-            q = v * (1 - f * s),
-            t = v * (1 - (1 - f) * s),
+        var i = Math.floor(hue),
+            f = hue - i,
+            p = value * (1 - saturation),
+            q = value * (1 - f * saturation),
+            t = value * (1 - (1 - f) * saturation),
             mod = i % 6,
-            r = [v, q, p, p, t, v][mod],
-            g = [t, v, v, q, p, p][mod],
-            b = [p, p, t, v, v, q][mod];
+            r = [value, q, p, p, t, value][mod],
+            g = [t, value, value, q, p, p][mod],
+            b = [p, p, t, value, value, q][mod];
 
         return {
             red: r * 255,
@@ -170,91 +206,66 @@ module Rise.Color {
         };
     }
 
-    export function rgbToHex(r, g, b, a) {
-        var hex = [];
-
-        function pad2(value) {
-            return value.length === 1 ? '0' + value : value;
-        }
-
-        if (Rise.Util.isUndefined(a)) {
-            hex = [
-                pad2(Math.round(r).toString(16)),
-                pad2(Math.round(g).toString(16)),
-                pad2(Math.round(b).toString(16))
-            ];
-        } else {
-            hex = [
-                pad2(Math.round(parseFloat(a) * 255).toString(16)),
-                pad2(Math.round(r).toString(16)),
-                pad2(Math.round(g).toString(16)),
-                pad2(Math.round(b).toString(16))
-            ];
-        }
-
-        return hex.join("").toUpperCase();
-    }
-
-    export function fromString(color) {
+    export function fromString(color:string) {
         color = color.trim().replace(/#/g, '').toLowerCase();
-        color = Rise.Color.colorNamesMap[color] || color;
+        color = Rise.Color[color] || color;
 
         var match;
 
         if (color === 'transparent') {
-            return new Rise.Color({
+            return new Rise.Color.RGBColor({
                 red: 0,
                 green: 0,
                 blue: 0,
                 alpha: 0
             });
         } else if ((match = colorRegExpMap.rgb.exec(color))) {
-            return new Rise.Color({
+            return new Rise.Color.RGBColor({
                 red: match[1],
                 green: match[2],
                 blue: match[3]
             });
         } else if ((match = colorRegExpMap.rgba.exec(color))) {
-            return new Rise.Color({
+            return new Rise.Color.RGBColor({
                 red: match[1],
                 green: match[2],
                 blue: match[3],
                 alpha: match[4]
             });
         } else if ((match = colorRegExpMap.hsl.exec(color))) {
-            return new Rise.Color({
+            return new Rise.Color.HSLColor({
                 h: match[1],
                 s: match[2],
                 l: match[3]
             });
         } else if ((match = colorRegExpMap.hsla.exec(color))) {
-            return new Rise.Color({
+            return new Rise.Color.HSLColor({
                 h: match[1],
                 s: match[2],
                 l: match[3],
                 alpha: match[4]
             });
         } else if ((match = colorRegExpMap.hsv.exec(color))) {
-            return new Rise.Color({
+            return new Rise.Color.HSVColor({
                 h: match[1],
                 s: match[2],
                 v: match[3]
             });
         } else if ((match = colorRegExpMap.hex8.exec(color))) {
-            return new Rise.Color({
+            return new Rise.Color.RGBColor({
                 alpha: parseInt(match[1], 16) / 255,
                 red: parseInt(match[2], 16),
                 green: parseInt(match[3], 16),
                 blue: parseInt(match[4], 16)
             });
         } else if ((match = colorRegExpMap.hex6.exec(color))) {
-            return new Rise.Color({
+            return new Rise.Color.RGBColor({
                 red: parseInt(match[1], 16),
                 green: parseInt(match[2], 16),
                 blue: parseInt(match[3], 16)
             });
         } else if ((match = colorRegExpMap.hex3.exec(color))) {
-            return new Rise.Color({
+            return new Rise.Color.RGBColor({
                 red: parseInt(match[1] + '' + match[1], 16),
                 green: parseInt(match[2] + '' + match[2], 16),
                 blue: parseInt(match[3] + '' + match[3], 16)

@@ -11,7 +11,8 @@ module Rise.Color {
         private _saturation:number;
         private _level:number;
 
-        constructor() {
+        constructor(color:any) {
+            super(color);
             color.s = decimalToPercentage(color.s);
             color.l = decimalToPercentage(color.l);
             rgb = Rise.Color.hslToRgb(color.h, color.s, color.l);
