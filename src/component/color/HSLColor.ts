@@ -1,12 +1,15 @@
 module Rise.Color {
-    export interface HSLColorInterface {
-        hue:number;
-        saturation:number;
-        level:number;
-        alpha:number;
+    function decimalToPercentage(value) {
+        value = parseFloat(value);
+
+        if (isFinite(value) && value >= 0 && value <= 1) {
+            return (value * 100) + "%";
+        } else {
+            return value;
+        }
     }
 
-    export class HSLColor extends Rise.Color.RGBColor implements HSLColorInterface {
+    export class HSLColor extends Rise.Color.RGBColor implements Rise.Color.HSLColorInterface {
         private _hue:number;
         private _saturation:number;
         private _level:number;
@@ -69,26 +72,6 @@ module Rise.Color {
             return this;
         }
 
-        toHslObject() {
-            var hsl = Rise.Color.rgbToHsl(this.red, this.green, this.blue);
 
-            return {
-                h: hsl.h * 360,
-                s: hsl.s,
-                l: hsl.l,
-                alpha: this.alpha
-            };
-        }
-
-        toHslString() {
-            var hsl = Rise.Color.rgbToHsl(this.red, this.green, this.blue),
-                h = Math.round(hsl.h * 360),
-                s = Math.round(hsl.s * 100),
-                l = Math.round(hsl.l * 100);
-
-            return this.alpha === 1 ?
-            "hsl(" + h + ", " + s + "%, " + l + "%)" :
-            "hsla(" + h + ", " + s + "%, " + l + "%, " + this.getAlpha() + ")";
-        }
     }
 }

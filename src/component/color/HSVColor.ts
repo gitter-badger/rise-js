@@ -1,11 +1,4 @@
 module Rise.Color {
-    export interface HSVColorInterface {
-        hue:number;
-        saturation:number;
-        value:number;
-        alpha:number;
-    }
-
     export class HSVColor extends Rise.Color.RGBColor implements Rise.Color.HSVColorInterface {
         private _hue:number;
         private _saturation:number;
@@ -69,26 +62,6 @@ module Rise.Color {
             return this;
         }
 
-        toHsvObject() {
-            var hsv = Rise.Color.rgbToHsv(this.red, this.green, this.blue);
 
-            return {
-                h: hsv.h * 360,
-                s: hsv.s,
-                v: hsv.v,
-                alpha: this.alpha
-            };
-        }
-
-        toHsvString() {
-            var hsv = Rise.Color.rgbToHsv(this.red, this.green, this.blue),
-                h = Math.round(hsv.h * 360),
-                s = Math.round(hsv.s * 100),
-                v = Math.round(hsv.v * 100);
-
-            return this.alpha === 1 ?
-            "hsv(" + h + ", " + s + "%, " + v + "%)" :
-            "hsva(" + h + ", " + s + "%, " + v + "%, " + this.getAlpha() + ")";
-        }
     }
 }

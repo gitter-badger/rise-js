@@ -1,50 +1,28 @@
 module Rise.Color {
-    function decimalToPercentage(value) {
-        value = parseFloat(value);
-
-        if (isFinite(value) && value >= 0 && value <= 1) {
-            return (value * 100) + "%";
-        } else {
-            return value;
-        }
-    }
-
-    export interface RGBColorInterface {
-        red:number;
-        green:number;
-        blue:number;
-        alpha:number;
-    }
-
     export class RGBColor implements Rise.Color.RGBColorInterface {
         private _red:number;
         private _green:number;
         private _blue:number;
         private _alpha:number;
 
-        constructor(color:Rise.Color.RGBColorInterface);
+        constructor(color:string);
         constructor(color:any) {
-            var rgb = {};
-
-            if (color instanceof Rise.Color) {
+            if (color instanceof Rise.Color.RGBColor) {
                 return color;
             } else if (typeof color == 'string') {
                 return Rise.Color.fromString(color);
             } else if (typeof color == 'object') {
-                rgb = Rise.Color.rgbToRgb(color.red, color.green, color.blue);
-                this.setRed(rgb.red);
-                this.setGreen(rgb.green);
-                this.setBlue(rgb.blue);
-                this.setAlpha(color.hasOwnProperty('alpha') ? color.alpha : 1);
+                this.red = color.red;
+                this.green = color.green;
+                this.blue = color.blue;
+                this.alpha = color.alpha || 1;
             } else {
-                return false;
+                throw new Error('Implement Logger');
             }
-
-            return this;
         }
 
         get red():number {
-            return this._red;
+            return Math.round(this._red);
         }
 
         set red(red:number) {
@@ -52,7 +30,7 @@ module Rise.Color {
         }
 
         get green():number {
-            return this._green;
+            return Math.round(this._green);
         }
 
         set green(green:number) {
@@ -60,7 +38,7 @@ module Rise.Color {
         }
 
         get blue():number {
-            return this._blue;
+            return Math.round(this._blue);
         }
 
         set blue(blue:number) {
@@ -112,8 +90,7 @@ module Rise.Color {
         }
 
         getBrightness():number {
-            var rgb = this.toRgbObject();
-            return (rgb.red * 299 + rgb.green * 587 + rgb.blue * 114) / 1000;
+            return (this.red * 299 + this.green * 587 + this.blue * 114) / 1000;
         }
 
         isDark():boolean {
@@ -124,186 +101,211 @@ module Rise.Color {
             return !this.isDark();
         }
 
-        toRgbObject() {
+        toRgbObject():Rise.Color.RGBColorObjectInterface {
             return {
-                red: Math.round(this.red),
-                green: Math.round(this.green),
-                blue: Math.round(this.blue),
+                red: this.red,
+                green: this.green,
+                blue: this.blue,
                 alpha: this.alpha
             };
         }
 
         toRgbString():string {
-            var rgb = this.toRgbObject();
-
             return this.alpha === 1 ?
-            "rgb(" + rgb.red + ", " + rgb.green + ", " + rgb.blue + ")" :
-            "rgba(" + rgb.red + ", " + rgb.green + ", " + rgb.blue + ", " + rgb.alpha + ")";
+            "rgb(" + this.red + ", " + this.green + ", " + this.blue + ")" :
+            "rgba(" + this.red + ", " + this.green + ", " + this.blue + ", " + this.alpha + ")";
         }
 
         toHexString(withChar:boolean = true):string {
+            var hex = Rise.Color.rgbToHex(this.red, this.green, this.blue, this.alpha);
+            return withChar ? '#' + hex : hex
+        }
+
+        toHslObject():Rise.Color.HSLColorObjectInterface {
+            var hsl = Rise.Color.rgbToHsl(this.red, this.green, this.blue);
+
+            return {
+                hue: hsl.hue * 360,
+                saturation: hsl.saturation,
+                lightness: hsl.lightness,
+                alpha: this.alpha
+            };
+        }
+
+        toHslString():string {
+            var hsl = Rise.Color.rgbToHsl(this.red, this.green, this.blue),
+                hue = Math.round(hsl.hue * 360),
+                saturation = Math.round(hsl.saturation * 100),
+                lightness = Math.round(hsl.lightness * 100);
+
             return this.alpha === 1 ?
-                Rise.Color.rgbToHex(this.red, this.green, this.blue) :
-                Rise.Color.rgbToHex(this.red, this.green, this.blue, this.alpha);
+            "hsl(" + hue + ", " + saturation + "%, " + lightness + "%)" :
+            "hsla(" + hue + ", " + saturation + "%, " + lightness + "%, " + this.alpha + ")";
         }
 
-        lighten(amount) {
-            amount = (amount === 0) ? 0 : (amount || 10);
+        toHsvObject():Rise.Color.HSVColorObjectInterface {
+            var hsv = Rise.Color.rgbToHsv(this.red, this.green, this.blue);
 
-            var hsl = this.toHsl();
-            hsl.l = Rise.Math.clamp(0, 1, hsl.l + (amount / 100));
-
-            return new Rise.Color(hsl);
+            return {
+                hue: hsv.hue * 360,
+                saturation: hsv.saturation,
+                value: hsv.value,
+                alpha: this.alpha
+            };
         }
 
-        darken(amount) {
-            amount = (amount === 0) ? 0 : (amount || 10);
+        toHsvString():string {
+            var hsv = Rise.Color.rgbToHsv(this.red, this.green, this.blue),
+                hue = Math.round(hsv.hue * 360),
+                saturation = Math.round(hsv.saturation * 100),
+                value = Math.round(hsv.value * 100);
 
-            var hsl = this.toHsl();
-            hsl.l = Rise.Math.clamp(0, 1, hsl.l - (amount / 100));
-
-            return new Rise.Color(hsl);
+            return this.alpha === 1 ?
+            "hsv(" + hue + ", " + saturation + "%, " + value + "%)" :
+            "hsva(" + hue + ", " + saturation + "%, " + value + "%, " + this.alpha + ")";
         }
 
-        desaturate(amount) {
-            amount = (amount === 0) ? 0 : (amount || 10);
+        lighten(amount:number = 10):Rise.Color.HSLColor {
+            var hsl = this.toHslObject();
+            hsl.lightness = Math.min(1, Math.max(0, hsl.lightness + (amount / 100)));
 
-            var hsl = this.toHsl();
-            hsl.s = Rise.Math.clamp(0, 1, hsl.s - (amount / 100));
-
-            return new Rise.Color(hsl);
+            return new Rise.Color.HSLColor(hsl);
         }
 
-        saturate(amount) {
-            amount = (amount === 0) ? 0 : (amount || 10);
+        darken(amount:number = 10):Rise.Color.HSLColor {
+            var hsl = this.toHslObject();
+            hsl.lightness = Math.min(1, Math.max(0, hsl.lightness - (amount / 100)));
 
-            var hsl = this.toHsl();
-            hsl.s = Rise.Math.clamp(0, 1, hsl.s + (amount / 100));
-
-            return new Rise.Color(hsl);
+            return new Rise.Color.HSLColor(hsl);
         }
 
-        brighten(amount) {
-            amount = (amount === 0) ? 0 : (amount || 10);
+        desaturate(amount:number = 10):Rise.Color.HSLColor {
+            var hsl = this.toHslObject();
+            hsl.saturation = Math.min(1, Math.max(0, hsl.saturation - (amount / 100)));
 
-            var rgb = this.toRgb();
-            rgb.red = Math.max(0, Math.min(255, rgb.red - Math.round(255 * -(amount / 100))));
-            rgb.green = Math.max(0, Math.min(255, rgb.green - Math.round(255 * -(amount / 100))));
-            rgb.blue = Math.max(0, Math.min(255, rgb.blue - Math.round(255 * -(amount / 100))));
-
-            return new Rise.Color(rgb);
+            return new Rise.Color.HSLColor(hsl);
         }
 
-        greyscale() {
+        saturate(amount:number = 10):Rise.Color.HSLColor {
+            var hsl = this.toHslObject();
+            hsl.saturation = Math.min(1, Math.max(0, hsl.saturation + (amount / 100)));
+
+            return new Rise.Color.HSLColor(hsl);
+        }
+
+        brighten(amount:number = 10):Rise.Color.RGBColor {
+            return new Rise.Color.RGBColor({
+                red: Math.max(0, Math.min(255, this.red - Math.round(255 * -(amount / 100)))),
+                green: Math.max(0, Math.min(255, this.green - Math.round(255 * -(amount / 100)))),
+                blue: Math.max(0, Math.min(255, this.blue - Math.round(255 * -(amount / 100))))
+            });
+        }
+
+        greyscale():Rise.Color.HSLColor {
             return this.desaturate(100);
         }
 
-        spin(amount) {
-            var hsl = this.toHsl(),
-                hue = (Math.round(hsl.h) + amount) % 360;
+        spin(amount:number = 0):Rise.Color.HSLColor {
+            var hsl = this.toHslObject(),
+                hue = (Math.round(hsl.hue) + amount) % 360;
 
-            hsl.h = hue < 0 ? 360 + hue : hue;
+            hsl.hue = hue < 0 ? 360 + hue : hue;
 
-            return new Rise.Color(hsl);
+            return new Rise.Color.HSLColor(hsl);
         }
 
-        getAnalogous(results, slices) {
-            results = results || 6;
-            slices = slices || 30;
-
-            var hsl = this.toHsl(),
+        getAnalogous(results:number = 6, slices:number = 30):Array<Rise.Color.RGBColor> {
+            var hsl = this.toHslObject(),
                 part = 360 / slices,
-                result = [new Rise.Color(this)];
+                result = [new Rise.Color.RGBColor(this)];
 
-            for (hsl.h = ((hsl.h - (part * results >> 1)) + 720) % 360; --results;) {
-                hsl.h = (hsl.h + part) % 360;
-                result.push(new Rise.Color(hsl));
+            for (hsl.hue = ((hsl.hue - (part * results >> 1)) + 720) % 360; --results;) {
+                hsl.hue = (hsl.hue + part) % 360;
+                result.push(new Rise.Color.HSLColor(hsl));
             }
 
             return result;
         }
 
-        getComplementary() {
-            var hsl = this.toHsl();
-            hsl.h = (hsl.h + 180) % 360;
-            return new Rise.Color(hsl);
+        getComplementary():Rise.Color.HSLColor {
+            var hsl = this.toHslObject();
+            hsl.hue = (hsl.hue + 180) % 360;
+            return new Rise.Color.HSLColor(hsl);
         }
 
-        getMonochromatic(results) {
-            results = results || 6;
-
-            var hsv = this.toHsv(),
+        getMonochromatic(results:number = 6):Array<Rise.Color.HSVColor> {
+            var hsv = this.toHsvObject(),
                 result = [],
                 modification = 1 / results;
 
             while (results--) {
-                result.push(new Rise.Color({
-                    h: hsv.h,
-                    s: hsv.s,
-                    v: hsv.v
+                result.push(new Rise.Color.HSVColor({
+                    h: hsv.hue,
+                    s: hsv.saturation,
+                    v: hsv.value
                 }));
 
-                hsv.v = (hsv.v + modification) % 1;
+                hsv.value = (hsv.value + modification) % 1;
             }
 
             return result;
         }
 
-        getSplitComplementary() {
-            var hsl = this.toHsl();
+        getSplitComplementary():Array<Rise.Color.RGBColor> {
+            var hsl = this.toHslObject();
 
             return [
-                new Rise.Color(this),
-                new Rise.Color({
-                    h: (hsl.h + 72) % 360,
-                    s: hsl.s,
-                    l: hsl.l
+                new Rise.Color.RGBColor(this),
+                new Rise.Color.HSLColor({
+                    h: (hsl.hue + 72) % 360,
+                    s: hsl.saturation,
+                    l: hsl.lightness
                 }),
-                new Rise.Color({
-                    h: (hsl.h + 216) % 360,
-                    s: hsl.s,
-                    l: hsl.l
+                new Rise.Color.HSLColor({
+                    h: (hsl.hue + 216) % 360,
+                    s: hsl.saturation,
+                    l: hsl.lightness
                 })
             ];
         }
 
-        getTriad() {
-            var hsl = this.toHsl();
+        getTriad():Array<Rise.Color.RGBColor> {
+            var hsl = this.toHslObject();
 
             return [
-                new Rise.Color(this),
-                new Rise.Color({
-                    h: (hsl.h + 120) % 360,
-                    s: hsl.s,
-                    l: hsl.l
+                new Rise.Color.RGBColor(this),
+                new Rise.Color.HSLColor({
+                    h: (hsl.hue + 120) % 360,
+                    s: hsl.saturation,
+                    l: hsl.lightness
                 }),
-                new Rise.Color({
-                    h: (hsl.h + 240) % 360,
-                    s: hsl.s,
-                    l: hsl.l
+                new Rise.Color.HSLColor({
+                    h: (hsl.hue + 240) % 360,
+                    s: hsl.saturation,
+                    l: hsl.lightness
                 })
             ];
         }
 
-        getTetrad() {
-            var hsl = this.toHsl();
+        getTetrad():Array<Rise.Color.RGBColor> {
+            var hsl = this.toHslObject();
 
             return [
-                new Rise.Color(this),
-                new Rise.Color({
-                    h: (hsl.h + 90) % 360,
-                    s: hsl.s,
-                    l: hsl.l
+                new Rise.Color.RGBColor(this),
+                new Rise.Color.HSLColor({
+                    h: (hsl.hue + 90) % 360,
+                    s: hsl.saturation,
+                    l: hsl.lightness
                 }),
-                new Rise.Color({
-                    h: (hsl.h + 180) % 360,
-                    s: hsl.s,
-                    l: hsl.l
+                new Rise.Color.HSLColor({
+                    h: (hsl.hue + 180) % 360,
+                    s: hsl.saturation,
+                    l: hsl.lightness
                 }),
-                new Rise.Color({
-                    h: (hsl.h + 270) % 360,
-                    s: hsl.s,
-                    l: hsl.l
+                new Rise.Color.HSLColor({
+                    h: (hsl.hue + 270) % 360,
+                    s: hsl.saturation,
+                    l: hsl.lightness
                 })
             ];
         }

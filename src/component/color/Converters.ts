@@ -40,14 +40,6 @@ module Rise.Color {
         };
     }());
 
-    export function rgbToRgb(red:number, green:number, blue:number) {
-        return {
-            red: bound(0, 255, red) * 255,
-            green: bound(0, 255, green) * 255,
-            blue: bound(0, 255, blue) * 255
-        };
-    }
-
     export function rgbToHex(red:number, green:number, blue:number, alpha:number = 1) {
         function pad2(value:string) {
             return value.length === 1 ? '0' + value : value;
