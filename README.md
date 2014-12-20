@@ -1,6 +1,8 @@
 RiseJS
 ===
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ghaiklor/rise-js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 RiseJS - is a JavaScript library that provides interactive editor on top of html elements.
 
 **_Contributions are welcome!_**
